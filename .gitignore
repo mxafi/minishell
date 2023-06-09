@@ -1,0 +1,38 @@
+# lets not ignore gitignore itself
+# lets group ignore instructions by category with comments
+
+# Mac stuff
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Vim & Neovim stuff
+[._]*.s[a-v][a-z]
+!*.svg  # comment out if you don't need vector files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+*~
+Session.vim
+Sessionx.vim
+.netrwhist
+[._]*.un~
+
+# VSCode stuff
+.vscode
+
+# XCode stuff
+xcuserdata
+
+# Debugging stuff
+*.dSYM
+
+# Project minishell stuff
+minishell
+*test*
+a.out
+*.o
+*.pdf
+*.bak
+
