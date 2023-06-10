@@ -25,7 +25,7 @@ MAIN_H			=	minishell.h
 MAIN_C			=	minishell.c
 
 INPUT_H			=	
-INPUT_C			=	
+INPUT_C			=	input.c
 
 LEXER_H			=	
 LEXER_C			=	
