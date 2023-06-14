@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/06/14 12:06:57 by malaakso         ###   ########.fr        #
+#    Updated: 2023/06/14 14:26:11 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,10 @@ OBJ_PATHS		=	$(addprefix $(OBJ_FOLDER)/, \
 					$(patsubst %.c, %.o, $(C_FILES)))
 
 C_FLAGS_OBJ		=	-Wall -Wextra -Werror
-C_FLAGS_NAME	=	$(C_FLAGS_OBJ) -lreadline
+C_FLAGS_NAME	=	$(C_FLAGS_OBJ) \
+					-lreadline \
+					-L ~/.brew/opt/readline/lib \
+					-I ~/.brew/opt/readline/include
 
 .PHONY: all
 all: $(NAME)
