@@ -27,8 +27,8 @@ MAIN_C			=	minishell.c
 INPUT_H			=	
 INPUT_C			=	
 
-LEXER_H			=	
-LEXER_C			=	
+LEXER_H			=	lexer.h
+LEXER_C			=	lexer.c
 
 H_FILES			=	$(MAIN_H) $(INPUT_H) $(LEXER_H)
 C_FILES			=	$(MAIN_C) $(INPUT_C) $(INPUT_H)
