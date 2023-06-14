@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/10 12:25:21 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/14 12:34:21 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@
 # include <termcap.h>
 
 # include "libft.h"
+
+void	display_prompt(void);
 
 #endif
