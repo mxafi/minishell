@@ -29,5 +29,18 @@ typedef struct s_lexer
 	t_token			*token_list;
 }					t_lexer;
 
+typedef enum {
+    STRING,
+    COMMAND_TYPE,
+    GREATER_THAN,
+    GREATER_GREATER,
+    LESS_THAN,
+    LESS_LESS,
+    PIPE_SYM,
+    SPACE
+} e_token_type;
+
+# define DELIMITERS " \t<>|\"'"
+
 
 #endif
