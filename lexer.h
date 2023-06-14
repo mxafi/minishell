@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lclerc <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/09 15:26:41 by lclerc           ###   ########.fr       */
+/*   Created: 2023/06/13 16:48:14 by lclerc            #+#    #+#             */
+/*   Updated: 2023/06/13 16:48:16 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#ifndef	LEXER_H
+# define LEXER_H
 
-int	main()
+#include "libft/libft.h"
+
+typedef struct s_token
 {
-	t_lexer		token_list;
-	t_token		*token;
+	int				type;
+	char			*token;
+	struct	s_token *next;
+}					t_token;	
 
-	token = token_list.token_list;
-	
-	char		*test_string = "echo -n \"toto va\" 'a' la peche > outfile | <infile wc -l > amount_of_lines";
-	token_list.delimiters = " \t<>|\"'";
-	
+typedef struct s_lexer 
+{
+	int				token_amount;
+	char			*delimiters;
+	t_token			*token_list;
+}					t_lexer;
 
 
-} 
+#endif
