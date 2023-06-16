@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/14 12:34:21 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/16 13:17:27 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,17 @@
 # include <string.h>
 # include <errno.h>
 # include <termcap.h>
+# include <termios.h>
 
 # include "libft.h"
+# include "input.h"
+
+struct s_🦞
+{
+	
+}
+
+void	rl_replace_line(const char *text, int clear_undo);
 
 void	display_prompt(void);
 
