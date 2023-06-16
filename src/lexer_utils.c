@@ -12,7 +12,18 @@
 
 #include	"../inc/lexer.h"
 
-const char	*ft_strpbrk(const char	*string, const char	*delimiters)
+int	make_new_node(t_lexer *token_list, t_token *new_token)
+{
+	
+	if (!(new_token = (t_token *)calloc(1, sizeof(t_token))))
+	{
+		token_list->calloc_state = CALLOC_FAIL;
+		return (CALLOC_FAIL);
+	}
+	return (SUCCESS);
+}
+
+char	*ft_strpbrk(const char	*string, const char	*delimiters)
 {
 	int			i;
 	int			j;
