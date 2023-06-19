@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   input.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/19 11:57:24 by malaakso         ###   ########.fr       */
+/*   Created: 2023/06/14 12:32:46 by malaakso          #+#    #+#             */
+/*   Updated: 2023/06/16 12:40:14 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef INPUT_H
+# define INPUT_H
 
-void	display_prompt(void)
-{
-	char	*input;
+char	*get_input(void);
+void	ignore_signals(void);
+void	restore_signal_defaults(void);
+void	toggle_echoctl(void);
 
-	while (1)
-	{
-		input = get_input();
-		if (!input)
-			return ;
-		lexer(input);
-		free(input);
-	}
-}
-
-int	main(void)
-{
-	display_prompt();
-	return (0);
-}
+#endif

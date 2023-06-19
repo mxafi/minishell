@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/06/09 20:42:18 by malaakso         ###   ########.fr        #
+#    Updated: 2023/06/19 12:44:45 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ FOLDER_LIST		=	$(H_FOLDER) $(C_FOLDER) $(OBJ_FOLDER) \
 MAIN_H			=	minishell.h
 MAIN_C			=	minishell.c
 
-INPUT_H			=	
-INPUT_C			=	
+INPUT_H			=	input.h
+INPUT_C			=	input.c
 
 LEXER_H			=	
 LEXER_C			=	
@@ -38,14 +38,18 @@ C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))
 OBJ_PATHS		=	$(addprefix $(OBJ_FOLDER)/, \
 					$(patsubst %.c, %.o, $(C_FILES)))
 
-C_FLAGS_OBJ		=	-Wall -Wextra -Werror -lreadline
-C_FLAGS_NAME		=	$(C_FLAGS_OBJ)
+C_FLAGS_OBJ		=	-Wall -Wextra -Werror
+C_FLAGS_NAME	=	$(C_FLAGS_OBJ) \
+					-lreadline \
+					-L ~/.brew/opt/readline/lib \
+					-I ~/.brew/opt/readline/include
 
 .PHONY: all
 all: $(NAME)
 
 $(NAME): $(FOLDER_LIST) $(OBJ_PATHS) Makefile \
 	$(LIBFT_FOLDER)/$(LIBFT)
+	@pkill minishell || true
 	$(COMPILER) $(C_FLAGS_NAME) $(OBJ_PATHS) $(LIBFT_FOLDER)/$(LIBFT) -o $@
 
 $(OBJ_PATHS): $(OBJ_FOLDER)/%.o:$(C_FOLDER)/%.c $(H_PATHS) Makefile
