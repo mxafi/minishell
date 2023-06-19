@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/16 13:17:27 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/19 15:23:30 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 # include "libft.h"
 # include "input.h"
 
-struct s_🦞
+typedef struct s_minishell
 {
-	
-}
+	int	exit_code;
+}	t_minishell;
 
 void	rl_replace_line(const char *text, int clear_undo);
 
