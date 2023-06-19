@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/06/09 20:42:18 by malaakso         ###   ########.fr        #
+#    Updated: 2023/06/14 12:02:08 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,12 +17,12 @@ COMPILER		=	cc
 H_FOLDER		=	inc
 C_FOLDER		=	src
 OBJ_FOLDER		=	obj
-LIBFT_FOLDER		=	libft
+LIBFT_FOLDER	=	libft
 FOLDER_LIST		=	$(H_FOLDER) $(C_FOLDER) $(OBJ_FOLDER) \
 					$(LIBFT_FOLDER)
 
-MAIN_H			=	minishell.h
-MAIN_C			=	minishell.c
+SHELL_H			=	minishell.h
+SHELL_C			=	minishell.c
 
 INPUT_H			=	
 INPUT_C			=	
@@ -30,16 +30,16 @@ INPUT_C			=
 LEXER_H			=	lexer.h
 LEXER_C			=	lexer.c
 
-H_FILES			=	$(MAIN_H) $(INPUT_H) $(LEXER_H)
-C_FILES			=	$(MAIN_C) $(INPUT_C) $(INPUT_H)
+H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H)
+C_FILES			=	$(SHELL_C) $(INPUT_C) $(INPUT_H)
 
 H_PATHS			=	$(addprefix $(H_FOLDER)/, $(H_FILES))
 C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))
 OBJ_PATHS		=	$(addprefix $(OBJ_FOLDER)/, \
 					$(patsubst %.c, %.o, $(C_FILES)))
 
-C_FLAGS_OBJ		=	-Wall -Wextra -Werror -lreadline
-C_FLAGS_NAME		=	$(C_FLAGS_OBJ)
+C_FLAGS_OBJ		=	-Wall -Wextra -Werror
+C_FLAGS_NAME	=	$(C_FLAGS_OBJ) -lreadline
 
 .PHONY: all
 all: $(NAME)
@@ -55,7 +55,7 @@ $(LIBFT_FOLDER)/$(LIBFT):
 	$(MAKE) -C $(LIBFT_FOLDER)
 
 $(FOLDER_LIST):
-	mkdir $@
+	mkdir -p $@
 
 .PHONY: clean
 clean:
