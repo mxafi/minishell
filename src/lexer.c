@@ -6,13 +6,13 @@
 /*   By: lclerc <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/09 15:26:41 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/06/19 11:56:10 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/lexer.h"
+#include "../inc/minishell.h"
 
-static	int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
+static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 {
 	t_token	*last_token;
 
@@ -37,6 +37,7 @@ static int	string_to_token(t_lexer *token_list, char  *start, char *delimiter)
 	t_token	*new_token;
 	int		length;
 
+	new_token = NULL;
 	length = delimiter - start;
 	if (delimiter == NULL)
 		length = ft_strlen(start);
@@ -54,6 +55,7 @@ static char *delimiter_to_token(t_lexer *token_list, char *start)
 	t_token	*new_token;
 	int		length;
 
+	new_token = NULL;
 	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(start, "<<", 2) == 0 || ft_strncmp(start, ">>", 2) == 0)
@@ -100,7 +102,7 @@ static int	tokenize_readline(t_lexer *token_list)
 
 
 
-int	main()
+int	lexer_main()
 {
 	t_lexer		token_list;
 	char		*test_string = "echo -n \"toto va\" 'a' la peche > outfile | <infile wc -l > amount_of_lines";
