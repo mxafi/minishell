@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/16 13:17:27 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:24:24 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <termcap.h>
 # include <termios.h>
 
-# include "libft.h"
+# include "../libft/libft.h"
 # include "input.h"
 
 struct s_🦞
