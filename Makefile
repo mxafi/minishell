@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/06/14 17:37:33 by malaakso         ###   ########.fr        #
+#    Updated: 2023/06/19 11:58:56 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ FOLDER_LIST		=	$(H_FOLDER) $(C_FOLDER) $(OBJ_FOLDER) \
 SHELL_H			=	minishell.h
 SHELL_C			=	minishell.c
 
-INPUT_H			=	
+INPUT_H			=	input.h
 INPUT_C			=	input.c
 
 LEXER_H			=	
