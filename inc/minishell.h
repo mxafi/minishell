@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/19 15:23:30 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:03:22 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <termcap.h>
 # include <termios.h>
 
-# include "libft.h"
+# include "../libft/libft.h"
 # include "input.h"
 
 typedef struct s_minishell
