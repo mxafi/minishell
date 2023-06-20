@@ -12,10 +12,11 @@
 
 #include	"../inc/lexer.h"
 
-int	make_new_node(t_lexer *token_list, t_token *new_token)
+int	make_new_node(t_lexer *token_list, t_token **new_token)
 {
 	
-	if (!(new_token = (t_token *)calloc(1, sizeof(t_token))))
+	
+	if (!(*new_token = (t_token *)calloc(1, sizeof(t_token))))
 	{
 		token_list->calloc_state = CALLOC_FAIL;
 		return (CALLOC_FAIL);
@@ -29,13 +30,14 @@ char	*ft_strpbrk(const char	*string, const char	*delimiters)
 	int			j;
 
 	i = 0;
+//	ft_printf(("ft_strpbrk\n"));
 	while (string[i] != '\0')
 	{
 		j = 0;
 		while (delimiters[j] != '\0')
 		{
 			if (string[i] == delimiters[j])
-				return ((char *) (string + i - 1));
+				return ((char *) (string + i));
 			j++;
 		}
 		i++;

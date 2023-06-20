@@ -12,22 +12,63 @@
 
 #include "../inc/minishell.h"
 
+char	*ft_test_substr(const char *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	s_len;
+	size_t	max_sub_len;
+	size_t	i;
+
+	if (!s)
+		return (0);
+	s_len = ft_strlen(s);
+	if (start > s_len)
+		start = s_len;
+	max_sub_len = s_len - start;
+	if (len <= max_sub_len)
+		sub = malloc(len + 1);
+	else
+		sub = malloc(max_sub_len + 1);
+	if (!sub)
+		return (0);
+	i = 0;
+	while (i < max_sub_len && i < len)
+	{
+		sub[i] = s[i + start];
+		i++;
+	}
+	sub[i] = '\0';
+	//printf("Substring created in ft_substr: %s\n", sub);
+	return (sub);
+}
+
+
 static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 {
 	t_token	*last_token;
 
-	if (!(token->token = ft_substr(str, 0, length)))
+	assert(str);
+	ft_printf("tokenize_node()");
+	ft_printf("token->token before substr is [] length [%d], str[%s]\n", length, str);
+	ft_printf("strlen(str) [%d]\n", ft_strlen(str));
+	if (!(token->token = ft_test_substr(str, 0, length)))
 	{
 		list->calloc_state = FAILURE;
 		return (FAILURE);
 	}
-	last_token = list->token_list;
-	while (last_token->next != NULL)
-		last_token = last_token->next;
-	last_token->next = token;
+	ft_printf("token->token after substr is [%s] \
+			length [%d], str[%s]\n", token->token, length, str);
 	token->next = NULL;
-	list->token_amount++;
-	token->token_count = list->token_amount;
+	token->token_count = ++list->token_amount;
+	if (list->token_list == NULL)
+		list->token_list = token;
+	else
+	{
+		last_token = list->token_list;
+		while (last_token->next != NULL)
+			last_token = last_token->next;
+		last_token->next = token;
+	}
 	return (SUCCESS);
 }
 
@@ -37,12 +78,20 @@ static int	string_to_token(t_lexer *token_list, char  *start, char *delimiter)
 	t_token	*new_token;
 	int		length;
 
+	//ft_printf("string_to_token()\n");
 	new_token = NULL;
-	length = delimiter - start;
 	if (delimiter == NULL)
+	{
 		length = ft_strlen(start);
-	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
+	}
+	else
+	{
+		length = delimiter - start;
+	//	ft_printf("length [%d] = delimiter [%s] - start[%s]\n", length, delimiter , start);
+	}
+	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (CALLOC_FAIL);
+	//ft_printf("length [%d] start [%s]\n", length, start);
 	if (!tokenize_node(token_list, new_token, start, length))
 		return (CALLOC_FAIL);
 	new_token->type = STRING;
@@ -56,7 +105,7 @@ static char *delimiter_to_token(t_lexer *token_list, char *start)
 	int		length;
 
 	new_token = NULL;
-	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
+	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(start, "<<", 2) == 0 || ft_strncmp(start, ">>", 2) == 0)
 	{
@@ -86,8 +135,12 @@ static int	tokenize_readline(t_lexer *token_list)
 	while (*start != '\0')
 	{
 		delimiter = ft_strpbrk(start, DELIMITERS);
+		//ft_printf("tokenize_readline -> ft_strpbrk gives delimeter: %s\n", delimiter);
 		if (!delimiter)
+		{
 			string_to_token(token_list, start, NULL);
+			break;
+		}
 		else 
 		{
 			if (start < delimiter)
@@ -101,16 +154,14 @@ static int	tokenize_readline(t_lexer *token_list)
 }
 
 
-
-int	lexer_main()
+int	lexer(char *input)
 {
 	t_lexer		token_list;
-	char		*test_string = "echo -n \"toto va\" 'a' la peche > outfile | <infile wc -l > amount_of_lines";
 
 	ft_bzero(&token_list, sizeof(t_lexer));
-	if (test_string)
+	if (input)
 	{
-		token_list.readlined = test_string;
+		token_list.readlined = input;
 		// need to trim whitespaces and get rid of those as first char
 		// also, do not consider tabs as type, so trim them to single space
 		//string_validation(&token_list);
