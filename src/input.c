@@ -6,11 +6,11 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:08:47 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/16 12:40:24 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:23:21 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 static void	ctrl_c(int sig)
 {

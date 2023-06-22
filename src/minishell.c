@@ -6,11 +6,11 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/19 11:57:24 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:23:36 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 void	display_prompt(void)
 {
