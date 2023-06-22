@@ -110,7 +110,7 @@ static char *delimiter_to_token(t_lexer *token_list, char *start)
 	if (ft_strncmp(start, "<<", 2) == 0 || ft_strncmp(start, ">>", 2) == 0)
 	{
 		length = 2;
-		if (*start == LARGER_THAN)
+		if (*start == OUTFILE)
  			new_token->type = APPEND_TO;
 		else
 			new_token->type = HEREDOC;
@@ -161,10 +161,12 @@ int	lexer(char *input)
 	ft_bzero(&token_list, sizeof(t_lexer));
 	if (input)
 	{
+		//validate_syntax(input); 
 		token_list.readlined = input;
-		// need to trim whitespaces and get rid of those as first char
+		// need to trim ALL whitespaces and get rid of those as first char
 		// also, do not consider tabs as type, so trim them to single space
 		//string_validation(&token_list);
+		trim_starting_white_spaces(input);
 		tokenize_readline(&token_list);
 		print_list(&token_list);
 	}
