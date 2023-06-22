@@ -1,6 +1,9 @@
 # lets not ignore gitignore itself
 # lets group ignore instructions by category with comments
 
+# GitHub stuff
+README.md
+
 # Mac stuff
 .DS_Store
 .AppleDouble
