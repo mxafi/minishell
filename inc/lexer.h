@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 16:48:14 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/23 12:04:19 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/06/23 12:51:53 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ typedef struct s_lexer
 # define DELIMITERS " \t<>|\"'"
 # define WHITE_SPACES " \t"
 
-enum e_token_type {
+enum				e_token_type
+{
 	SINGLE_QUOTE = '\'',
 	DOUBLE_QUOTE = '\"',
 	OUTFILE = '>',
@@ -77,4 +78,3 @@ void				print_list(t_lexer *list);
 int					validate_syntax(t_lexer *token_list);
 
 #endif
-

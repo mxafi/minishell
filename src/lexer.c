@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/19 11:56:10 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/06/23 13:40:50 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+/**
+ * @brief 
+ * 
+ * @param s 
+ * @param start 
+ * @param len 
+ * @return char* 
+ */
 char	*ft_test_substr(const char *s, unsigned int start, size_t len)
 {
 	char	*sub;
@@ -42,14 +50,23 @@ char	*ft_test_substr(const char *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param list 
+ * @param token 
+ * @param str 
+ * @param length 
+ * @return int 
+ */
 static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 {
 	t_token	*last_token;
 
 	assert(str);
 	ft_printf("tokenize_node()");
-	ft_printf("token->token before substr is [] length [%d], str[%s]\n", length, str);
+	ft_printf("token->token before substr is [] length [%d], str[%s]\n", length,
+			str);
 	ft_printf("strlen(str) [%d]\n", ft_strlen(str));
 	if (!(token->token = ft_test_substr(str, 0, length)))
 	{
@@ -57,7 +74,10 @@ static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 		return (FAILURE);
 	}
 	ft_printf("token->token after substr is [%s] \
-			length [%d], str[%s]\n", token->token, length, str);
+			length [%d], str[%s]\n",
+				token->token,
+				length,
+				str);
 	token->next = NULL;
 	token->token_count = ++list->token_amount;
 	if (list->token_list == NULL)
@@ -72,8 +92,7 @@ static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 	return (SUCCESS);
 }
 
-
-static int	string_to_token(t_lexer *token_list, char  *start, char *delimiter)
+static int	string_to_token(t_lexer *token_list, char *start, char *delimiter)
 {
 	t_token	*new_token;
 	int		length;
@@ -87,7 +106,8 @@ static int	string_to_token(t_lexer *token_list, char  *start, char *delimiter)
 	else
 	{
 		length = delimiter - start;
-	//	ft_printf("length [%d] = delimiter [%s] - start[%s]\n", length, delimiter , start);
+		//	ft_printf("length [%d] = delimiter [%s] - start[%s]\n", length,
+		//			delimiter , start);
 	}
 	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (CALLOC_FAIL);
@@ -99,7 +119,7 @@ static int	string_to_token(t_lexer *token_list, char  *start, char *delimiter)
 	return (SUCCESS);
 }
 
-static char *delimiter_to_token(t_lexer *token_list, char *start)
+static char	*delimiter_to_token(t_lexer *token_list, char *start)
 {
 	t_token	*new_token;
 	int		length;
@@ -111,11 +131,11 @@ static char *delimiter_to_token(t_lexer *token_list, char *start)
 	{
 		length = 2;
 		if (*start == OUTFILE)
- 			new_token->type = APPEND_TO;
+			new_token->type = APPEND_TO;
 		else
 			new_token->type = HEREDOC;
 	}
-	else 
+	else
 	{
 		length = 1;
 		new_token->type = *start;
@@ -135,40 +155,36 @@ static int	tokenize_readline(t_lexer *token_list)
 	while (*start != '\0')
 	{
 		delimiter = ft_strpbrk(start, DELIMITERS);
-		//ft_printf("tokenize_readline -> ft_strpbrk gives delimeter: %s\n", delimiter);
+		//ft_printf("tokenize_readline -> ft_strpbrk gives delimeter: %s\n",
+			//	delimiter);
 		if (!delimiter)
 		{
 			string_to_token(token_list, start, NULL);
-			break;
+			break ;
 		}
-		else 
+		else
 		{
 			if (start < delimiter)
 				string_to_token(token_list, start, delimiter);
 			start = delimiter_to_token(token_list, delimiter);
 		}
 		if (token_list->calloc_state == CALLOC_FAIL)
-			break;
+			break ;
 	}
 	return (token_list->calloc_state);
 }
 
-
 int	lexer(char *input)
 {
-	t_lexer		token_list;
+	t_lexer	token_list;
 
 	ft_bzero(&token_list, sizeof(t_lexer));
 	if (input)
 	{
-		//validate_syntax(input); 
-		token_list.readlined = input;
-		// need to trim ALL whitespaces and get rid of those as first char
-		// also, do not consider tabs as type, so trim them to single space
-		//string_validation(&token_list);
-		trim_starting_white_spaces(input);
+		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
+		validate_syntax(&token_list);
 		tokenize_readline(&token_list);
 		print_list(&token_list);
 	}
-	return(0);
-} 
+	return (0);
+}
