@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/19 16:03:22 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/23 12:32:33 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # include "../libft/libft.h"
 # include "input.h"
+# include "astree.h"
 
 typedef struct s_minishell
 {
