@@ -6,12 +6,15 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/27 17:10:34 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:11:32 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+// FOR DEBUG PURPOSES
+# include <assert.h>
 
 // Provides constants for system limits, such as maximum path length.
 # include <limits.h>
