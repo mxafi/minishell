@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/06/27 17:09:59 by malaakso         ###   ########.fr        #
+#    Updated: 2023/06/27 17:12:22 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ LEXER_H			=
 LEXER_C			=	
 
 ASTREE_H		=	astree.h
-ASTREE_C		=	astree.c
+ASTREE_C		=	astree.c astree_helpers_create.c astree_helpers_delete.c
 
 H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H)
 C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_H) $(ASTREE_C)
