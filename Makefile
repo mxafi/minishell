@@ -17,7 +17,7 @@ COMPILER		=	cc
 H_FOLDER		=	inc
 C_FOLDER		=	src
 OBJ_FOLDER		=	obj
-LIBFT_FOLDER	=	libft
+LIBFT_FOLDER		=	libft
 FOLDER_LIST		=	$(H_FOLDER) $(C_FOLDER) $(OBJ_FOLDER) \
 					$(LIBFT_FOLDER)
 
@@ -31,7 +31,7 @@ LEXER_H			=
 LEXER_C			=	
 
 H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H)
-C_FILES			=	$(SHELL_C) $(INPUT_C) $(INPUT_H)
+C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C)
 
 H_PATHS			=	$(addprefix $(H_FOLDER)/, $(H_FILES))
 C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))
@@ -39,7 +39,7 @@ OBJ_PATHS		=	$(addprefix $(OBJ_FOLDER)/, \
 					$(patsubst %.c, %.o, $(C_FILES)))
 
 C_FLAGS_OBJ		=	-Wall -Wextra -Werror
-C_FLAGS_NAME	=	$(C_FLAGS_OBJ) \
+C_FLAGS_NAME		=	$(C_FLAGS_OBJ) \
 					-lreadline \
 					-L ~/.brew/opt/readline/lib \
 					-I ~/.brew/opt/readline/include
