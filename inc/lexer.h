@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 16:48:14 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/23 12:51:53 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/06/26 18:28:55 by lionel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ typedef struct s_token
 
 typedef struct s_lexer
 {
-	int				calloc_state;
 	int				calloc_count;
 	int				state;
+	int				error_code;
 	int				token_amount;
 	char			*readlined;
 	t_token			*token_list;
@@ -52,18 +52,19 @@ enum				e_token_type
 	HEREDOC,
 	APPEND_TO,
 	CMD
+	SYNTAX_ERROR = 258,
 };
 
 /*
  * return values (how to handle those???)
  */
-# define FAILURE 0
-# define CALLOC_FAIL 1
-# define SUCCESS 2
-
+# define FAILURE 		0
+# define CALLOC_FAIL 	1
+# define SUCCESS 		2
 /*
  * contained in lexer_utils.c
  */
+int					free_token_list(t_lexer *token_list);
 int					make_new_node(t_lexer *token_to_node, t_token **new_token);
 char				*ft_strpbrk(const char *string, const char *delimiters);
 

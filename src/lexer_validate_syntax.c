@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_validate_syntax.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:11:59 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/23 15:00:20 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/06/26 18:12:13 by lionel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@
 		spaces can be in between)
 3/ check quotes are closing 
 4/ Last char cannot be redirector or pipe
-Any syntax error exits with "exit 258"
+Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
-	static void token_is_not_pipe(t_lexer *token_list, t_token *token)
+static void token_is_not_pipe(t_lexer *token_list, t_token *token)
 {
 	if (token != NULL && token->type == PIPE)
 	{
 		ft_printf("shellfish> syntax error near unexpected token `|'\n");
-		token_list->state = 258;
+		token_list->state = SYNTAX_ERROR;
 	}
 }
 
@@ -48,14 +48,13 @@ static void	redirectors_are_valid(t_lexer *token_list, t_token *token)
 			{
 				ft_printf("shellfish> syntax error near unexpected token%c\n",
 					token->type);
-				exit(258);
+				token_list->state = SYNTAX_ERROR;
 			}
 		}
 		else
 		{
 			ft_printf("shellfish> syntax error near unexpected token\
 				`newline'\n");
-			exit(258);
 		}
 	}
 }
@@ -80,6 +79,8 @@ int	validate_syntax(t_lexer *token_list)
 		pipes_are_valid(token_list);
 		quotes_are_valid(token_list);
 	}
-	token_is_not_pipe(token_list, token);
+	if (token_is_not_pipe(token_list, token));
+	if (token_list->state == FAILED_VALIDATION)
+		return (FAILED_VALIDATION);
 	return (SUCCESS);
 }

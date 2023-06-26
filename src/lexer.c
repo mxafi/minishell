@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/23 13:40:50 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/06/26 18:29:20 by lionel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 	ft_printf("strlen(str) [%d]\n", ft_strlen(str));
 	if (!(token->token = ft_test_substr(str, 0, length)))
 	{
-		list->calloc_state = FAILURE;
+		list->error_code = FAILURE;
 		return (FAILURE);
 	}
 	ft_printf("token->token after substr is [%s] \
@@ -168,10 +168,10 @@ static int	tokenize_readline(t_lexer *token_list)
 				string_to_token(token_list, start, delimiter);
 			start = delimiter_to_token(token_list, delimiter);
 		}
-		if (token_list->calloc_state == CALLOC_FAIL)
+		if (token_list->error_code == CALLOC_FAIL)
 			break ;
 	}
-	return (token_list->calloc_state);
+	return (token_list->error_code);
 }
 
 int	lexer(char *input)
@@ -182,7 +182,11 @@ int	lexer(char *input)
 	if (input)
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
-		validate_syntax(&token_list);
+		if ((validate_syntax(&token_list)) == SYNTAX_ERROR);
+		{
+			free_token_list(token_list);
+			return (SYNTAX_ERROR);
+		}
 		tokenize_readline(&token_list);
 		print_list(&token_list);
 	}
