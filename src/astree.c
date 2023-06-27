@@ -6,13 +6,13 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:33:28 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/27 16:24:06 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:05:00 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/** shellfish grammar lclerc will implement most of it in lexing and tagging
+/** shellfish grammar lclerc will implement it in lexing and tagging
  * 
  * <command_line>			OK::=	<command>
  * 							OK|		<command_line> '|' <command>
