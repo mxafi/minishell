@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-/** shellfish grammar
+/** shellfish grammar lclerc will implement most of it in lexing and tagging
  * 
  * <command_line>			OK::=	<command>
  * 							OK|		<command_line> '|' <command>
