@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:33:28 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/24 23:54:46 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:24:06 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,20 @@
 
 /** shellfish grammar
  * 
- * <command_line>			::=	<command>
- * 							|	<command_line> '|' <command>
+ * <command_line>			OK::=	<command>
+ * 							OK|		<command_line> '|' <command>
  * 
- * <command>				::=	<simple_command>
- * 							|	<simple_command> <redirector> <redirector_pipeline>
- * 							|	<command> '<<' <argument>
+ * <command>				OK::=	<simple_command>
+ * 							|		<simple_command> <redirector> <redirector_pipeline>
  * 
- * <simple_command>			::=	<pathname>
- * 							|	<simple_command> <argument>
+ * <simple_command>			OK::=	<pathname>
+ * 							OK|		<simple_command> <argument>
  * 
- * <redirector>				::=	'<' | '>' | '>>'
+ * <redirector>				OK::=	'<' | '>' | '<<' | '>>'
  * 
- * <redirector_pipeline>	::=	<filename>
- * 							|	<redirector> <redirector_pipeline>
+ * <redirector_pipeline>	OK::=	<filename>
+ * 							|		<filename> <redirector> <redirector_pipeline>
  * 
- * <argument>				::=	ANY STRING TOKEN
+ * <argument>				OK::=	ANY STRING TOKEN
  * 
  */
