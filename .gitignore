@@ -3,6 +3,7 @@
 
 # GitHub stuff
 README.md
+.deepsource.toml
 
 # Mac stuff
 .DS_Store
