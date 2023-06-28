@@ -27,11 +27,13 @@ MAIN_C			=	minishell.c
 INPUT_H			=	input.h
 INPUT_C			=	input.c
 
-LEXER_H			=	
-LEXER_C			=	
+LEXER_H			=	lexer.h	
+LEXER_C			=	lexer.c \
+					lexer_utils.c \
+					DELETE_ME_AND_FCT_IN_HEADER.c
 
 H_FILES			=	$(MAIN_H) $(INPUT_H) $(LEXER_H)
-C_FILES			=	$(MAIN_C) $(INPUT_C) $(INPUT_H)
+C_FILES			=	$(MAIN_C) $(INPUT_C) $(LEXER_C)
 
 H_PATHS			=	$(addprefix $(H_FOLDER)/, $(H_FILES))
 C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))

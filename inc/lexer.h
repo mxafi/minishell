@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 16:48:14 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/28 13:05:26 by lionel           ###   ########.fr       */
+/*   Updated: 2023/06/28 17:03:27 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,9 @@ enum				e_token_type
 	ARG,
 	SGL_QUOTE_STR,
 	DBL_QUOTE_STR,
-};
-
-enum				e_token_error
-{
-	SYNTAX_ERROR_OUTFILE,
-	SYNTAX_ERROR_https://elearning.intra.42.fr/notions/57/subnotions/245/videos/203
-
 	SYNTAX_ERROR = 258,
 };
+
 
 enum				e_token_state
 {

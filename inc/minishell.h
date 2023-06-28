@@ -27,16 +27,17 @@
 # include <termcap.h>
 # include <termios.h>
 
-# include "libft.h"
-# include "input.h"
+# include "./lexer.h"
+# include "./input.h"
 
-struct s_🦞
-{
-	
-}
 
 void	rl_replace_line(const char *text, int clear_undo);
 
 void	display_prompt(void);
+
+/*
+ * Contained in lexer.c
+ */
+int	lexer(char	*input);
 
 #endif
