@@ -6,28 +6,49 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:33:28 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/27 18:05:00 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/28 20:08:37 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/** shellfish grammar lclerc will implement it in lexing and tagging
+t_token	*free_current_token_return_next(t_token *token)
+{
+	t_token	*ret;
+
+	assert(token != NULL);
+	ret = token->next;
+	free(token->data);
+	free(token);
+	return (ret);
+}
+
+/** ast_builder
+ * transforms a linked list of tokens into an ast meant for easy execution
+ * assumes input is valid
+ * PIPE, REDIR, CMD, BI_CMD, are seperate nodes, ARG tokens live inside nodes
  * 
- * <command_line>			OK::=	<command>
- * 							OK|		<command_line> '|' <command>
- * 
- * <command>				OK::=	<simple_command>
- * 							|		<simple_command> <redirector> <redirector_pipeline>
- * 
- * <simple_command>			OK::=	<pathname>
- * 							OK|		<simple_command> <argument>
- * 
- * <redirector>				OK::=	'<' | '>' | '<<' | '>>'
- * 
- * <redirector_pipeline>	OK::=	<filename>
- * 							|		<filename> <redirector> <redirector_pipeline>
- * 
- * <argument>				OK::=	ANY STRING TOKEN
- * 
+ * TODO things:
+ * []implement missing functions
+ * []check logic, should check for null returns from parse functions or not?
  */
+t_ast	*ast_builder(t_token *token)
+{
+	t_ast	*ret;
+
+	assert(token != NULL);
+	ret = NULL;
+	while (token != NULL)
+	{
+		if (token->type == PIPE)
+			ret = parse_pipe(token, ret); //TODO
+		else if (token->type == REDIR)
+			ret = parse_redir(token, ret); //TODO
+		else if (token->type == CMD || token->type == BI_CMD)
+			ret = parse_cmd(token, ret); //TODO
+		else if (token->type != ARG)
+			printf("DEBUG: unexpected type in ast_builder: %i", token->type);
+		token = free_current_token_return_next(token);
+	}
+	return (ret);
+}

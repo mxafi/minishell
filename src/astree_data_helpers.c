@@ -1,50 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   astree_helpers_create.c                            :+:      :+:    :+:   */
+/*   astree_data_helpers.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 21:47:24 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/24 21:52:17 by malaakso         ###   ########.fr       */
+/*   Created: 2023/06/24 21:51:55 by malaakso          #+#    #+#             */
+/*   Updated: 2023/06/28 20:08:46 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// creates a node with optional data and type of AST_TOKEN_TYPE_UNDEFINED
-t_ast	*ast_create_node(char *data)
+void	ast_recursive_delete(t_ast *node)
 {
-	t_ast	*node;
-
-	node = ft_calloc(1, sizeof(t_ast));
 	if (!node)
-		return (NULL);
-	node->data = data;
-	node->type = AST_TOKEN_TYPE_UNDEFINED;
-	return (node);
+		return ;
+	if (node->exec_argv)
+		free(node->exec_argv);
+	ast_recursive_delete(node->left);
+	ast_recursive_delete(node->right);
+	free(node);
 }
 
-void	ast_set_data(t_ast *node, char *data)
+void	ast_set_exec_argv(t_ast *node, char *string, int position)
 {
 	assert(node != NULL);
-	assert(node->data == NULL);
-	node->data = data;
+	assert(node->exec_argv != NULL);
+	assert(node->exec_argv[position] == NULL);
+	node->exec_argv[position] = string;
 }
 
-void	ast_replace_data(t_ast *node, char *data)
+void	ast_set_type(t_ast *node, int token_type)
 {
 	assert(node != NULL);
-	assert(node->data != NULL);
-	free(node->data);
-	node->data = data;
-}
-
-void	ast_set_type(t_ast *node, int type)
-{
-	assert(node != NULL);
-	assert(node->type == AST_TOKEN_TYPE_UNDEFINED);
-	node->type = type;
+	assert(node->token_type == AST_TOKEN_TYPE_UNDEFINED);
+	node->token_type = token_type;
 }
 
 void	ast_attach(t_ast *root, t_ast *left, t_ast *right)
