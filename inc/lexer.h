@@ -6,7 +6,7 @@
 /*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 16:48:14 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/26 18:28:55 by lionel           ###   ########.fr       */
+/*   Updated: 2023/06/28 13:05:26 by lionel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,25 @@ enum				e_token_type
 	STRING,
 	HEREDOC,
 	APPEND_TO,
-	CMD
+	CMD, 
+	ARG,
+	SGL_QUOTE_STR,
+	DBL_QUOTE_STR,
+};
+
+enum				e_token_error
+{
+	SYNTAX_ERROR_OUTFILE,
+	SYNTAX_ERROR_https://elearning.intra.42.fr/notions/57/subnotions/245/videos/203
+
 	SYNTAX_ERROR = 258,
+};
+
+enum				e_token_state
+{
+	IS_STR,
+	IS_REDIR,
+	IS_PIPE,
 };
 
 /*
