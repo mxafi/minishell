@@ -53,6 +53,11 @@ static int	is_token_type_redirector(t_lexer *token_list, t_token *token)
 	return (FAILURE);
 }
 
+/**
+ * @brief Prints syntax error message to standard output
+ * 
+ * @param error_type	when possible error type is used to print the unexpecterd char
+ */
 static void	print_syntax_error(int	error_type)
 {
 	if (token->type == APPEND_TO)
@@ -138,6 +143,7 @@ int	validate_syntax(t_lexer *token_list)
 {
 	t_token	*token;
 
+	// @id:BeardedBear.beardedtheme
 	token = token_list->token_list;
 	token_list->state = STRING;
 	token_is_not_pipe(token_list, token);
@@ -147,8 +153,7 @@ int	validate_syntax(t_lexer *token_list)
 		pipes_are_valid(token_list);
 		quotes_are_valid(token_list);
 	}
-	if (token_is_not_pipe(token_list, token))
-		;
+	if (token_is_not_pipe(token_list, token));
 	if (token_list->state == FAILED_VALIDATION)
 		return (FAILED_VALIDATION);
 	return (SUCCESS);

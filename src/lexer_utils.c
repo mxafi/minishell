@@ -6,16 +6,23 @@
 /*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:59:04 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/28 13:05:41 by lionel           ###   ########.fr       */
+/*   Updated: 2023/06/29 00:24:51 by lionel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../inc/lexer.h"
 
+/**
+ * @brief 	Memory allocate a new node and initializes it to zero with callot
+ * 
+ * @param token_list 	used as error code placeholder
+ * @param new_token		new node being tokenized	 
+ * @return int			SUCCESS or CALLOC FAIL 
+ */
 int	make_new_node(t_lexer *token_list, t_token **new_token)
 {
 	
-	if (!(*new_token = (t_token *)calloc(1, sizeof(t_token))))
+	if (!(*new_token = (t_token *)ft_calloc(1, sizeof(t_token))))
 	{
 		token_list->error_code = CALLOC_FAIL;
 		return (CALLOC_FAIL);
@@ -24,10 +31,10 @@ int	make_new_node(t_lexer *token_list, t_token **new_token)
 }
 
 /**
- * @brief 
+ * @brief	Frees the token list
  * 
- * @param delete_me 
- * @return int 
+ * @param delete_me	The list 
+ * @return int		error code if called due to a syntax validation error 
  */
 int	free_token_list(t_lexer *delete_me)
 {
@@ -44,6 +51,7 @@ int	free_token_list(t_lexer *delete_me)
 			current = helper;
 		}
 	delete_me->token_list = NULL;
+	//check if that return is needed
 	return (delete_me->error_code);
 }
 
