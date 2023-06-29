@@ -6,13 +6,13 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 21:47:24 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/29 12:55:36 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/29 13:07:13 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// creates a node with optional data and type of AST_TOKEN_TYPE_UNDEFINED
+// creates a node with optional data and type of AST_VALUE_NOT_DEFINED
 t_ast_node	*ast_create_node(char **exec_argv)
 {
 	t_ast_node	*node;
@@ -21,7 +21,7 @@ t_ast_node	*ast_create_node(char **exec_argv)
 	if (!node)
 		return (NULL);
 	node->exec_argv = exec_argv;
-	node->type = AST_TOKEN_TYPE_UNDEFINED;
+	node->type = AST_VALUE_NOT_DEFINED;
 	return (node);
 }
 

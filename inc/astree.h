@@ -6,14 +6,14 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/29 12:53:21 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/29 13:06:58 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASTREE_H
 # define ASTREE_H
 
-# define AST_TOKEN_TYPE_UNDEFINED	-1
+# define AST_VALUE_NOT_DEFINED	-1
 
 // e_token_type from lexer.h for DEBUG
 typedef enum e_token_list{
