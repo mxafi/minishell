@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 16:48:14 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/28 17:03:27 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/06/29 14:03:48by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ enum				e_token_type
 	STRING,
 	HEREDOC,
 	APPEND_TO,
-	CMD, 
+	CMD,
 	ARG,
 	SGL_QUOTE_STR,
 	DBL_QUOTE_STR,
@@ -72,6 +72,7 @@ enum				e_token_state
 # define FAILURE 		0
 # define CALLOC_FAIL 	1
 # define SUCCESS 		2
+
 /*
  * contained in lexer_utils.c
  */
@@ -88,5 +89,22 @@ void				print_list(t_lexer *list);
  * contained in lexer_validate_syntax.c
  */
 int					validate_syntax(t_lexer *token_list);
+
+/**
+ * contained in lexer_validate_redirector.c 
+ */
+void			redirector_is_valid(t_lexer *token_list, t_token *token);
+void			token_is_redirector(t_lexer *token_list, t_token *token); 
+int				is_token_type_redirector(t_lexer *token_list, t_token *token);
+
+/**
+ * contained in lexer_validate_pipe.c 
+ */
+void	pipes_are_valid(t_lexer *token_list, t_token *token);
+
+/**
+ * contained in lexer_validate_redirector.c
+ */
+int		validate_quotes(t_lexer token_list);
 
 #endif
