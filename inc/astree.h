@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/29 13:06:58 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/29 13:35:31 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ typedef struct s_token
 typedef enum e_ast_node_type
 {
 	AST_PIPE,
-	AST_COMMAND
+	AST_COMMAND,
+	AST_BI_CMD
 }	t_ast_node_type;
 
 typedef enum e_ast_redir_type
