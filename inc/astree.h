@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/30 11:34:44 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:00:55 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ typedef enum e_ast_node_type
 {
 	AST_PIPE,
 	AST_COMMAND,
-	AST_BI_CMD
+	AST_BI_CMD,
+	AST_UNDEFINED
 }	t_ast_node_type;
 
 typedef enum e_ast_redir_type
@@ -72,8 +73,10 @@ typedef struct s_ast_node
 	struct s_ast	*right;
 }					t_ast_node;
 
-void	ast_recursive_delete(t_ast_node *node);
-void	ast_recursive_token_list_delete(t_token *list);
-t_token	*free_current_token_return_next(t_token *token);
+void		ast_recursive_delete(t_ast_node *node);
+void		ast_recursive_token_list_delete(t_token *list);
+t_token		*free_current_token_return_next(t_token *token);
+t_ast_node	*ast_create_node(char **exec_argv, t_ast_node_type type);
+char		**ast_create_empty_exec_argv(int length);
 
 #endif
