@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <complex.h>
 
 /* Syntax check as I have gathered it.. hopefully, nothing is missing:
 1/ Check first character -> cannot be pipe
@@ -40,21 +39,20 @@ static void	token_is_not_pipe(t_lexer *token_list, t_token *token)
 }
 
 /**
-
-		* @brief	Checks the type of current token and routes to appropriates validation function
+ * @brief	Checks the type of current token and routes to appropriates validation function
  * 
+ * @param token_list
+ * @param token
  */
-*@param token_list
-		*@param token
-			* /
-	static void check_current_token(t_lexer *token_list, t_token *token)
+static void	check_current_token(t_lexer *token_list, t_token *token)
 {
 	if (is_token_type_redirector(token_list, token))
 		validate_redirector(token_list, token);
 	else if (token->type == PIPE)
 		validate_pipe(token_list);
 	else if (token->type == SPACE)
-		token = delete_space_token(token_list, token) else if ()
+		token = delete_space_token(token_list, token);
+
 }
 
 /**

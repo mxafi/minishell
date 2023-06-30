@@ -13,12 +13,11 @@
 #ifndef LEXER_H
 # define LEXER_H
 
-# include "../inc/minishell.h"
 # include "assert.h"
 
 typedef struct s_token
 {
-	int				type;
+	t_token_type	type;
 	int				token_count;
 	char			*token;
 	struct s_token	*next;
@@ -40,7 +39,7 @@ typedef struct s_lexer
 # define DELIMITERS " \t<>|\"'"
 # define WHITE_SPACES " \t"
 
-enum				e_token_type
+typedef enum e_token_type
 {
 	SINGLE_QUOTE = '\'',
 	DOUBLE_QUOTE = '\"',
@@ -56,15 +55,15 @@ enum				e_token_type
 	SGL_QUOTE_STR,
 	DBL_QUOTE_STR,
 	SYNTAX_ERROR = 258,
-};
+}	t_token_type;
 
 
-enum				e_token_state
+typedef enum e_token_state
 {
 	IS_STR,
 	IS_REDIR,
 	IS_PIPE,
-};
+}	t_token_state;
 
 /*
  * return values (how to handle those???)
@@ -105,6 +104,6 @@ void	pipes_are_valid(t_lexer *token_list, t_token *token);
 /**
  * contained in lexer_validate_redirector.c
  */
-int		validate_quotes(t_lexer token_list);
+int		validate_quotes(t_lexer *token_list);
 
 #endif
