@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/29 13:35:31 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/30 11:34:44 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,9 @@ typedef struct s_ast_node
 	struct s_ast	*left;
 	struct s_ast	*right;
 }					t_ast_node;
+
+void	ast_recursive_delete(t_ast_node *node);
+void	ast_recursive_token_list_delete(t_token *list);
+t_token	*free_current_token_return_next(t_token *token);
 
 #endif

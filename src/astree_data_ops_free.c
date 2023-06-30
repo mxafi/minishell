@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:01:04 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/29 13:33:02 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/06/30 11:34:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,15 @@ void	ast_recursive_token_list_delete(t_token *list)
 		free(list->data);
 	ast_recursive_token_list_delete(list->next);
 	free(list);
+}
+
+t_token	*free_current_token_return_next(t_token *token)
+{
+	t_token	*ret;
+
+	assert(token != NULL);
+	ret = token->next;
+	free(token->data);
+	free(token);
+	return (ret);
 }
