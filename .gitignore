@@ -24,6 +24,7 @@ Sessionx.vim
 
 # VSCode stuff
 .vscode
+*.code-workspace
 
 # XCode stuff
 xcuserdata
