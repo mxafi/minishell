@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:59:04 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/29 00:24:51 by lionel           ###   ########.fr       */
+/*   Updated: 2023/07/04 14:44:56 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
  * 
  * @param token_list 	used as error code placeholder
  * @param new_token		new node being tokenized	 
- * @return int			SUCCESS or CALLOC FAIL 
+ * @return t_return_value	SUCCESS or CALLOC FAIL 
  */
-int	make_new_node(t_lexer *token_list, t_token **new_token)
+t_return_value	make_new_node(t_lexer *token_list, t_token **new_token)
 {
 	
 	if (!(*new_token = (t_token *)ft_calloc(1, sizeof(t_token))))
@@ -41,16 +41,16 @@ int	free_token_list(t_lexer *delete_me)
 	t_token	*current;
 	t_token	*helper;
 
-	current = delete_me->token_list;
+	current = delete_me->head;
 	//del this assert()
-	assert(delete_me->token_list);
+	assert(delete_me->head);
 	while (current != NULL)
 		{
 			helper = current->next;
 			free (current);
 			current = helper;
 		}
-	delete_me->token_list = NULL;
+	delete_me->head = NULL;
 	//check if that return is needed
 	return (delete_me->error_code);
 }

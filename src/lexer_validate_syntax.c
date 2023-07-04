@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:11:59 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/28 14:27:55y lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/04 13:21:01 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,16 @@ static void	check_current_token(t_lexer *token_list, t_token *token)
  * 			last token cannot be a pipe (make sure of that) or a REDIR
  *			calls to validate redirectors, pipes and quotes
  *  
- * @param token_list 
- * @return int 
+ * @param	token_list 
+ * @return	t_return_value	 Return value
  */
-int	validate_syntax(t_lexer *token_list)
+t_return_value	validate_syntax(t_lexer *token_list)
 {
 	t_token	*token;
 
-	token = token_list->token_list;
-	token_list->state = STRING;
-	if (validate_quotes(token_list) == VALIDATED)
+	token = token_list->head;
+	token_list->state = IS_STR;
+	if (validate_quotes(token_list) == SUCCESS)
 	{
 		token_is_not_pipe(token_list, token);
 		while ((token->next != NULL) && (token_list->state != SYNTAX_ERROR))
@@ -79,7 +79,7 @@ int	validate_syntax(t_lexer *token_list)
 			;
 	}
 	token = NULL;
-	if (token_list->state == FAILED_VALIDATION)
-		return (FAILED_VALIDATION);
+	if (token_list->state == SYN)
+		return (FAILURE);
 	return (SUCCESS);
 }

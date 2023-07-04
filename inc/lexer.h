@@ -21,17 +21,17 @@ typedef struct s_token
 	int				token_count;
 	char			*token;
 	struct s_token	*next;
-}					t_token;
+}	t_token;
 
 typedef struct s_lexer
 {
-	int				calloc_count;
-	int				state;
-	int				error_code;
-	int				token_amount;
-	char			*readlined;
-	t_token			*token_list;
-}					t_lexer;
+	int					calloc_count;
+	t_validation_state	state;
+	t_return_value		error_code;
+	int					token_amount;
+	char				*readlined;
+	t_token				*head;
+}	t_lexer;
 
 /*
  * delimiters and their functional properties
@@ -57,20 +57,24 @@ typedef enum e_token_type
 	SYNTAX_ERROR = 258,
 }	t_token_type;
 
-
-typedef enum e_token_state
+typedef enum e_validation_state
 {
 	IS_STR,
 	IS_REDIR,
 	IS_PIPE,
-}	t_token_state;
+	SYNTAX_ERROR = 258,
+}	t_validation_state;
 
 /*
  * return values (how to handle those???)
  */
-# define FAILURE 		0
-# define CALLOC_FAIL 	1
-# define SUCCESS 		2
+typedef enum e_return_value
+{
+	FAILURE = 0,
+	CALLOC_FAIL ,
+	SUCCESS,
+	SYNTAX_ERROR = 258,
+}	t_return_value;
 
 /*
  * contained in lexer_utils.c
@@ -87,23 +91,24 @@ void				print_list(t_lexer *list);
 /*
  * contained in lexer_validate_syntax.c
  */
-int					validate_syntax(t_lexer *token_list);
+t_return_value		validate_syntax(t_lexer *token_list);
 
 /**
  * contained in lexer_validate_redirector.c 
  */
-void			redirector_is_valid(t_lexer *token_list, t_token *token);
-void			token_is_redirector(t_lexer *token_list, t_token *token); 
-int				is_token_type_redirector(t_lexer *token_list, t_token *token);
+void				redirector_is_valid(t_lexer *token_list, t_token *token);
+void				token_is_redirector(t_lexer *token_list, t_token *token);
+t_return_value		is_token_type_redirector(t_lexer *token_list, \
+		t_token *token);
 
 /**
  * contained in lexer_validate_pipe.c 
  */
-void	pipes_are_valid(t_lexer *token_list, t_token *token);
+void				pipes_are_valid(t_lexer *token_list, t_token *token);
 
 /**
  * contained in lexer_validate_redirector.c
  */
-int		validate_quotes(t_lexer *token_list);
+t_return_value		validate_quotes(t_lexer *token_list);
 
 #endif

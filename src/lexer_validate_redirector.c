@@ -6,10 +6,11 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:58:31 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/29 14:35:13 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/04 13:16:54 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../inc/lexer.h"
 
 /**
  * @brief	Checks whether the current token is of redirector type
@@ -18,7 +19,7 @@
  * @param 	token 		token being checked 
  * @return	returns SUCCESS or FAILURE according to validity 
  */
-int	is_token_type_redirector(t_lexer *token_list, t_token *token)
+t_return_value	is_token_type_redirector(t_lexer *token_list, t_token *token)
 {
 	if (token->type == OUTFILE || token->type == INFILE ||
 		token->type == HEREDOC || token->type == APPEND_TO)
@@ -88,7 +89,7 @@ void	validate_redirector(t_lexer *token_list, t_token *token)
 			if (token->type == SPACE)
 				delete_space_token(&token_list, token->token_count);
 			if (token->type == STRING)
-				token_list->state = STRING;
+				token_list->state = IS_STR;
 			else
 			{
 				ft_printf("shellfish> syntax error near unexpected token%c\n",

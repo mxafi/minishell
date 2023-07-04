@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/29 00:27:34 by lionel           ###   ########.fr       */
+/*   Updated: 2023/07/04 11:45:14 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 				str);
 	token->next = NULL;
 	token->token_count = ++list->token_amount;
-	if (list->token_list == NULL)
-		list->token_list = token;
+	if (list->head == NULL)
+		list->head = token;
 	else
 	{
-		last_token = list->token_list;
+		last_token = list->head;
 		while (last_token->next != NULL)
 			last_token = last_token->next;
 		last_token->next = token;
@@ -102,7 +102,7 @@ static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
  * @param delimiter		used to determine string length to be tokenized 
  * @return int			SUCCESS or CALLOC_FAIL 
  */
-static int	string_to_token(t_lexer *token_list, char *input, char *delimiter)
+static t_return_value	string_to_token(t_lexer *token_list, char *input, char *delimiter)
 {
 	t_token	*new_token;
 	int		length;
