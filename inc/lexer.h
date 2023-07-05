@@ -41,11 +41,6 @@ typedef struct s_lexer
 
 typedef enum e_token_type
 {
-	SINGLE_QUOTE = '\'',
-	DOUBLE_QUOTE = '\"',
-	OUTFILE = '>',
-	INFILE = '<',
-	PIPE = '|',
 	SPACE,
 	STRING,
 	HEREDOC,
@@ -54,6 +49,11 @@ typedef enum e_token_type
 	ARG,
 	SGL_QUOTE_STR,
 	DBL_QUOTE_STR,
+	SINGLE_QUOTE = '\'',
+	DOUBLE_QUOTE = '\"',
+	OUTFILE = '>',
+	INFILE = '<',
+	PIPE = '|',
 	SYNTAX_ERROR = 258,
 }	t_token_type;
 
@@ -62,6 +62,8 @@ typedef enum e_validation_state
 	IS_STR,
 	IS_REDIR,
 	IS_PIPE,
+	NEED_SGL_QUOTE_STR,
+	NEED_DBL_QUOTE_STR,
 	SYNTAX_ERROR = 258,
 }	t_validation_state;
 
@@ -75,6 +77,12 @@ typedef enum e_return_value
 	SUCCESS,
 	SYNTAX_ERROR = 258,
 }	t_return_value;
+
+/*
+ * contained in lexer.c
+ */
+t_return_value	string_to_token(t_lexer *token_list, char *input, char *delimiter);
+
 
 /*
  * contained in lexer_utils.c

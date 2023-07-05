@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/04 11:45:14 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/05 18:41:25 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
  * @param delimiter		used to determine string length to be tokenized 
  * @return int			SUCCESS or CALLOC_FAIL 
  */
-static t_return_value	string_to_token(t_lexer *token_list, char *input, char *delimiter)
+t_return_value	string_to_token(t_lexer *token_list, char *input, char *delimiter)
 {
 	t_token	*new_token;
 	int		length;
@@ -110,33 +110,31 @@ static t_return_value	string_to_token(t_lexer *token_list, char *input, char *de
 	//ft_printf("string_to_token()\n");
 	new_token = NULL;
 	if (delimiter == NULL)
-	{
 		length = ft_strlen(input);
-	}
 	else
-	{
 		length = delimiter - input;
 		//	ft_printf("length [%d] = delimiter [%s] - input[%s]\n", length,
 		//			delimiter , input);
-	}
 	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
-		return (CALLOC_FAIL);
+		return (token_list->error_code = CALLOC_FAIL);
 	//ft_printf("length [%d] input [%s]\n", length, input);
 	if (!tokenize_node(token_list, new_token, input, length))
-		return (CALLOC_FAIL);
+	 	// below is CALLOC_FAIL if memalloc fails, but it is malloc... should we care about that?
+		return (token_list->error_code = CALLOC_FAIL);
 	new_token->type = STRING;
 	input = delimiter;
-	return (SUCCESS);
+	// CHECK IF RETURN VALUES ARE USED
+	return (token_list->error_code = SUCCESS);
 }
 
 /**
  * @brief	Tokenizes delimeters
  * @details	The current char in input string is used as token type except for << and >>
- * 			which require manual depiction due to the two characters identificatoion.
+ * 			which require manual depiction due to the two characters identification.
  * 
  * @param token_list  	Information and token list placeholder.
  * @param input			Input string from readline being tokenized
- * @return char*		Pointter to string after delimiter 
+ * @return char*		Pointer to string after delimiter 
  */
 static char	*delimiter_to_token(t_lexer *token_list, char *input)
 {
@@ -157,6 +155,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	else
 	{
 		length = 1;
+		//Will need to make proper function to handle the input type here
 		new_token->type = *input;
 	}
 	if (!tokenize_node(token_list, new_token, input, length))
@@ -166,9 +165,11 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 
 /**
  * @brief 	Readline string is tokenized using a self implemented version of strpbrk
- * @details	The strpbrk seeks the input string for delimters: spaces, tabs, redirections
+ * @details	The strpbrk seeks the input string for delimiters: spaces, tabs, redirection
  * 			pipes and quotes to output delimited strings a tokenized linked list. The 
  * 			delimiter itself is then tokenized.
+ * 			A call to check whether quotes are empty or not is made, with the aim 
+ * 			to tokenize a null string in between if it is the case.
  * 
  * @param token_list	Token list and list information placeholder.
  * @return int			Error code is initialized to 0 and return CALLOC_FAIL if it occurs
@@ -195,6 +196,7 @@ static int	tokenize_readline(t_lexer *token_list)
 			if (input < delimiter)
 				string_to_token(token_list, input, delimiter);
 			input = delimiter_to_token(token_list, delimiter);
+			add_null_string_token_if_empty_quote(token_list);
 		}
 		if (token_list->error_code == CALLOC_FAIL)
 			break ;
@@ -203,16 +205,16 @@ static int	tokenize_readline(t_lexer *token_list)
 }
 
 /**
- * @brief 	The lexer prepares the input string from the shell prompt to be excuted
+ * @brief 	The lexer prepares the input string from the shell prompt to be executed
  * @details	A lexer struct is initialized and serves as a placeholder for the tokenized
  *			list.
  *			- White spaces are trimmed from both ends of the readline input
  * 			- Input is tokenized
  *			- Syntax is validated
  * 
- * @param input String obrained by user via readline
+ * @param input String obtained by user via readline
  * @return int	Return value is 0 if input was validated and execution was 
- * 				acccomplished properly or an error code is returned.
+ * 				accomplished properly or an error code is returned.
  */
 int	lexer(char *input)
 {

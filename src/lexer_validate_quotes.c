@@ -6,11 +6,12 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:41:02 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/04 18:28:41 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/05 15:04:55 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
 
 /**
  * @brief	Checks if the opening quote has a matching closing quote. 
@@ -34,9 +35,6 @@ static t_token	*handle_quote(t_lexer *list, t_token *current,
 		current = current->next;
 		if (current->type == quote_type)
 		{
-			current = empty_paired_quote_add_null_string(list, current);
-			current->type == IS_STR;
-			// edit the type change in empty_paired_quote...
 			if (current->next != NULL)
 				current = current->next;
 			return (current);
@@ -48,11 +46,11 @@ static t_token	*handle_quote(t_lexer *list, t_token *current,
 		}
 		if (current == NULL)
 		{
-			list->state == SYNTAX_ERROR;
+			list->state = SYNTAX_ERROR;
 			return (NULL);
 		}
 	}
-	list->state == IS_STR;
+	list->state = IS_STR;
 	if (current->next != NULL)
 		current = current->next;
 	return (current);
@@ -75,9 +73,9 @@ t_return_value	validate_quotes(t_lexer *token_list)
 	while (current != NULL && token_list->state != SYNTAX_ERROR)
 	{
 		if (current->type == SINGLE_QUOTE)
-			current = handle_quote(token_list, current, SGL_QUOTE_STR);
+			current = handle_quote(token_list, current, SINGLE_QUOTE);
 		else if (current->type == DOUBLE_QUOTE)
-			current = handle_quote(token_list, current, DBL_QUOTE_STR);
+			current = handle_quote(token_list, current, DOUBLE_QUOTE);
 		else
 			current = current->next;
 	}
