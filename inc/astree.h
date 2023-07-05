@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/30 15:00:55 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/05 23:00:52 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ void		ast_recursive_token_list_delete(t_token *list);
 t_token		*free_current_token_return_next(t_token *token);
 t_ast_node	*ast_create_node(char **exec_argv, t_ast_node_type type);
 char		**ast_create_empty_exec_argv(int length);
+t_redir		**ast_create_empty_redirections(int count);
 
 #endif

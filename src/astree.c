@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:33:28 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/01 14:29:50 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/05 23:01:22 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_ast_node	*ast_parse_command(t_token *token)
 	node->redir_count = ast_get_redir_count(token);
 	node->argv_count = ast_get_arg_count(token) - node->redir_count + 1;
 	node->exec_argv = ast_create_empty_exec_argv(node->argv_count);
-	node->redirections = ast_create_empty_redirections(node->redir_count);//TODO
+	node->redirections = ast_create_empty_redirections(node->redir_count);
 	if (!node->exec_argv || !node->redirections)
 		ast_recursive_delete(node);
 	ast_parse_argv(node, token);//TODO
