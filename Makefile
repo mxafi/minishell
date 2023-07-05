@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/05 23:07:09 by malaakso         ###   ########.fr        #
+#    Updated: 2023/07/05 23:38:22 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ ASTREE_C		=	astree.c \
 					astree_data_helpers.c \
 					astree_data_helpers_alloc.c \
 					astree_data_ops_free.c \
-					astree_parse_command.c
+					astree_parse_command.c \
+					astree_parse_argv.c
 
 H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H)
 C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C)
