@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 13:02:31 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/06 12:55:49 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/06 13:11:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_token	*skip_redirector_and_arg(t_token *token)
 	return (token);
 }
 
-int	ast_parse_argv(t_ast_node *node, t_token *token)
+void	ast_parse_argv(t_ast_node *node, t_token *token)
 {
 	int	i;
 
