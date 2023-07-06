@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 13:02:31 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/05 23:48:35 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/06 12:55:49 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,31 @@
 
 static t_token	*skip_redirector_and_arg(t_token *token)
 {
-	if (token->type == REDIR) //assumes there is an argument after the redirector
+	if (token->type == REDIR)
 	{
 		token = token->next;
 		if (!token || token->type == PIPE)
-			return ;
+			return (NULL);
 		token = token->next;
 		if (!token || token->type == PIPE)
-			return ;
+			return (NULL);
 	}
 	return (token);
 }
 
-void	ast_parse_argv(t_ast_node *node, t_token *token)
+int	ast_parse_argv(t_ast_node *node, t_token *token)
 {
 	int	i;
 
-	i = 1;
+	if (!node || !token)
+		return ;
+	i = 0;
 	while (token && token->type != PIPE)
 	{
 		token = skip_redirector_and_arg(token);
 		if (!token || token->type == PIPE)
 			return ;
-		if (token->type == CMD || token->type == BI_CMD)
-		{
-			node->exec_argv[0] = token->data;
-			token->data = NULL;
-		}
-		if (token->type == ARG)
+		if (token->type == CMD || token->type == BI_CMD || token->type == ARG)
 		{
 			node->exec_argv[i] = token->data;
 			token->data = NULL;
