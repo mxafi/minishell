@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/05 23:49:04 by malaakso         ###   ########.fr        #
+#    Updated: 2023/07/06 12:58:03 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ ASTREE_C		=	ast.c \
 					ast_data_ops_alloc.c \
 					ast_data_ops_free.c \
 					ast_parse_command.c \
-					ast_parse_argv.c
+					ast_parse_argv.c \
+					ast_parse_redirections.c
 
 H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H)
 C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C)

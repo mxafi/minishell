@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:05:54 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/06 12:56:00 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/06 12:59:33 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ t_ast_node	*ast_parse_command(t_token *token)
 	if (!node->exec_argv || !node->redirections)
 		ast_recursive_delete(node);
 	ast_parse_argv(node, token);
-	ast_parse_redirections(node, token);//TODO
+	ast_parse_redirections(node, token);
 	return (node);
 }
