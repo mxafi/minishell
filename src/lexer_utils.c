@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:59:04 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/05 19:49:15 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/06 17:46:36 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
  * @brief 	Memory allocate a new node and initializes it to zero with calloc
  * 
  * @param token_list 	used as error code placeholder
- * @param new_token		new node being tokenized		
+ * @param new_token		new node being tokenized
  * @return t_return_value	SUCCESS or CALLOC FAIL 
  */
-t_return_value	make_new_node(t_lexer *token_list, t_token **new_token)
+t_return_value	make_new_node(t_lexer *token_list, t_token *new_token)
 {
-	if (!(*new_token = (t_token *)ft_calloc(1, sizeof(t_token))))
+	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
+	if (new_token == NULL)
 	{
 		token_list->error_code = CALLOC_FAIL;
 		return (CALLOC_FAIL);
@@ -29,14 +30,31 @@ t_return_value	make_new_node(t_lexer *token_list, t_token **new_token)
 	return (SUCCESS);
 }
 
-void	set_list_quote_state()
+void	set_list_quote_state(t_lexer *list, t_token *token, t_token_type type,
+		char *input)
 {
-	
+	if (type != UNDEFINED)
+		token->type = type;
+	else
+	{
+		if (input[0] == '\'')
+			token->type = SINGLE_QUOTE;
+		else if (input[0] == '\"')
+			token->type = DOUBLE_QUOTE;
+		else if (input[0] == '>')
+			token->type = OUTFILE;
+		else if (input[0] == '<')
+			token->type = INFILE;
+		else if (input[0] == '|')
+			token->type = PIPE;
+		else if (input[0] == ' ')
+			token->type = SPACE;
+	}
+	list->state = UNDEFINED;
 }
 
 /**
- * @brief 
- * 
+ * @brief	Checks
  * 
  * @param list 
  */
@@ -49,25 +67,12 @@ void	add_null_string_token_if_empty_quote(t_lexer *list)
 	current = list->head;
 	while (current != NULL)
 		current = current->next;
-	if (current->type == SINGLE_QUOTE || current->type == DOUBLE_QUOTE)
-	{
-		if (current->type == SINGLE_QUOTE && list->state != NEED_SGL_QUOTE_STR)
-			list->state = NEED_SGL_QUOTE_STR;
-		else if (current->type == SINGLE_QUOTE)
-		 {
-			string_to_token(list, empty_string, empty_string);
-			list->state == SGL_QUOTE_STR;
-		 }
-		else if (current->type == DOUBLE_QUOTE && \
-			list->state != NEED_DBL_QUOTE_STR)
-			list->state = NEED_DBL_QUOTE_STR;
-		else if (current->type == DOUBLE_QUOTE)
-		 {
-			string_to_token(list, empty_string, empty_string);
-			list->state == DBL_QUOTE_STR;
-		 }
-	}
+	if (current->type == SINGLE_QUOTE)
+		label_single_quote_string(list, current);
+	if (current->type == DOUBLE_QUOTE)
+		label_double_quote_string(list, current);
 }
+
 
 /**
  * @brief	Frees the token list

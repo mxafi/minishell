@@ -41,6 +41,7 @@ typedef struct s_lexer
 
 typedef enum e_token_type
 {
+	UNDEFINED,
 	SPACE,
 	STRING,
 	HEREDOC,
@@ -57,13 +58,20 @@ typedef enum e_token_type
 	SYNTAX_ERROR = 258,
 }	t_token_type;
 
+/**
+ * @brief validation state enumerator used in syntax validation and tokenization of single and double quotes
+ * 
+ */
 typedef enum e_validation_state
 {
+	UNDEFINED,
 	IS_STR,
 	IS_REDIR,
 	IS_PIPE,
-	NEED_SGL_QUOTE_STR,
-	NEED_DBL_QUOTE_STR,
+	SGL_QUOTE_OPENED,
+	SGL_QUOTE_CLOSED,
+	DBL_QUOTE_OPENED,
+	DBL_QUOTE_CLOSED,
 	SYNTAX_ERROR = 258,
 }	t_validation_state;
 
@@ -87,9 +95,10 @@ t_return_value	string_to_token(t_lexer *token_list, char *input, char *delimiter
 /*
  * contained in lexer_utils.c
  */
-int					free_token_list(t_lexer *token_list);
-int					make_new_node(t_lexer *token_to_node, t_token **new_token);
-char				*ft_strpbrk(const char *string, const char *delimiters);
+int		free_token_list(t_lexer *token_list);
+int		make_new_node(t_lexer *token_to_node, t_token *new_token);
+char	*ft_strpbrk(const char *string, const char *delimiters);
+void	set_list_quote_state(t_lexer *list, t_token *token, t_token_type type, char *input);
 
 /*
  * TODO: contained in DELETE_ME_AND_FCT_HEADER.c
@@ -119,4 +128,9 @@ void				pipes_are_valid(t_lexer *token_list, t_token *token);
  */
 t_return_value		validate_quotes(t_lexer *token_list);
 
+/**
+ * contained in lexer_quote_handling.c
+ */
+void	label_single_quote(t_lexer *list)
+void	label_double_quote(t_lexer *list)
 #endif
