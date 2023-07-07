@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/23 13:11:11 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/07 13:26:03 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,11 @@
 
 typedef struct s_minishell
 {
-	int	exit_code;
+	int		exit_code;
+	char	**envp;
 }	t_minishell;
+
+t_minishell	*g_minishell;
 
 // Necessary function prototype for readline.
 void	rl_replace_line(const char *text, int clear_undo);
