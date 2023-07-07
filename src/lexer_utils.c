@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:59:04 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/06 17:46:36 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/07 12:54:09 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,48 +30,33 @@ t_return_value	make_new_node(t_lexer *token_list, t_token *new_token)
 	return (SUCCESS);
 }
 
-void	set_list_quote_state(t_lexer *list, t_token *token, t_token_type type,
-		char *input)
+void	set_token_type_and_quote_state(t_lexer *list, t_token *token,
+		t_token_type token_type, char *input)
 {
-	if (type != UNDEFINED)
-		token->type = type;
-	else
+	if (list->state == UNDEFINED)
 	{
-		if (input[0] == '\'')
-			token->type = SINGLE_QUOTE;
-		else if (input[0] == '\"')
-			token->type = DOUBLE_QUOTE;
-		else if (input[0] == '>')
-			token->type = OUTFILE;
-		else if (input[0] == '<')
-			token->type = INFILE;
-		else if (input[0] == '|')
-			token->type = PIPE;
-		else if (input[0] == ' ')
-			token->type = SPACE;
+		if (token_type != UNDEFINED)
+			token->type = token_type;
+		else
+		{
+			if (input[0] == '\'' || input[0] == '\"')
+				handle_quotes(list, token, token_type, input);
+			else if (input[0] == '>')
+				token->type = OUTFILE;
+			else if (input[0] == '<')
+				token->type = INFILE;
+			else if (input[0] == '|')
+				token->type = PIPE;
+			else if (input[0] == ' ')
+				token->type = SPACE;
+		}
 	}
-	list->state = UNDEFINED;
+	else if (list->state == SGL_QUOTE_OPENED || list->state == \
+		SGL_QUOTE_CAN_BE_CLOSED || list->state == DBL_QUOTE_OPENED || \
+		list->state == DBL_QUOTE_CAN_BE_CLOSED)
+		handle_quotes(list, token, token_type, input);
 }
 
-/**
- * @brief	Checks
- * 
- * @param list 
- */
-void	add_null_string_token_if_empty_quote(t_lexer *list)
-{
-	t_token	*current;
-	char	*empty_string;
-
-	empty_string = "";
-	current = list->head;
-	while (current != NULL)
-		current = current->next;
-	if (current->type == SINGLE_QUOTE)
-		label_single_quote_string(list, current);
-	if (current->type == DOUBLE_QUOTE)
-		label_double_quote_string(list, current);
-}
 
 
 /**

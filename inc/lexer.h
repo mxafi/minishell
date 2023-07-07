@@ -17,11 +17,11 @@
 
 typedef struct s_token
 {
-	t_token_type	type;
-	int				token_count;
-	char			*token;
-	struct s_token	*next;
-}	t_token;
+	t_token_type		type;
+	int					token_count;
+	char				*token;
+	struct s_token		*next;
+}						t_token;
 
 typedef struct s_lexer
 {
@@ -31,7 +31,7 @@ typedef struct s_lexer
 	int					token_amount;
 	char				*readlined;
 	t_token				*head;
-}	t_lexer;
+}						t_lexer;
 
 /*
  * delimiters and their functional properties
@@ -56,10 +56,11 @@ typedef enum e_token_type
 	INFILE = '<',
 	PIPE = '|',
 	SYNTAX_ERROR = 258,
-}	t_token_type;
+}						t_token_type;
 
 /**
- * @brief validation state enumerator used in syntax validation and tokenization of single and double quotes
+
+	* @brief validation state enumerator used in syntax validation and tokenization of single and double quotes
  * 
  */
 typedef enum e_validation_state
@@ -69,11 +70,11 @@ typedef enum e_validation_state
 	IS_REDIR,
 	IS_PIPE,
 	SGL_QUOTE_OPENED,
-	SGL_QUOTE_CLOSED,
+	SGL_QUOTE_CAN_BE_CLOSED,
 	DBL_QUOTE_OPENED,
-	DBL_QUOTE_CLOSED,
+	DBL_QUOTE_CAN_BE_CLOSED,
 	SYNTAX_ERROR = 258,
-}	t_validation_state;
+}						t_validation_state;
 
 /*
  * return values (how to handle those???)
@@ -81,56 +82,64 @@ typedef enum e_validation_state
 typedef enum e_return_value
 {
 	FAILURE = 0,
-	CALLOC_FAIL ,
+	CALLOC_FAIL,
 	SUCCESS,
 	SYNTAX_ERROR = 258,
-}	t_return_value;
+}						t_return_value;
 
 /*
  * contained in lexer.c
  */
-t_return_value	string_to_token(t_lexer *token_list, char *input, char *delimiter);
-
-
+t_return_value			string_to_token(t_lexer *token_list, char *input,
+							char *delimiter);
+int						tokenize_node(t_lexer *list, t_token *token, \
+							char *str, int length);
 /*
  * contained in lexer_utils.c
  */
-int		free_token_list(t_lexer *token_list);
-int		make_new_node(t_lexer *token_to_node, t_token *new_token);
-char	*ft_strpbrk(const char *string, const char *delimiters);
-void	set_list_quote_state(t_lexer *list, t_token *token, t_token_type type, char *input);
+int						free_token_list(t_lexer *token_list);
+int						make_new_node(t_lexer *token_to_node,
+							t_token *new_token);
+char					*ft_strpbrk(const char *string, const char *delimiters);
+void					set_list_quote_state(t_lexer *list, t_token *token,
+							t_token_type type, char *input);
 
 /*
  * TODO: contained in DELETE_ME_AND_FCT_HEADER.c
  */
-void				print_list(t_lexer *list);
+void					print_list(t_lexer *list);
 
 /*
  * contained in lexer_validate_syntax.c
  */
-t_return_value		validate_syntax(t_lexer *token_list);
+t_return_value			validate_syntax(t_lexer *token_list);
 
 /**
  * contained in lexer_validate_redirector.c 
  */
-void				redirector_is_valid(t_lexer *token_list, t_token *token);
-void				token_is_redirector(t_lexer *token_list, t_token *token);
-t_return_value		is_token_type_redirector(t_lexer *token_list, \
-		t_token *token);
+void					redirector_is_valid(t_lexer *token_list,
+							t_token *token);
+void					token_is_redirector(t_lexer *token_list,
+							t_token *token);
+t_return_value			is_token_type_redirector(t_lexer *token_list,
+							t_token *token);
 
 /**
  * contained in lexer_validate_pipe.c 
  */
-void				pipes_are_valid(t_lexer *token_list, t_token *token);
+void					pipes_are_valid(t_lexer *token_list, t_token *token);
 
 /**
  * contained in lexer_validate_redirector.c
  */
-t_return_value		validate_quotes(t_lexer *token_list);
+t_return_value			validate_quotes(t_lexer *token_list);
 
 /**
  * contained in lexer_quote_handling.c
  */
-void	label_single_quote(t_lexer *list)
-void	label_double_quote(t_lexer *list)
+void					label_single_quote(t_lexer *list);
+void					label_double_quote(t_lexer *list);
+void					handle_quotes(t_lexer *list, t_token *token,
+							t_token_type type, char *input);
+
 #endif

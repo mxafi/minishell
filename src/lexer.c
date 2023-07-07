@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/06 17:25:02 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/07 13:16:38 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*ft_test_substr(const char *s, unsigned int input, size_t len)
  * @param length	length of the string to be tokenized 
  * @return int		SUCCESS or FAILURE 
  */
-static int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
+int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 {
 	t_token	*last_token;
 
@@ -106,7 +106,7 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 		return (token_list->error_code = CALLOC_FAIL);
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (token_list->error_code = CALLOC_FAIL);
-	set_token_type_and_list_state(token_list, new_token, STRING, input);
+	set_token_type_and_quote_state(token_list, new_token, STRING, input);
 	input = delimiter;
 	// CHECK IF RETURN VALUES ARE USED
 	return (token_list->error_code = SUCCESS);
@@ -115,7 +115,7 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 /**
  * @brief	Tokenizes delimiters
  * @details	Heredoc and append delimiters are determined separately from the 
- * 			other delimiters. A call to set_token_type_and_list_state is made
+ * 			other delimiters. A call to set_token_type_and_quote_state is made
  * 			which will set the token type to the node, as well as an 
  * 			initialization of the token list's state needed by the quote handlers
  *			in add_null_string_token_if_empty_quote function.
@@ -136,16 +136,16 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	{
 		length = 2;
 		if (*input == OUTFILE)
-			set_token_type_and_list_state(token_list, new_token, \
+			set_token_type_and_quote_state(token_list, new_token, \
 			APPEND_TO, input);
 		else
-			set_token_type_and_list_state(token_list, new_token, \
+			set_token_type_and_quote_state(token_list, new_token, \
 			HEREDOC, input);
 	}
 	else
 	{
 		length = 1;
-		set_token_type_and_list_state(token_list, new_token, UNDEFINED, input);
+		set_token_type_and_quote_state(token_list, new_token, UNDEFINED, input);
 	}
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (NULL);
@@ -158,8 +158,6 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
  * @details	The strpbrk seeks the input string for delimiters: spaces, 
  * 			tabs, redirection pipes and quotes to output delimited strings in 
  * 			a tokenized linked list. The delimiter itself is then tokenized.
- * 			A call to check whether quotes are empty or not is made, with the 
- * 			aim to tokenize a null string in between if it is the case.
  * 
  * @param token_list	Token list and list information placeholder.
  * @return int			Error code is initialized to 0 and return CALLOC_FAIL
@@ -185,8 +183,6 @@ static int	tokenize_readline(t_lexer *token_list)
 			if (input < delimiter)
 				string_to_token(token_list, input, delimiter);
 			input = delimiter_to_token(token_list, delimiter);
-			add_null_string_token_if_empty_quote(token_list);
-			create_null_string_if_needed()
 		}
 		if (token_list->error_code == CALLOC_FAIL)
 			break ;
