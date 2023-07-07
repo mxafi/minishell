@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:59:04 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/07 12:54:09 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/07 18:27:42 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,16 @@ t_return_value	make_new_node(t_lexer *token_list, t_token *new_token)
 	return (SUCCESS);
 }
 
-void	set_token_type_and_quote_state(t_lexer *list, t_token *token,
+/**
+ * @brief 
+ * 
+ *
+ * @param list 
+ * @param token 
+ * @param token_type 
+ * @param input 
+ */
+t_return_value	set_token_type_and_quote_state(t_lexer *list, t_token *token,
 		t_token_type token_type, char *input)
 {
 	if (list->state == UNDEFINED)
@@ -51,13 +60,12 @@ void	set_token_type_and_quote_state(t_lexer *list, t_token *token,
 				token->type = SPACE;
 		}
 	}
-	else if (list->state == SGL_QUOTE_OPENED || list->state == \
-		SGL_QUOTE_CAN_BE_CLOSED || list->state == DBL_QUOTE_OPENED || \
-		list->state == DBL_QUOTE_CAN_BE_CLOSED)
+	else if (list->state == SGL_QUOTE_OPENED \
+			|| list->state == SGL_QUOTE_CAN_BE_CLOSED \
+			|| list->state == DBL_QUOTE_OPENED || \
+				list->state == DBL_QUOTE_CAN_BE_CLOSED) \
 		handle_quotes(list, token, token_type, input);
 }
-
-
 
 /**
  * @brief	Frees the token list

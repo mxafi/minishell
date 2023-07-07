@@ -13,12 +13,11 @@
 #ifndef LEXER_H
 # define LEXER_H
 
-# include "assert.h"
-
 typedef struct s_token
 {
 	t_token_type		type;
 	int					token_count;
+	int					string_length;
 	char				*token;
 	struct s_token		*next;
 }						t_token;
@@ -93,7 +92,7 @@ typedef enum e_return_value
 t_return_value			string_to_token(t_lexer *token_list, char *input,
 							char *delimiter);
 int						tokenize_node(t_lexer *list, t_token *token, \
-							char *str, int length);
+							char *str);
 /*
  * contained in lexer_utils.c
  */

@@ -6,12 +6,11 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:41:02 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/05 15:04:55 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/07 14:34:05 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
 
 /**
  * @brief	Checks if the opening quote has a matching closing quote. 

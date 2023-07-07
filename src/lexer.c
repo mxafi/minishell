@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/07 13:16:38 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/07 18:47:20 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ char	*ft_test_substr(const char *s, unsigned int input, size_t len)
  * @param length	length of the string to be tokenized 
  * @return int		SUCCESS or FAILURE 
  */
-int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
+int	tokenize_node(t_lexer *list, t_token *token, char *str)
 {
 	t_token	*last_token;
 
 	assert(str);
 	// uses some test substr, see below and above function, check
-	if ((token->token = ft_test_substr(str, 0, length)) == FAILURE)
+	if (!(token->token = ft_test_substr(str, 0, token->string_length)))
 	{
 		list->error_code = FAILURE;
 		return (FAILURE);
@@ -99,12 +99,12 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 
 	new_token = NULL;
 	if (delimiter == NULL)
-		length = ft_strlen(input);
+		new_token->string_length = ft_strlen(input);
 	else
-		length = delimiter - input;
+		new_token->string_length = delimiter - input;
 	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
 		return (token_list->error_code = CALLOC_FAIL);
-	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
+	if (tokenize_node(token_list, new_token, input) == FAILURE)
 		return (token_list->error_code = CALLOC_FAIL);
 	set_token_type_and_quote_state(token_list, new_token, STRING, input);
 	input = delimiter;
@@ -127,29 +127,31 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 static char	*delimiter_to_token(t_lexer *token_list, char *input)
 {
 	t_token	*new_token;
-	int		length;
 
 	new_token = NULL;
 	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
-		return (NULL);
+		return (NULL); // may need to exit() here instead.
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
 	{
-		length = 2;
+		new_token->string_length = 2;
 		if (*input == OUTFILE)
-			set_token_type_and_quote_state(token_list, new_token, \
-			APPEND_TO, input);
+			set_token_type_and_quote_state(token_list, new_token, APPEND_TO, input);
 		else
-			set_token_type_and_quote_state(token_list, new_token, \
-			HEREDOC, input);
+			set_token_type_and_quote_state(token_list, new_token, HEREDOC, input);
 	}
 	else
 	{
-		length = 1;
+		new_token->string_length = 1;
 		set_token_type_and_quote_state(token_list, new_token, UNDEFINED, input);
 	}
-	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
-		return (NULL);
-	return (input + length);
+	if (new_token->token != '\0' && new_token->string_length != 0)
+	{
+		if (tokenize_node(token_list, new_token, input) == FAILURE)
+			return (NULL); // may need to exit() here instead.
+	}
+	if (new_token->string_length == 0)
+		new_token->string_length = 1;
+	return (input + new_token->string_length);
 }
 
 /**
@@ -192,7 +194,7 @@ static int	tokenize_readline(t_lexer *token_list)
 
 /**
  * @brief 	The lexer prepares the input string from the shell prompt to be 
- *		 	executed
+ *				executed
  * @details	A lexer struct is initialized and serves as a placeholder for 
  *			the tokenized list.
  *			- White spaces are trimmed from both ends of the readline input
