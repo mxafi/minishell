@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/07 18:47:20 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/09 19:34:31 by lionel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ char	*ft_test_substr(const char *s, unsigned int input, size_t len)
  * @param length	length of the string to be tokenized 
  * @return int		SUCCESS or FAILURE 
  */
-int	tokenize_node(t_lexer *list, t_token *token, char *str)
+int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 {
 	t_token	*last_token;
 
 	assert(str);
 	// uses some test substr, see below and above function, check
-	if (!(token->token = ft_test_substr(str, 0, token->string_length)))
+	if (!(token->token = ft_test_substr(str, 0, length)) == FAILURE)
 	{
 		list->error_code = FAILURE;
 		return (FAILURE);
@@ -99,18 +99,17 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 
 	new_token = NULL;
 	if (delimiter == NULL)
-		new_token->string_length = ft_strlen(input);
+		length = ft_strlen(input);
 	else
-		new_token->string_length = delimiter - input;
+		length = delimiter - input;
 	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
 		return (token_list->error_code = CALLOC_FAIL);
-	if (tokenize_node(token_list, new_token, input) == FAILURE)
+	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (token_list->error_code = CALLOC_FAIL);
 	set_token_type_and_quote_state(token_list, new_token, STRING, input);
 	input = delimiter;
 	// CHECK IF RETURN VALUES ARE USED
-	return (token_list->error_code = SUCCESS);
-}
+	return (token_list->error_code = SUCCESS);}
 
 /**
  * @brief	Tokenizes delimiters
@@ -127,31 +126,29 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 static char	*delimiter_to_token(t_lexer *token_list, char *input)
 {
 	t_token	*new_token;
+	int		length;
 
 	new_token = NULL;
 	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
-		return (NULL); // may need to exit() here instead.
+		return (NULL);
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
 	{
-		new_token->string_length = 2;
+		length = 2;
 		if (*input == OUTFILE)
-			set_token_type_and_quote_state(token_list, new_token, APPEND_TO, input);
+			set_token_type_and_quote_state(token_list, new_token, \
+			APPEND_TO, input);
 		else
-			set_token_type_and_quote_state(token_list, new_token, HEREDOC, input);
+			set_token_type_and_quote_state(token_list, new_token, \
+			HEREDOC, input);
 	}
 	else
 	{
-		new_token->string_length = 1;
+		length = 1;
 		set_token_type_and_quote_state(token_list, new_token, UNDEFINED, input);
 	}
-	if (new_token->token != '\0' && new_token->string_length != 0)
-	{
-		if (tokenize_node(token_list, new_token, input) == FAILURE)
-			return (NULL); // may need to exit() here instead.
-	}
-	if (new_token->string_length == 0)
-		new_token->string_length = 1;
-	return (input + new_token->string_length);
+	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
+		return (NULL);
+	return (input + length);
 }
 
 /**
