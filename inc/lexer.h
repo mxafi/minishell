@@ -17,7 +17,6 @@ typedef struct s_token
 {
 	t_token_type		type;
 	int					token_count;
-	int					string_length;
 	char				*token;
 	struct s_token		*next;
 }						t_token;
@@ -40,7 +39,7 @@ typedef struct s_lexer
 
 typedef enum e_token_type
 {
-	UNDEFINED,
+	UNDEFINED_TOKEN,
 	SPACE,
 	STRING,
 	HEREDOC,
@@ -49,6 +48,7 @@ typedef enum e_token_type
 	ARG,
 	SGL_QUOTE_STR,
 	DBL_QUOTE_STR,
+	QUOTE_NEED_NULL_STR,
 	SINGLE_QUOTE = '\'',
 	DOUBLE_QUOTE = '\"',
 	OUTFILE = '>',
@@ -92,7 +92,7 @@ typedef enum e_return_value
 t_return_value			string_to_token(t_lexer *token_list, char *input,
 							char *delimiter);
 int						tokenize_node(t_lexer *list, t_token *token, \
-							char *str);
+							char *str, int length);
 /*
  * contained in lexer_utils.c
  */
