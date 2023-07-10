@@ -6,79 +6,47 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:41:02 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/07 14:34:05 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/10 14:17:25 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/**
- * @brief	Checks if the opening quote has a matching closing quote. 
- * @details	Seeks for matching closing quote, every token type iterated through 
- * 			prior quote match is relabeled as SGL or DBL_QUOTE_STR.
- * 			- If a matching quote is found, the token list's state is updated to
- *			IS_STR.
- * 			- If no matching quote is found, the token list's state is updated
- * 			to SYNTAX_ERROR and will terminate further validation of the input
- *
- * @param list		Placeholder for list data
- * @param current	Token of type quote in search of it's closing pair
- * @param quote_type Single (SGL_QUOTE_STR) or double quote (DBL_QUOTE_STR)
- * @return	t_token* Returns the token closing the quote or NULL pointer 
- */
-static t_token	*handle_quote(t_lexer *list, t_token *current,
-		t_token_type quote_type)
-{
-	if (current->next != NULL)
-	{
-		current = current->next;
-		if (current->type == quote_type)
-		{
-			if (current->next != NULL)
-				current = current->next;
-			return (current);
-		}
-		while (current != NULL && current->type != quote_type)
-		{
-			current->type = quote_type;
-			current = current->next;
-		}
-		if (current == NULL)
-		{
-			list->state = SYNTAX_ERROR;
-			return (NULL);
-		}
-	}
-	list->state = IS_STR;
-	if (current->next != NULL)
-		current = current->next;
-	return (current);
-}
+
 
 /**
  * @brief	Single and double quotes pair checker.
- * @details Look for an open quote token and handles the quote accordingly.
- * 			Rename token type between matching quotes to single or double quote
- * 			string (SGL / DBL_QUOTE_STR).
+ * @details In the tokenization process, in order to label tokens as quoted
+ * 			strings the state of opened quotes labelled as single SGL or double
+ * 			DBL *_QUOTE_OPENED or *_QUOTE_CAN_BE_CLOSED) is kept in the
+ *			token_list->state placeholder. If this state remains, the syntax
+ *			validation process is printing a corresponding syntax error, if 
+ *			quotes are present, but have matching closing quote, token_list->state
+ *			is UNDEFINED. This is not a bash behaviour but a requisite from 
+ *			the subject.
  *
  * @param 	token_list List of token being checked
  * @return	t_return_value Failure or Success 
  */
 t_return_value	validate_quotes(t_lexer *token_list)
 {
-	t_token	*current;
+	t_token	*last;
 
-	current = token_list->token_list;
-	while (current != NULL && token_list->state != SYNTAX_ERROR)
-	{
-		if (current->type == SINGLE_QUOTE)
-			current = handle_quote(token_list, current, SINGLE_QUOTE);
-		else if (current->type == DOUBLE_QUOTE)
-			current = handle_quote(token_list, current, DOUBLE_QUOTE);
-		else
-			current = current->next;
-	}
-	if (token_list->state == SYNTAX_ERROR)
+	last = token_list->head;
+	while (last != NULL)
+		current = current->next;
+	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED || \
+		token_list->state == SGL_QUOTE_OPENED || \
+		{
+		printf("Shellfish> syntax error expecting closing single quotes `\''\n");
+		token_list-
 		return (FAILURE);
+		}
+	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED || \
+		token_list->state == DBL_QUOTE_OPENED)
+		{
+		printf("Shellfish> syntax error expecting closing double quotes `\"'\n");
+		return (FAILURE);
+		}
 	return (SUCCESS);
 }

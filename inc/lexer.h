@@ -54,12 +54,10 @@ typedef enum e_token_type
 	OUTFILE = '>',
 	INFILE = '<',
 	PIPE = '|',
-	SYNTAX_ERROR = 258,
 }						t_token_type;
 
 /**
-
-	* @brief validation state enumerator used in syntax validation and tokenization of single and double quotes
+ * @brief validation state enumerator used in syntax validation and tokenization of single and double quotes
  * 
  */
 typedef enum e_validation_state
@@ -83,7 +81,7 @@ typedef enum e_return_value
 	FAILURE = 0,
 	CALLOC_FAIL,
 	SUCCESS,
-	SYNTAX_ERROR = 258,
+	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;
 
 /*

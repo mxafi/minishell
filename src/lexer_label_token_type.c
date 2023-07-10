@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_quote_handling.c                             :+:      :+:    :+:   */
+/*   lexer_label_token_type.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/10 10:43:17 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/10 11:19:55 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
 
 /**
  * @brief		Labels token types and the current state of the token list  
- * @details		Second function labelling token types, and handles quotes
+ * @details		Helper function labelling token types, and handles quotes
  *				If a quote (single or double quotes) the state of the list
  *				is changed to (..)QUOTE_OPENED status. 
  *				Any token type being handled while the token list is in opened
@@ -83,9 +83,10 @@ static void	handle_quotes(t_lexer *list, t_token *token, t_token_type type,
 	else if (list->state == UNDEFINED && input[0] == '\"')
 		set_token_type_and_list_state(list, token, DOUBLE_QUOTE, \
 				DBL_QUOTE_OPENED);
-	else if ((list->state == SGL_QUOTE_OPENED && input[0] != '\'')
-		set_token_type_and_list_state(list, token, SGL_QUOTE_STR, SGL_QUOTE_CAN_BE_CLOSED);
-	else if ((list->state == DBL_QUOTE_OPENED && input[0] != '\"')
+	else if (list->state == SGL_QUOTE_OPENED && input[0] != '\'')
+		set_token_type_and_list_state(list, token, SGL_QUOTE_STR, \
+				SGL_QUOTE_CAN_BE_CLOSED);
+	else if (list->state == DBL_QUOTE_OPENED && input[0] != '\"')
 		set_token_type_and_list_state(list, token, DBL_QUOTE_STR, \
 				DBL_QUOTE_CAN_BE_CLOSED);
 	else if (list->state == SGL_QUOTE_CAN_BE_CLOSED && input[0] == '\'')
@@ -93,9 +94,11 @@ static void	handle_quotes(t_lexer *list, t_token *token, t_token_type type,
 	else if (list->state == DBL_QUOTE_CAN_BE_CLOSED && input[0] == '\"')
 		set_token_type_and_list_state(list, token, DOUBLE_QUOTE, UNDEFINED);
 	else if (list->state == SGL_QUOTE_OPENED && input[0] == '\'')
-		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, UNDEFINED);
+		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, \
+				UNDEFINED);
 	else if (list->state == DBL_QUOTE_OPENED && input[0] == '\"')
-		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, UNDEFINED);
+		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, \
+				UNDEFINED);
 	else
 		add_null_string_token_if_empty_quotes(void);
 }
@@ -133,6 +136,8 @@ t_return_value	label_token_type(t_lexer *list, t_token *token, \
 				token->type = SPACE;
 		}
 	}
-	else if (list->state == SGL_QUOTE_OPENED || list->state == DBL_QUOTE_OPENED)
+	else if (list->state == SGL_QUOTE_OPENED || list->state == DBL_QUOTE_OPENED \
+		list->state == SGL_QUOTE_CAN_BE_CLOSED || \
+		list->state == DBL_QUOTE_CAN_BE_CLOSED)
 		handle_quotes(list, token, token_type, input);
 }

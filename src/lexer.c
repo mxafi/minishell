@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/10 10:39:39 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/10 16:49:16 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,10 +212,10 @@ int	lexer(char *input)
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
 		tokenize_readline(&token_list);
 		print_list(&token_list);
-		if ((validate_syntax(&token_list)) == SYNTAX_ERROR)
+		if ((validate_syntax(&token_list)) == FAILURE)
 		{
-			free_token_list(token_list);
-			return (SYNTAX_ERROR);
+			free_token_list(&token_list);
+			return (EXIT_SYNTAX_ERROR);
 		}
 	}
 	return (0);
