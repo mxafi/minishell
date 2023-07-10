@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/09 19:34:31 by lionel           ###   ########.fr       */
+/*   Updated: 2023/07/10 10:39:39 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 		return (token_list->error_code = CALLOC_FAIL);
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (token_list->error_code = CALLOC_FAIL);
-	set_token_type_and_quote_state(token_list, new_token, STRING, input);
+	label_token_type(token_list, new_token, STRING, input);
 	input = delimiter;
 	// CHECK IF RETURN VALUES ARE USED
 	return (token_list->error_code = SUCCESS);}
@@ -135,16 +135,16 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	{
 		length = 2;
 		if (*input == OUTFILE)
-			set_token_type_and_quote_state(token_list, new_token, \
+			label_token_type(token_list, new_token, \
 			APPEND_TO, input);
 		else
-			set_token_type_and_quote_state(token_list, new_token, \
+			label_token_type(token_list, new_token, \
 			HEREDOC, input);
 	}
 	else
 	{
 		length = 1;
-		set_token_type_and_quote_state(token_list, new_token, UNDEFINED, input);
+		label_token_type(token_list, new_token, UNDEFINED, input);
 	}
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (NULL);

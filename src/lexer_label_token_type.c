@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quote_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/09 19:31:43 by lionel           ###   ########.fr       */
+/*   Updated: 2023/07/10 10:43:17 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
  * @param token	Current token 
  * @param input Current input string being tokenized 
  */
-void	handle_quotes(t_lexer *list, t_token *token, t_token_type type,
+static void	handle_quotes(t_lexer *list, t_token *token, t_token_type type,
 		char *input)
 {
 	if (list->state == UNDEFINED && input[0] == '\'')
@@ -98,4 +98,41 @@ void	handle_quotes(t_lexer *list, t_token *token, t_token_type type,
 		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, UNDEFINED);
 	else
 		add_null_string_token_if_empty_quotes(void);
+}
+
+/**
+ * @brief	Labels the token types and the current state of the token list 
+ * @details When initialized the linked list's state is undefined. During the
+ * 			tokenization process, only quotes change this state to monitor
+ * 			if the following token is to be labelled as found by ft_strpbrk()
+ * 			or if it is a quote type of string SGL/DBL_QUOTE_STR.
+ *
+ * @param list			Head of the token list and placeholder for list information
+ * @param token 		The current token being treated
+ * @param token_type	The type of token 
+ * @param input			The input string currently being handled 
+ */
+t_return_value	label_token_type(t_lexer *list, t_token *token, \
+				t_token_type token_type, char *input)
+{
+	if (list->state == UNDEFINED)
+	{
+		if (token_type != UNDEFINED_TOKEN)
+			token->type = token_type;
+		else
+		{
+			if (input[0] == '\'' || input[0] == '\"')
+				handle_quotes(list, token, token_type, input);
+			else if (input[0] == '>')
+				token->type = OUTFILE;
+			else if (input[0] == '<')
+				token->type = INFILE;
+			else if (input[0] == '|')
+				token->type = PIPE;
+			else if (input[0] == ' ')
+				token->type = SPACE;
+		}
+	}
+	else if (list->state == SGL_QUOTE_OPENED || list->state == DBL_QUOTE_OPENED)
+		handle_quotes(list, token, token_type, input);
 }

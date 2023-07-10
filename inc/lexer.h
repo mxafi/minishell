@@ -100,8 +100,6 @@ int						free_token_list(t_lexer *token_list);
 int						make_new_node(t_lexer *token_to_node,
 							t_token *new_token);
 char					*ft_strpbrk(const char *string, const char *delimiters);
-void					set_list_quote_state(t_lexer *list, t_token *token,
-							t_token_type type, char *input);
 
 /*
  * TODO: contained in DELETE_ME_AND_FCT_HEADER.c
@@ -134,11 +132,9 @@ void					pipes_are_valid(t_lexer *token_list, t_token *token);
 t_return_value			validate_quotes(t_lexer *token_list);
 
 /**
- * contained in lexer_quote_handling.c
+ * contained in lexer_label_token_type.c
  */
-void					label_single_quote(t_lexer *list);
-void					label_double_quote(t_lexer *list);
-void					handle_quotes(t_lexer *list, t_token *token,
-							t_token_type type, char *input);
+t_return_value	label_token_type(t_lexer *list, t_token *token, \
+				t_token_type token_type, char *input)
 
 #endif

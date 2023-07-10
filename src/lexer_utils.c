@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lionel <lionel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:59:04 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/09 19:34:31 by lionel           ###   ########.fr       */
+/*   Updated: 2023/07/10 10:29:54 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,43 +28,6 @@ t_return_value	make_new_node(t_lexer *token_list, t_token *new_token)
 		return (CALLOC_FAIL);
 	}
 	return (SUCCESS);
-}
-
-/**
- * @brief	Labels the token types and the current state of the token list 
- * @details When initialized the linked list's state is undefined. During the
- * 			tokenization process, only quotes change this state to monitor
- * 			if the following token is to be labelled as found by ft_strpbrk()
- * 			or if it is a quote type of string SGL/DBL_QUOTE_STR.
- *
- * @param list			Head of the token list and placeholder for list information
- * @param token 		The current token being treated
- * @param token_type	The type of token 
- * @param input			The input string currently being handled 
- */
-t_return_value	set_token_type_and_quote_state(t_lexer *list, t_token *token,
-		t_token_type token_type, char *input)
-{
-	if (list->state == UNDEFINED)
-	{
-		if (token_type != UNDEFINED_TOKEN)
-			token->type = token_type;
-		else
-		{
-			if (input[0] == '\'' || input[0] == '\"')
-				handle_quotes(list, token, token_type, input);
-			else if (input[0] == '>')
-				token->type = OUTFILE;
-			else if (input[0] == '<')
-				token->type = INFILE;
-			else if (input[0] == '|')
-				token->type = PIPE;
-			else if (input[0] == ' ')
-				token->type = SPACE;
-		}
-	}
-	else if (list->state == SGL_QUOTE_OPENED || list->state == DBL_QUOTE_OPENED)
-		handle_quotes(list, token, token_type, input);
 }
 
 /**
