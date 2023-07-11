@@ -6,11 +6,36 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:59:04 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/10 10:29:54 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/11 13:45:09lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/lexer.h"
+#include "../inc/minishell.h"
+
+/**
+ * @brief Deletes token from the token list.
+ * 
+ * @param list	The list containing the token to be deleted
+ * @param token	The token to be deleted
+ */
+void	delete_token(t_lexer *list, t_token *token)
+{
+	t_token	*current;
+
+	assert(token && list && list->head); //DEL THIS ASSERT
+	current = list->head;
+	if (current == token)
+		list->head = token->next;
+	else
+	{
+		while (current != NULL && current != token)
+			current = current->next;
+		current->next = token->next;
+	}
+	free(token->token);
+	free(token->next);
+	free(token);
+}
 
 /**
  * @brief 	Memory allocate a new node and initializes it to zero with calloc

@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/10 11:19:55 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/11 13:16:00 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@
  */
 static void	add_null_string_token_if_empty_quote(void)
 {
-
 	printf("THis was never meant to be read, what are you doing here\n");
-	
 //	t_token	*new_token;
 //
 //	if (input[0] == '\'')
@@ -47,6 +45,9 @@ static void	add_null_string_token_if_empty_quote(void)
 //
 /**
  * @brief			Labels token types and token list's state 
+ * @details			If empty quotes occur, a QUOTE_NEED_NULL_STR will mark
+ * 					the token type that will have it's content written
+ * 					with an empty string.
  * 
  * @param list 		Head of token list and information placeholder
  * @param token		Current token 
@@ -58,6 +59,8 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
 {
 	token->type = type;
 	list->state = state;
+	if (token->type == QUOTE_NEED_NULL_STR)
+		token->token == "";
 }
 
 /**
@@ -100,7 +103,7 @@ static void	handle_quotes(t_lexer *list, t_token *token, t_token_type type,
 		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, \
 				UNDEFINED);
 	else
-		add_null_string_token_if_empty_quotes(void);
+		add_null_string_token_if_empty_quotes();
 }
 
 /**
@@ -137,7 +140,7 @@ t_return_value	label_token_type(t_lexer *list, t_token *token, \
 		}
 	}
 	else if (list->state == SGL_QUOTE_OPENED || list->state == DBL_QUOTE_OPENED \
-		list->state == SGL_QUOTE_CAN_BE_CLOSED || \
+		|| list->state == SGL_QUOTE_CAN_BE_CLOSED || \
 		list->state == DBL_QUOTE_CAN_BE_CLOSED)
 		handle_quotes(list, token, token_type, input);
 }

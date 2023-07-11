@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:11:59 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/10 18:24:25 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/11 15:35:28 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 /**
  * @brief	Checks syntax validity of pipes within the input
  * @details	Checks for the following situations:
- * 			- CMD1 || CMD2 -> No syntax error
+ * 			- CMD1 || CMD2 -> No syntax error in bash -> here yes
  * 			- CMD1 ||| CMD2 -> Syntax error near unexpected `|'
  * 			- CMD1 |||| CMD2 -> Syntax error near unexpected `||'
  * 			- CMD1 <| CMD2 -> Syntax error near unexpected `|'
@@ -45,11 +45,10 @@ static t_return_value	check_if_pipe_is_surrounded_by_strings(
 	if (current->type == PIPE)
 	{
 		if (previous->type != STRING && previous->type != SGL_QUOTE_STR && \
-			previous->type != DBL_QUOTE_STR && \
-			previous->type != QUOTE_NEED_NULL_STR && next->type != STRING && \
-			next->type != SGL_QUOTE_STR && next->type != DBL_QUOTE_STR && \
-			next->type != QUOTE_NEED_NULL_STR && next->type != PIPE)
-			;
+			previous->type != DBL_QUOTE_STR && next->type != STRING && \
+			next->type != SGL_QUOTE_STR && next->type != DBL_QUOTE_STR)
+		
+
 	}
 }
 
