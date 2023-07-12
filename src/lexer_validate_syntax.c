@@ -6,11 +6,12 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:11:59 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/12 11:45:14 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/12 17:01:47 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
 /* Syntax check as I have gathered it.. hopefully, nothing is missing:
 1/ Check first character -> cannot be pipe
 2/ Redirectors < < , <>,
@@ -21,7 +22,39 @@
 Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
+/**
+ * @brief		Implement a function that seeks for a $ and string compare 
+ * 				the consecutive chars until the next token. A match in the 
+ * 				environment KEYS 
+ * 
+ *
+ * @param list 
+ */
+void	expand_from_env(t_lexer *list)
+{
+	t_token	*current;
+	char	*env_key;
+	char	*env_value;
 
+	current = list->head;
+	env_key = NULL;
+	while (current != NULL)
+	{
+		if (current->type == DBL_QUOTE_STR || current->type == STRING)
+		{
+			env_key = ft_strchr(current->content + 1, '$');
+			if (env_key != NULL)
+			{
+				env_value = env_get_value_by_key(env_key + 1);
+				if (env_value != NULL)
+					current->content = ft_strdup(env_value);
+				else
+					current->content = ft_strdup("");
+			}
+		}
+		current = current->next;
+	}
+}
 
 /**
  * @brief	token by token validation process
@@ -39,9 +72,9 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	token = token_list->head;
 	token_list->state = IS_STR;
 	validate_quotes(token_list);
+	expand_from_env(token_list);
 	concatenate_strings(token_list);
 	remove_spaces(token_list);
 	validate_pipe(token_list);
 	validate_redirectors(token_list)
-	
 }
