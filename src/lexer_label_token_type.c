@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/11 13:16:00 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/12 10:42:12 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
 	token->type = type;
 	list->state = state;
 	if (token->type == QUOTE_NEED_NULL_STR)
-		token->token == "";
+		token->content == "";
 }
 
 /**

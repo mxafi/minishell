@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:41:02 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/11 16:12:16 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/12 14:45:17 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,37 @@ void	remove_quote_tokens(t_lexer *token_list)
 		if (current->type == QUOTE_NEED_NULL_STR)
 		{
 			current->type = STRING;
-			ft_strlcpy(current->token, "", 1);
+			ft_strlcpy(current->content, "", 1);
 		}
 		current = current->next;
 	}
 }
+void	expand_env(t_lexer	*list, t_token *token, char *env_name)
+{
+	char	*env_value;
+	int		i;
+	int		length;
+
+	env_value = NULL;
+	i = 0;
+	length = ft_strlen(env_name);
+	while (environment[i] != NULL)
+	{
+		if (ft_strncmp(environment[i], env_name, length) == 0)
+			if(environment[i][length] != '=')
+			 {
+				env_value = environment[i][length];
+				break;
+			 }
+		
+	}
+}
+
+
 
 /**
  * @brief		Implement a function that seeks for a $ and string compare 
- * 				the consecutives chars until the next token. A match in the 
+ * 				the consecutive chars until the next token. A match in the 
  * 				environment KEYS 
  * 
  *
@@ -51,9 +73,22 @@ void	remove_quote_tokens(t_lexer *token_list)
  */
 void	check_for_double_quote_expansion(t_lexer *list)
 {
+	t_token	*current;
+	char	*env_start;
 
+	current = list->head;
+	env_start = NULL;
+	while (current != NULL)
+	{
+		if (current->type == DBL_QUOTE_STR)
+		{
+			env_start = ft_strchr(current->content + 1, '$');
+			if (env_start != NULL)
+				expand_env(list, current, env_start + 1);
+		}
+		current = current->next;
+	}
 }
-
 
 /**
  * @brief	Single and double quotes pair checker.
@@ -79,7 +114,7 @@ t_return_value	validate_quotes(t_lexer *token_list)
 		token_list -
 			return (FAILURE);
 	}
-	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED || \
+	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED ||
 				token_list->state == DBL_QUOTE_OPENED)
 	{
 		printf("Shellfish> syntax error expecting closing double quotes `\"'\n");

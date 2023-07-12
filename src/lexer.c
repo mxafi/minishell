@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/10 16:49:16 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/12 10:43:07 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 
 	assert(str);
 	// uses some test substr, see below and above function, check
-	if (!(token->token = ft_test_substr(str, 0, length)) == FAILURE)
+	if (!(token->content = ft_test_substr(str, 0, length)) == FAILURE)
 	{
 		list->error_code = FAILURE;
 		return (FAILURE);

@@ -17,7 +17,7 @@ typedef struct s_token
 {
 	t_token_type		type;
 	int					token_count;
-	char				*token;
+	char				*content;
 	struct s_token		*next;
 }						t_token;
 
@@ -121,14 +121,14 @@ t_return_value			is_token_type_redirector(t_lexer *token_list,
 							t_token *token);
 
 /**
- * contained in lexer_validate_pipe.c 
+ * contained in lexer_validate_pipes.c 
  */
 void					pipes_are_valid(t_lexer *token_list, t_token *token);
 
 /**
- * contained in lexer_validate_redirector.c
+ * contained in lexer_validate_quote.c
  */
-t_return_value			validate_quotes(t_lexer *token_list);
+t_return_value			validate_pipes(t_lexer *token_list);
 
 /**
  * contained in lexer_label_token_type.c

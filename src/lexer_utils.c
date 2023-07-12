@@ -32,7 +32,7 @@ void	delete_token(t_lexer *list, t_token *token)
 			current = current->next;
 		current->next = token->next;
 	}
-	free(token->token);
+	free(token->content);
 	free(token->next);
 	free(token);
 }
