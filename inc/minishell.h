@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/06/23 13:11:11 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:51:21 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,15 @@
 // User defined headers
 # include "../libft/libft.h"
 # include "input.h"
+# include "env.h"
 
 typedef struct s_minishell
 {
-	int	exit_code;
+	int		exit_code;
+	char	**envp;
 }	t_minishell;
+
+t_minishell	*g_minishell;
 
 // Necessary function prototype for readline.
 void	rl_replace_line(const char *text, int clear_undo);
