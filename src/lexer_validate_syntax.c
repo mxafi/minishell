@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:11:59 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/12 17:01:47 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/12 18:11:45 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,56 @@
 Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
+void	concatenate_strings(t_lexer *list)
+{
+	t_token	*current;
+	t_token	*next_token;
+	char	*new_string;
+	int		length;
+
+	current = list->head;
+	while (current->next != NULL)
+	{
+		next_token = current->next;
+		if (current->type == STRING || current->type == SGL_QUOTE_STR ||
+			current->type == DBL_QUOTE_STR)
+		{
+			while ((next_token->content == STRING ||
+					next_token->content == SGL_QUOTE_STR
+						|| next_token == DBL_QUOTE_STR) &&
+					next_token != NULL)
+			{
+				length = ft_strlen(current->content) +
+					ft_strlen(next_token->content);
+				new_string = (char *)malloc(length);
+				if (new_string != NULL)
+				{
+					ft_strlcpy(new_string, current->content, length);
+					ft_strlcat(new_string, next_token->content, length);
+					current->content == ft_strdup(new_string);
+					delete_token(list, next_token);
+				}
+				if (current->next != NULL)
+					next_token = current->next;
+			}
+		}
+		current = current->next;
+	}
+}
+
 /**
- * @brief		Implement a function that seeks for a $ and string compare 
- * 				the consecutive chars until the next token. A match in the 
- * 				environment KEYS 
- * 
+ * @brief	Expands environment variables within double-quoted strings or 
+
+					*			regular strings	the consecutive chars until the next token. A match in 
+ * 			the environment KEYS 
+
+		* @details	This function searches for the occurrence of environment variables indicated
+ *			by a `$` symbol within double-quoted strings or regular strings. It 
+
+				*			retrieves the corresponding values from the environment and updates the 
+ *			token content accordingly. 
  *
- * @param list 
+ * @param list	The lexer list containing the tokens to process
  */
 void	expand_from_env(t_lexer *list)
 {
@@ -38,6 +81,7 @@ void	expand_from_env(t_lexer *list)
 
 	current = list->head;
 	env_key = NULL;
+	env_value = NULL;
 	while (current != NULL)
 	{
 		if (current->type == DBL_QUOTE_STR || current->type == STRING)

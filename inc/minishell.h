@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/12 15:53:36 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/12 17:40:18 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # include "../libft/libft.h"
 # include "input.h"
 # include "env.h"
+# include "lexer.h"
 
 typedef struct s_minishell
 {
