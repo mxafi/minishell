@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:41:02 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/12 14:45:17 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/12 15:41:48 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	remove_quote_tokens(t_lexer *token_list)
 		current = current->next;
 	}
 }
-void	expand_env(t_lexer	*list, t_token *token, char *env_name)
+void	expand_env(t_lexer *list, t_token *token, char *env_name)
 {
 	char	*env_value;
 	int		i;
@@ -52,16 +52,20 @@ void	expand_env(t_lexer	*list, t_token *token, char *env_name)
 	while (environment[i] != NULL)
 	{
 		if (ft_strncmp(environment[i], env_name, length) == 0)
-			if(environment[i][length] != '=')
-			 {
+		{
+			if (environment[i][length] == '=')
+			{
 				env_value = environment[i][length];
-				break;
-			 }
+				break ;
+			}
+		}
+		i++;
+	}
+	if (env_value != NULL)
+	{
 		
 	}
 }
-
-
 
 /**
  * @brief		Implement a function that seeks for a $ and string compare 
