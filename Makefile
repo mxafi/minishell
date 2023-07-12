@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
+#    By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/06/19 12:44:45 by lclerc           ###   ########.fr        #
+#    Updated: 2023/07/12 15:50:19 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,8 @@ LEXER_C			=	lexer.c \
 					lexer_utils.c \
 					DELETE_ME_AND_FCT_IN_HEADER.c
 
-H_FILES			=	$(MAIN_H) $(INPUT_H) $(LEXER_H)
-C_FILES			=	$(MAIN_C) $(INPUT_C) $(LEXER_C)
+H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H)
+C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C)
 
 H_PATHS			=	$(addprefix $(H_FOLDER)/, $(H_FILES))
 C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))
@@ -41,7 +41,7 @@ OBJ_PATHS		=	$(addprefix $(OBJ_FOLDER)/, \
 					$(patsubst %.c, %.o, $(C_FILES)))
 
 C_FLAGS_OBJ		=	-Wall -Wextra -Werror
-C_FLAGS_NAME	=	$(C_FLAGS_OBJ) \
+C_FLAGS_NAME		=	$(C_FLAGS_OBJ) \
 					-lreadline \
 					-L ~/.brew/opt/readline/lib \
 					-I ~/.brew/opt/readline/include
