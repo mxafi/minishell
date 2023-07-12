@@ -6,7 +6,7 @@
 #    By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/12 15:50:19 by lclerc           ###   ########.fr        #
+#    Updated: 2023/07/12 15:52:24 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,10 @@ LIBFT_FOLDER		=	libft
 FOLDER_LIST		=	$(H_FOLDER) $(C_FOLDER) $(OBJ_FOLDER) \
 					$(LIBFT_FOLDER)
 
-MAIN_H			=	minishell.h
-MAIN_C			=	minishell.c
+SHELL_H			=	minishell.h \
+					env.h
+SHELL_C			=	minishell.c \
+					env.c
 
 INPUT_H			=	input.h
 INPUT_C			=	input.c
