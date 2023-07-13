@@ -13,24 +13,6 @@
 #ifndef LEXER_H
 # define LEXER_H
 
-typedef struct s_token
-{
-	t_token_type		type;
-	int					token_count;
-	char				*content;
-	struct s_token		*next;
-}						t_token;
-
-typedef struct s_lexer
-{
-	int					calloc_count;
-	t_validation_state	state;
-	t_return_value		error_code;
-	int					token_amount;
-	char				*readlined;
-	t_token				*head;
-}						t_lexer;
-
 /*
  * delimiters and their functional properties
  */
@@ -83,6 +65,24 @@ typedef enum e_return_value
 	SUCCESS,
 	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;
+
+typedef struct s_token
+{
+	t_token_type		type;
+	int					token_count;
+	char				*content;
+	struct s_token		*next;
+}						t_token;
+
+typedef struct s_lexer
+{
+	int					calloc_count;
+	t_validation_state	state;
+	t_return_value		error_code;
+	int					token_amount;
+	char				*readlined;
+	t_token				*head;
+}						t_lexer;
 
 /*
  * contained in lexer.c
