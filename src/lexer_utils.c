@@ -56,36 +56,40 @@ t_return_value	make_new_node(t_lexer *token_list, t_token *new_token)
 }
 
 /**
- * @brief	Frees the token list
+ * @brief	Frees the memory allocation for a token list
  * 
- * @param delete_me	The list 
- * @return int		error code if called due to a syntax validation error 
+ * @param delete_me	The list to be freed.
+ * @return int		The error code associated with the token list.
  */
 int	free_token_list(t_lexer *delete_me)
 {
-	t_token	*current;
-	t_token	*helper;
+	t_token			*current;
+	t_token			*helper;
+	t_return_value	error_code;
 
 	current = delete_me->head;
 	//del this assert()
 	assert(delete_me->head);
+	error_code = delete_me->error_code;
 	while (current != NULL)
 	{
 		helper = current->next;
+		free(current->content);
 		free(current);
 		current = helper;
 	}
 	delete_me->head = NULL;
 	//check if that return is needed
-	return (delete_me->error_code);
+	return (error_code);
 }
 
 /**
- * @brief 
+ * @brief		Searches a string for any of a set of specified delimiters. 
  * 
- * @param string 
- * @param delimiters
- * @return char* 
+ * @param string 		The string to search within
+ * @param delimiters	A null-terminated string containing the delimiters to search for.
+ * @return char*		A pointer to the first occurence of any delimiter in the string, 
+ * 						oe NULL if no delimiter is found.
  */
 char	*ft_strpbrk(const char *string, const char *delimiters)
 {

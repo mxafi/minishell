@@ -22,100 +22,34 @@
 Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
-/**
- * @brief	Concatenate current and following token
- * @details	Concatenation results in the deletion of the next token.
- * 
- * @param list			The list of token
- * @param current 		Current token which will hold the new string
- * @param next_token 	Token being deleted after concatenation
- */
-static void	concatenate_strings(t_lexer *list, t_token *current,
-		t_token *next_token)
-{
-	size_t	length;
-	char	*new_string;
-
-	length = ft_strlen(current->content) + ft_strlen(next_token->content);
-	new_string = (char *)ft_calloc(length + 1, sizeof(char));
-	if (new_string != NULL)
-	{
-		ft_strlcpy(new_string, current->content, length);
-		ft_strlcat(new_string, next_token->content, length);
-		free(current->content);
-		current->content = new_string;
-		delete_token(list, next_token);
-	}
-	else
-	{
-		list->error_code = CALLOC_FAIL;
-		return ;
-	}
-}
 
 /**
- * @brief	Expands environment variables within double-quoted strings or 
- *
- * @brief 		Search for concatenable strings
- * @details		Search for consecutive strings for concatenation
+ * @brief		Remove space tokens from the token list.
  * 
- * @param list	List of token.
+ * @param list	The list of tokens to be processed.
  */
-static void	concatenate_adjacent_strings(t_lexer *list)
+static void	remove_spaces(t_lexer *list)
 {
 	t_token	*current;
 	t_token	*next_token;
 
 	current = list->head;
-	assert(current != NULL);       // del both asserts
-	assert(current->next != NULL); // Del both asserts
 	while (current != NULL && current->next != NULL)
 	{
 		next_token = current->next;
-		if (current->type == STRING)
-		{
-			while (next_token != NULL && next_token->type == STRING)
-			{
-				concatenate_strings(list, current, next_token);
-				if (list->error_code == CALLOC_FAIL)
-					return ;
-			}
-		}
-		current = current->next;
-	}
-}
-
-/**
- * @brief		Format all string types to STRING
- * @details		In order to save space in the subsequent concatenation of string
- * 				and since all action on specific quotes as SGL or DBL_QUOTE_STR
- * 				have been handled, those latest are now irrelevant.
- *
- * @param list	The list of token
- */
-static void	simplify_string_syntax(t_lexer *list)
-{
-	t_token	*current;
-
-	current = list->head;
-	while (current != NULL)
-	{
-		if (current->type == SGL_QUOTE_STR || current->type == DBL_QUOTE_STR)
-			current->type = STRING;
+		if (current->type == SPACE)
+			delete_token(list, current);
 		current = current->next;
 	}
 }
 
 /**
  * @brief	Expands environment variables within double-quoted strings or 
-
-					*			regular strings	the consecutive chars until the next token. A match in 
+ *			regular strings	the consecutive chars until the next token. A match in 
  * 			the environment KEYS 
-
-		* @details	This function searches for the occurrence of environment variables indicated
+ * @details	This function searches for the occurrence of environment variables indicated
  *			by a `$` symbol within double-quoted strings or regular strings. It 
-
-				*			retrieves the corresponding values from the environment and updates the 
+ *			retrieves the corresponding values from the environment and updates the 
  *			token content accordingly. 
  *
  * @param list	The lexer list containing the tokens to process
@@ -160,9 +94,9 @@ t_return_value	validate_syntax(t_lexer *token_list)
 {
 	validate_quotes(token_list);
 	expand_from_env(token_list);
-	simplify_string_syntax(token_list);
 	concatenate_adjacent_strings(token_list);
 	remove_spaces(token_list);
 	validate_pipe(token_list);
-	validate_redirectors(token_list) return (token_list->error_code);
+	validate_redirectors(token_list);
+	return (token_list->error_code);
 }

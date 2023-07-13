@@ -89,8 +89,8 @@ typedef struct s_lexer
  */
 t_return_value			string_to_token(t_lexer *token_list, char *input,
 							char *delimiter);
-int						tokenize_node(t_lexer *list, t_token *token, \
-							char *str, int length);
+int						tokenize_node(t_lexer *list, t_token *token, char *str,
+							int length);
 /*
  * contained in lexer_utils.c
  */
@@ -133,7 +133,12 @@ t_return_value			validate_pipes(t_lexer *token_list);
 /**
  * contained in lexer_label_token_type.c
  */
-t_return_value	label_token_type(t_lexer *list, t_token *token, \
-				t_token_type token_type, char *input)
+t_return_value	label_token_type(t_lexer *list, t_token *token,
+		t_token_type token_type, char *input)
+
+	/**
+ * contained in lexer_string_concatenation.c 
+ */
+void					concatenate_adjacent_strings(t_lexer *list);
 
 #endif
