@@ -96,6 +96,7 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	expand_from_env(token_list);
 	concatenate_adjacent_strings(token_list);
 	remove_spaces(token_list);
+	
 	validate_pipe(token_list);
 	validate_redirectors(token_list);
 	return (token_list->error_code);

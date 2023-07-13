@@ -6,76 +6,54 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:43:44 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/12 11:45:20 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/13 15:46:52by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../inc/minishell.h"
+
 /**
  * @brief	Checks syntax validity of pipes within the input
- * @details	Checks for the following situations:
+ * @details	Pipes have to have valid command on both sides, but from a syntax
+ * 			validation perspective only those triggering a syntax error in bash
+ * 			are considered as follows:
  * 			- CMD1 || CMD2 -> No syntax error in bash -> here yes
  * 			- CMD1 ||| CMD2 -> Syntax error near unexpected `|'
  * 			- CMD1 |||| CMD2 -> Syntax error near unexpected `||'
  * 			- CMD1 <| CMD2 -> Syntax error near unexpected `|'
  * 			- CMD1 >| CMD2 -> No Syntax error
  * 			- CMD1 >>| CMD2 -> Syntax error near unexpected `|'
- * 			- CMD1 >>>| CMD2 -> Syntax error near unexpected '>|'
- * 			For simplicity, only "Syntax error" is printed
- * @param token_list 
- * @param previous 
- * @param current 
- * @param next 
- * @return 
- */
-static t_return_value	check_if_pipe_is_surrounded_by_strings(
-	t_lexer *token_list, t_token *previous, t_token *current, t_token *next)
-{
-	if (current->type == PIPE)
-	{
-		if (previous->type != STRING && previous->type != SGL_QUOTE_STR && \
-			previous->type != DBL_QUOTE_STR && next->type != STRING && \
-			next->type != SGL_QUOTE_STR && next->type != DBL_QUOTE_STR)
-		
-
-	}
-}
-
-/**
- * @brief 
+ * 			- CMD1 >>>| CMD2 -> Syntax error near unexpected '>|' 
+ * 			Also, the first and last token cannot be pipes either.
  * 
- * 
- * @param token_list 
- * @return 
+ * @param token_list		List of token 
+ * @return t_return_value	SUCCESS or EXIT_SYNTAX_ERROR
  */
-static t_return_value	validate_pipe(t_lexer *token_list)
+t_return_value	validate_pipe(t_lexer *token_list)
 {
 	t_token	*previous;
 	t_token	*current;
-	t_token	*next;
 
-	previous = token_list->head;
+	previous = NULL;
 	current = token_list->head;
-	if (current->next != NULL)
-		next = token_list->head;
-	if (current->type == PIPE)
-	{
-		printf("shellfish> syntax error near unexpected token `|'\n");
-		token_list->state = SYNTAX_ERROR;
-	}
 	while (current->next != NULL)
 	{
-		previous->next = current;
-		next = current->next;
-		if (check_if_pipe_is_surrounded_by_strings(token_list, previous,
-				current, next) == FAILURE)
-			return (FAILURE);
+		if ((current->type == PIPE && previous == NULL) || (current->type == PIPE
+				&& (previous->type == PIPE || previous->type == INFILE
+					|| previous->type == APPEND_TO)))
+		{
+			printf("shellfish> syntax error near unexpected token `|'\n");
+			return (token_list->error_code == EXIT_SYNTAX_ERROR);
+		}
+		if (current->next == PIPE && current->next == NULL)
+		{
+			printf("shellfish> syntax error near unexpected token `newline'\n");
+			token_list->state = SYNTAX_ERROR;
+		}
+		previous = current;
 		current = current->next;
 	}
-	if (current->type == PIPE)
-	{
-		printf("shellfish> syntax error near unexpected token `newline'\n");
-		token_list->state = SYNTAX_ERROR;
-	}
+	if (token_list->state == SYNTAX_ERROR)
+		return (token_list->error_code == EXIT_SYNTAX_ERROR);
+	return (token_list->error_code == SUCCESS);
 }
