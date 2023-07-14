@@ -36,7 +36,7 @@ t_return_value	validate_pipe(t_lexer *token_list)
 
 	previous = NULL;
 	current = token_list->head;
-	while (current->next != NULL)
+	while (current != NULL)
 	{
 		if ((current->type == PIPE && previous == NULL) || (current->type == PIPE
 				&& (previous->type == PIPE || previous->type == INFILE
@@ -45,7 +45,7 @@ t_return_value	validate_pipe(t_lexer *token_list)
 			printf("shellfish> syntax error near unexpected token `|'\n");
 			return (token_list->error_code == EXIT_SYNTAX_ERROR);
 		}
-		if (current->next == PIPE && current->next == NULL)
+		if (current->type == PIPE && current->next == NULL)
 		{
 			printf("shellfish> syntax error near unexpected token `newline'\n");
 			token_list->state = SYNTAX_ERROR;

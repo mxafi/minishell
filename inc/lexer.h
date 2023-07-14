@@ -45,9 +45,6 @@ typedef enum e_token_type
 typedef enum e_validation_state
 {
 	UNDEFINED,
-	IS_STR,
-	IS_REDIR,
-	IS_PIPE,
 	SGL_QUOTE_OPENED,
 	SGL_QUOTE_CAN_BE_CLOSED,
 	DBL_QUOTE_OPENED,
@@ -66,6 +63,12 @@ typedef enum e_return_value
 	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;
 
+typedef enum e_boolean
+{
+	NOT_YET,
+	FOUND,
+}						t_boolean;
+
 typedef struct s_token
 {
 	t_token_type		type;
@@ -79,10 +82,12 @@ typedef struct s_lexer
 	int					calloc_count;
 	t_validation_state	state;
 	t_return_value		error_code;
+	t_boolean			CMD_found;
 	int					token_amount;
 	char				*readlined;
 	t_token				*head;
 }						t_lexer;
+
 
 /*
  * contained in lexer.c

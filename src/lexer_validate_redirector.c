@@ -6,20 +6,29 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:58:31 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/10 16:44:54 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/14 16:34:57 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/lexer.h"
 
+/* Syntax check as I have gathered it.. hopefully, nothing is missing:
+1/ Check first character -> cannot be pipe
+2/ Redirectors < < , <>,
+	> > and pipes | | (beware of non combinable delimiters else than << and >>) have to be followed with at least one non-delimiter chars on each side (yeah,
+		spaces can be in between)
+3/ check quotes are closing 
+4/ Last char cannot be redirector or pipe
+Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
+*/
+
 /**
  * @brief	Checks whether the current token is of redirector type
- * @details	Returns the redirector types if valid, else keeps the current state
- * @param 	token_list	contains the current state of the syntax validation process
- * @param 	token 		token being checked 
- * @return	returns SUCCESS or FAILURE according to validity 
+ *
+ * @param 	token	token being checked 
+ * @return			SUCCESS or FAILURE according to validity 
  */
-t_return_value	is_token_type_redirector(t_lexer *token_list, t_token *token)
+t_return_value	token_is_redirector(t_token *token)
 {
 	if (token->type == OUTFILE || token->type == INFILE ||
 		token->type == HEREDOC || token->type == APPEND_TO)
@@ -30,77 +39,53 @@ t_return_value	is_token_type_redirector(t_lexer *token_list, t_token *token)
 /**
  * @brief Prints syntax error message to standard output
  * 
- * @param error_type	when possible error type is used to print the unexpecterd char
+ * @param unexpected_token	The unexpected token causing the syntax error
  */
-static void	print_syntax_error(int	error_type)
+static void	print_syntax_error(char *unexpected_token)
 {
-	if (token->type == APPEND_TO)
-		printf("shellfish> syntax error near unexpected token `>>'\n");
-	else if (token->type == HEREDOC)
-		printf("shellfish> syntax error near unexpected token `<<'\n");
+	if (!unexpected_token)
+		ft_printf("shellfish> syntax error near unexpected token `newline'\n");
 	else
-		printf("shellfish> syntax error near unexpected token `%c'\n", error_type);
+		printf("shellfish> syntax error near unexpected token `%s'\n",
+				unexpected_token);
 }
 
 /**
- * @brief 	Checks whether the current token is a valid redirector
- * @details	Syntax is invalid if validation process is already in IS_REDIR
- *			mode and current token is also a REDIR type.
- *			Valid syntax updates the token_list->state:
- *				to OUTFILE, INFILE, APPEND, HEREDOC if current token is of REDIR type
- *				keeps the current state if current token is not of REDIR type
- * @param 	token_list	contains the current state of validation process
- * @param 	token		token being checked
- */
-void	token_is_redirector(t_lexer *token_list, t_token *token)
-{
-	if (token_list->state != IS_REDIR)
-		if (is_token_type_redirector(token_list, token) == SUCCESS)
-			token_list->state = IS_REDIR;
-	else
-	{
-		if (is_token_type_redirector(token_list, token) == SUCCESS)
-		 {
-			//Should there be state and errorcode..
-			token_list->state = SYNTAX_ERROR;
-			token_list->error_code = SYNTAX_ERROR;
-			print_syntax_error(t_token->type);
-		 }
-	}
-}
-
-
-
-/**
- * @brief 	checks
+ * @brief 	Validates the syntax of redirectors within the input
+ * @details	Following conditions lead to syntax errors:
+ * 			- Redirector must be followed by non-empty string
+ * 			- The last token of the list cannot be a redirector
+ * 			A syntax error message is printed if necessary and an error
+ * 			code is returned.
  * 
- * @param token_list 
- * @param token 
+ * @param token_list		Token list to validate
+ * @return t_return_value 	SUCCESS or EXIT_SYNTAX_ERROR
  */
-void	validate_redirector(t_lexer *token_list, t_token *token)
+t_return_value	validate_redirectors(t_lexer *list)
 {
-	if (token_is_redirector(token_list, token) && \
-			(token_list->state != SYNTAX_ERROR))
+	t_token	*current;
+	t_token	*next_token;
+
+	current = list->head;
+	while (current != NULL)
 	{
-		token_list->state = token->type;
-		if (token->next != NULL)
+		if (token_is_redirector(current->type))
 		{
-			token = token->next;
-			if (token->type == SPACE)
-				delete_space_token(&token_list, token->token_count);
-			if (token->type == STRING)
-				token_list->state = IS_STR;
-			else
+			next_token = current->next;
+			if (current->next != NULL && next_token->type != STRING)
 			{
-				ft_printf("shellfish> syntax error near unexpected token%c\n",
-					token->type);
-				token_list->state = SYNTAX_ERROR;
+				print_syntax_error(next_token->content);
+				list->error_code = EXIT_SYNTAX_ERROR;
+				return (EXIT_SYNTAX_ERROR);
 			}
 		}
-		else
-		{
-			ft_printf("shellfish> syntax error near unexpected token\
-				`newline'\n");
-		}
+		current = current->next;
 	}
+	if (current != NULL && token_is_redirector(current->type))
+	{
+		print_syntax_error(NULL);
+		list->error_code = EXIT_SYNTAX_ERROR;
+		return (EXIT_SYNTAX_ERROR);
+	}
+	return (SUCCESS);
 }

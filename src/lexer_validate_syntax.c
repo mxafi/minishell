@@ -22,6 +22,37 @@
 Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
+/**
+ * @brief	Labels tokens as CMD or ARG based on their position in the token list.
+ * 
+ * @details	The first encountered STRING tokenS of the input and after each 
+ * 			pipes are labeled as CMD, and all subsequent STRING tokens are 
+ * 			labeled as ARG. The labeling is performed by modifying the type
+ * 			field of the tokens.
+ * @param token_list The list to process and label.
+ */
+void	label_CMDS_and_ARGS(t_lexer *token_list)
+{
+	t_token	*current;
+
+	current = token_list->head;
+	while (current != NULL)
+	{
+		if (current->type == STRING)
+		{
+			if (token_list->CMD_found == FOUND)
+				current->type = ARG;
+			else
+			{
+				current->type = CMD;
+				token_list->CMD_found = FOUND;
+			}
+		}
+		else if (current->type == PIPE)
+			token_list->CMD_found = NOT_YET;
+	current = current->next;
+	}
+}
 
 /**
  * @brief		Remove space tokens from the token list.
@@ -45,11 +76,14 @@ static void	remove_spaces(t_lexer *list)
 
 /**
  * @brief	Expands environment variables within double-quoted strings or 
- *			regular strings	the consecutive chars until the next token. A match in 
+
+					*			regular strings	the consecutive chars until the next token. A match in 
  * 			the environment KEYS 
- * @details	This function searches for the occurrence of environment variables indicated
+
+		* @details	This function searches for the occurrence of environment variables indicated
  *			by a `$` symbol within double-quoted strings or regular strings. It 
- *			retrieves the corresponding values from the environment and updates the 
+
+				*			retrieves the corresponding values from the environment and updates the 
  *			token content accordingly. 
  *
  * @param list	The lexer list containing the tokens to process
@@ -82,22 +116,29 @@ static void	expand_from_env(t_lexer *list)
 }
 
 /**
- * @brief	token by token validation process
- * @details	1st token can not be a pipe
- * 			last token cannot be a pipe (make sure of that) or a REDIR
- *			calls to validate redirectors, pipes and quotes
- *  
- * @param	token_list 
- * @return	t_return_value		Return value
+ * @brief	Validates the syntax of the token list
+ * @details	This function performs a series of syntax validations on the token
+ * 			list. It checks for the correctness of quotes, expands environment 
+ * 			variables, concatenates adjacent strings, removes spaces, validates 
+ * 			pipe usage, validates redirectors, and labels CMD and ARG tokens.	
+ *
+ * @param token_list	Token list being validated
+ * @return				SUCCESS or EXIT_SYNTAX_ERROR 
  */
 t_return_value	validate_syntax(t_lexer *token_list)
 {
 	validate_quotes(token_list);
+	if (token_list->error_code != SUCCESS)
+		return (token_list->error_code);
 	expand_from_env(token_list);
 	concatenate_adjacent_strings(token_list);
 	remove_spaces(token_list);
-	
 	validate_pipe(token_list);
+	if (token_list->error_code != SUCCESS)
+		return (token_list->error_code);
 	validate_redirectors(token_list);
+	if (token_list->error_code != SUCCESS)
+		return (token_list->error_code);
+	label_CMDS_and_ARGS(token_list);
 	return (token_list->error_code);
 }
