@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   vec_get.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/24 15:05:44 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/15 17:12:27 by malaakso         ###   ########.fr       */
+/*   Created: 2023/07/14 15:27:14 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/14 15:35:07 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#include "vec.h"
 
-# include "./basic/libft_basic.h"
-# include "./printf/ft_printf.h"
-# include "./gnl/get_next_line.h"
-# include "./vec/vec.h"
-
-#endif
+/**
+ * @brief Return an opaque handle to the element at index.
+ * 
+ * @param src the source vector.
+ * @param index the index of the desired element. 
+ * @return void* - a pointer to the desired element in the vector's memory.
+ */
+void	*vec_get(t_vec *src, size_t index)
+{
+	if (!src || !src->memory || index >= src->len)
+		return (NULL);
+	return (&src->memory[src->elem_size * index]);
+}
