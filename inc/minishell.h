@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/17 15:37:15 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:46:24 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@
 # include "input.h"
 # include "ast.h"
 # include "env.h"
+# include "executor.h"
 
 typedef struct s_minishell
 {

@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/17 15:37:43 by malaakso         ###   ########.fr        #
+#    Updated: 2023/07/17 15:46:05 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,11 @@ ASTREE_C		=	ast.c \
 					ast_parse_argv.c \
 					ast_parse_redirections.c
 
-H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H)
-C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C)
+EXECUTOR_H		=	executor.h
+EXECUTOR_C		=	executor.c
+
+H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H) $(EXECUTOR_H)
+C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C) $(EXECUTOR_C)
 
 H_PATHS			=	$(addprefix $(H_FOLDER)/, $(H_FILES))
 C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))
