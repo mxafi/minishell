@@ -6,12 +6,15 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 12:51:21 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:37:15 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+// FOR DEBUG PURPOSES
+# include <assert.h>
 
 // Provides constants for system limits, such as maximum path length.
 # include <limits.h>
@@ -46,6 +49,7 @@
 // User defined headers
 # include "../libft/libft.h"
 # include "input.h"
+# include "ast.h"
 # include "env.h"
 
 typedef struct s_minishell
