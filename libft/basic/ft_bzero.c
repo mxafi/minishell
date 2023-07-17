@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/10/25 15:42:19 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:13:05 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft_basic.h"
 
-void	display_prompt(void)
+void	ft_bzero(void *s, size_t n)
 {
-	char	*input;
+	unsigned char	*p;
 
-	while (1)
+	p = s;
+	while (n > 0)
 	{
-		input = get_input();
-		if (!input)
-			return ;
-		//lexer(input);
-		free(input);
+		*p = 0;
+		p++;
+		n--;
 	}
-}
-
-int	main(void)
-{
-	g_minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!g_minishell)
-		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
-	display_prompt();
-	return (0);
 }

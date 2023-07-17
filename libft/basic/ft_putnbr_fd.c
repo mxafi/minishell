@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/11/08 15:33:47 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:15:31 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft_basic.h"
 
-void	display_prompt(void)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char	*input;
-
-	while (1)
+	if (n < 0)
 	{
-		input = get_input();
-		if (!input)
-			return ;
-		//lexer(input);
-		free(input);
+		if (n == -2147483648)
+		{
+			ft_putchar_fd('-', fd);
+			ft_putchar_fd('2', fd);
+			n = 147483648;
+		}
+		else
+		{
+			ft_putchar_fd('-', fd);
+			ft_putnbr_fd(n * -1, fd);
+		}
 	}
-}
-
-int	main(void)
-{
-	g_minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!g_minishell)
-		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
-	display_prompt();
-	return (0);
+	if (n > 9)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	if (n >= 0 && n < 10)
+	{
+		ft_putchar_fd(n + '0', fd);
+	}
 }

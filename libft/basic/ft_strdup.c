@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/11/01 15:40:39 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:15:31 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft_basic.h"
 
-void	display_prompt(void)
+char	*ft_strdup(const char *s1)
 {
-	char	*input;
+	size_t	s1_len;
+	char	*p;
+	size_t	i;
 
-	while (1)
+	s1_len = ft_strlen(s1);
+	p = malloc(s1_len + 1);
+	if (!p)
+		return (0);
+	i = 0;
+	while (s1[i])
 	{
-		input = get_input();
-		if (!input)
-			return ;
-		//lexer(input);
-		free(input);
+		p[i] = s1[i];
+		i++;
 	}
-}
-
-int	main(void)
-{
-	g_minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!g_minishell)
-		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
-	display_prompt();
-	return (0);
+	p[i] = 0;
+	return (p);
 }

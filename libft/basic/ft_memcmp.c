@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/10/29 15:58:37 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:15:31 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft_basic.h"
 
-void	display_prompt(void)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	char	*input;
+	size_t			i;
+	unsigned char	*p1;
+	unsigned char	*p2;
 
-	while (1)
-	{
-		input = get_input();
-		if (!input)
-			return ;
-		//lexer(input);
-		free(input);
-	}
-}
-
-int	main(void)
-{
-	g_minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!g_minishell)
-		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
-	display_prompt();
-	return (0);
+	p1 = (unsigned char *)s1;
+	p2 = (unsigned char *)s2;
+	if (n == 0)
+		return (0);
+	i = 0;
+	while ((i < (n - 1)) && p1[i] == p2[i])
+		i++;
+	return (p1[i] - p2[i]);
 }

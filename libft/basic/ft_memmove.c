@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/10/25 17:28:26 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:13:27 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft_basic.h"
 
-void	display_prompt(void)
+static void	*ft_memcpyr(void *dst, const void *src, size_t n)
 {
-	char	*input;
-
-	while (1)
+	while (n > 0)
 	{
-		input = get_input();
-		if (!input)
-			return ;
-		//lexer(input);
-		free(input);
+		((char *)dst)[n - 1] = ((char *)src)[n - 1];
+		n--;
 	}
+	return (dst);
 }
 
-int	main(void)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	g_minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!g_minishell)
-		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
-	display_prompt();
-	return (0);
+	if (dst < src)
+	{
+		ft_memcpy(dst, src, len);
+	}
+	else if (dst > src)
+	{
+		ft_memcpyr(dst, src, len);
+	}
+	return (dst);
 }

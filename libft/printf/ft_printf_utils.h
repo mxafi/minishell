@@ -1,37 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_printf_utils.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/11/25 14:48:07 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 13:19:32 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#ifndef FT_PRINTF_UTILS_H
+# define FT_PRINTF_UTILS_H
 
-void	display_prompt(void)
-{
-	char	*input;
+# include <unistd.h>
 
-	while (1)
-	{
-		input = get_input();
-		if (!input)
-			return ;
-		//lexer(input);
-		free(input);
-	}
-}
+int	ft_int_putchar_fd(char c, int fd);
+int	ft_int_putstr_fd(char *s, int fd);
+int	ft_int_putnbr_fd(int n, int fd);
+int	ft_int_putnbr_uint_fd(unsigned int n, int fd);
 
-int	main(void)
-{
-	g_minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!g_minishell)
-		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
-	display_prompt();
-	return (0);
-}
+#endif

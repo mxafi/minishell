@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/11/22 15:48:37 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:02:56 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-void	display_prompt(void)
-{
-	char	*input;
+# include <stdarg.h>
 
-	while (1)
-	{
-		input = get_input();
-		if (!input)
-			return ;
-		//lexer(input);
-		free(input);
-	}
-}
+# include "../libft.h"
 
-int	main(void)
-{
-	g_minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!g_minishell)
-		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
-	display_prompt();
-	return (0);
-}
+# include "ft_printf_utils.h"
+# include "ft_printf_spec_hex.h"
+
+int		ft_printf(const char *input, ...);
+
+#endif

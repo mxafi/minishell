@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/10/26 15:59:43 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:13:57 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft_basic.h"
 
-void	display_prompt(void)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char	*input;
+	size_t	i;
+	size_t	len;
 
-	while (1)
+	len = 0;
+	while (src[len] != 0)
+		len++;
+	if (dstsize == 0)
+		return (len);
+	i = 0;
+	while (src[i] != 0 && i < dstsize - 1)
 	{
-		input = get_input();
-		if (!input)
-			return ;
-		//lexer(input);
-		free(input);
+		dst[i] = src[i];
+		i++;
 	}
-}
-
-int	main(void)
-{
-	g_minishell = ft_calloc(1, sizeof(t_minishell));
-	if (!g_minishell)
-		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
-	display_prompt();
-	return (0);
+	dst[i] = 0;
+	return (len);
 }
