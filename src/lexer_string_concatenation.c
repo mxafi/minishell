@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 13:44:48 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/13 13:49:38 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 18:32:41 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	concatenate_strings(t_lexer *list, t_token *current,
 	if (new_string != NULL)
 	{
 		ft_strlcpy(new_string, current->content, length);
-		ft_strlcat(new_string, next_token->content, length);
+		ft_strlcat(new_string, next_token->content, length + 1);
 		free(current->content);
 		current->content = new_string;
 		delete_token(list, next_token);
@@ -78,9 +78,10 @@ void	concatenate_adjacent_strings(t_lexer *list)
 	t_token	*next_token;
 
 	current = list->head;
-	assert(current != NULL);       // del both asserts
+//	assert(current != NULL);       // del both asserts
 	assert(current->next != NULL); // Del both asserts
 	simplify_string_syntax(list);
+	printf("concatenating start\n");
 	while (current != NULL && current->next != NULL)
 	{
 		next_token = current->next;
@@ -91,8 +92,10 @@ void	concatenate_adjacent_strings(t_lexer *list)
 				concatenate_strings(list, current, next_token);
 				if (list->error_code == CALLOC_FAIL)
 					return ;
+				next_token = current->next;
 			}
 		}
 		current = current->next;
 	}
+	printf("concatenate end\n");
 }

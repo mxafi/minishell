@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/17 11:48:04 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 18:27:50 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,14 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 		char *delimiter)
 {
 	t_token	*new_token;
-	int		length;
+	size_t	length;
 
 	new_token = NULL;
 	if (delimiter == NULL)
 		length = ft_strlen(input);
 	else
 		length = delimiter - input;
-	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
+	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (token_list->error_code = CALLOC_FAIL);
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (token_list->error_code = CALLOC_FAIL);
@@ -129,7 +129,8 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	int		length;
 
 	new_token = NULL;
-	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
+	printf("delimiter_to_token()\n");
+	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
 	{
@@ -169,8 +170,7 @@ static int	tokenize_readline(t_lexer *token_list)
 
 	delimiter = NULL;
 	input = token_list->readlined;
-	printf("tokenize_readline\n");
-	while (*input != '\0')
+	while (input && *input != '\0')
 	{
 		delimiter = ft_strpbrk(input, DELIMITERS);
 		if (!delimiter)
@@ -187,6 +187,7 @@ static int	tokenize_readline(t_lexer *token_list)
 		if (token_list->error_code == CALLOC_FAIL)
 			break ;
 	}
+	printf("tokenize_readline\n");
 	return (token_list->error_code);
 }
 
@@ -208,12 +209,12 @@ int	lexer(char *input)
 	t_lexer	token_list;
 
 	ft_bzero(&token_list, sizeof(t_lexer));
-	if (input)
+	if (input && *input != '\0')
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
-		printf("lexer()\n");
 		tokenize_readline(&token_list);
 		print_list(&token_list);
+		printf("lexer() validation to come\n");
 		if ((validate_syntax(&token_list)) == FAILURE)
 		{
 			free_token_list(&token_list);

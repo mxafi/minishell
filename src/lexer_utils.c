@@ -20,20 +20,24 @@
  */
 void	delete_token(t_lexer *list, t_token *token)
 {
+	t_token	*previous;
 	t_token	*current;
 
 	assert(token && list && list->head); //DEL THIS ASSERT
+	previous = NULL;
 	current = list->head;
-	if (current == token)
+	while (current != NULL && current != token)
+	{
+		previous = current;
+		current = current->next;
+	}
+	if (current == NULL)
+		return ;
+	if (previous == NULL)
 		list->head = token->next;
 	else
-	{
-		while (current != NULL && current != token)
-			current = current->next;
-		current->next = token->next;
-	}
+		previous->next = token->next;
 	free(token->content);
-	free(token->next);
 	free(token);
 }
 
@@ -44,10 +48,10 @@ void	delete_token(t_lexer *list, t_token *token)
  * @param new_token		new node being tokenized
  * @return t_return_value	SUCCESS or CALLOC FAIL 
  */
-t_return_value	make_new_node(t_lexer *token_list, t_token *new_token)
+t_return_value	make_new_node(t_lexer *token_list, t_token **new_token)
 {
-	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
-	if (new_token == NULL)
+	*new_token = (t_token *)ft_calloc(1, sizeof(t_token));
+	if (*new_token == NULL)
 	{
 		token_list->error_code = CALLOC_FAIL;
 		return (CALLOC_FAIL);
@@ -61,7 +65,7 @@ t_return_value	make_new_node(t_lexer *token_list, t_token *new_token)
  * @param delete_me	The list to be freed.
  * @return int		The error code associated with the token list.
  */
-int	free_token_list(t_lexer *delete_me)
+t_return_value	free_token_list(t_lexer *delete_me)
 {
 	t_token			*current;
 	t_token			*helper;
@@ -87,8 +91,11 @@ int	free_token_list(t_lexer *delete_me)
  * @brief		Searches a string for any of a set of specified delimiters. 
  * 
  * @param string 		The string to search within
- * @param delimiters	A null-terminated string containing the delimiters to search for.
- * @return char*		A pointer to the first occurence of any delimiter in the string, 
+
+		* @param delimiters	A null-terminated string containing the delimiters to search for.
+
+			* @return char*		A pointer to the first occurence of any delimiter in the string,
+			
  * 						oe NULL if no delimiter is found.
  */
 char	*ft_strpbrk(const char *string, const char *delimiters)

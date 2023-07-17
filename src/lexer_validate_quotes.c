@@ -27,18 +27,22 @@ void	remove_quote_tokens(t_lexer *token_list)
 	t_token	*next_token;
 
 	current = token_list->head;
+	
 	while (current != NULL)
 	{
 		next_token = current->next;
+		printf("Error Removing quote\n");
+		print_list(token_list);
 		if (current->type == SINGLE_QUOTE || current->type == DOUBLE_QUOTE)
 			delete_token(token_list, current);
-		if (current->type == QUOTE_NEED_NULL_STR)
+		else if (current->type == QUOTE_NEED_NULL_STR)
 		{
 			current->type = STRING;
 			ft_strlcpy(current->content, "", 1);
 		}
-		if (current->next != NULL)
-			current = current->next;
+	//	if (current->next != NULL)
+		//	current = current->next;
+		current = current->next;
 	}
 }
 
@@ -73,7 +77,9 @@ t_return_value	validate_quotes(t_lexer *token_list)
 		token_list->error_code = EXIT_SYNTAX_ERROR;
 		return (token_list->error_code);
 	}
+	printf("validating quotes going to remove quote tokens\n");
 	remove_quote_tokens(token_list);
+	printf("validating quotes returning from quote removal\n");
 	token_list->error_code = SUCCESS;
 	return (token_list->error_code);
 }

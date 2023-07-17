@@ -72,7 +72,7 @@ typedef enum e_boolean
 typedef struct s_token
 {
 	t_token_type		type;
-	int					token_count;
+	int					token_count; //not used should be removed
 	char				*content;
 	struct s_token		*next;
 }						t_token;
@@ -83,7 +83,7 @@ typedef struct s_lexer
 	t_validation_state	state;
 	t_return_value		error_code;
 	t_boolean			CMD_found;
-	int					token_amount;
+	int					token_amount; //not used should be removed
 	char				*readlined;
 	t_token				*head;
 }						t_lexer;
@@ -99,9 +99,8 @@ int						tokenize_node(t_lexer *list, t_token *token, char *str,
 /*
  * contained in lexer_utils.c
  */
-int						free_token_list(t_lexer *token_list);
-t_return_value			make_new_node(t_lexer *token_to_node,
-							t_token *new_token);
+t_return_value			free_token_list(t_lexer *token_list);
+t_return_value			make_new_node(t_lexer *token_to_node, t_token **new_token);
 void					delete_token(t_lexer *list, t_token *token);
 char					*ft_strpbrk(const char *string, const char *delimiters);
 

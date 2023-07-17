@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/17 10:41:53 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 16:06:41 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
  */
 static void	add_null_string_token_if_empty_quotes(void)
 {
-	printf("THis was never meant to be read, what are you doing here\n");
+	printf("Error: tHis was never meant to be read, what are you doing here\n");
 //	t_token	*new_token;
 //
 //	if (input[0] == '\'')
@@ -79,6 +79,8 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
  */
 static void	handle_quotes(t_lexer *list, t_token *token, char *input)
 {
+	printf("Entering quote handling\n");
+	//print_list(list);
 	if (list->state == UNDEFINED && input[0] == '\'')
 		set_token_type_and_list_state(list, token, SINGLE_QUOTE, \
 				SGL_QUOTE_OPENED);
@@ -95,6 +97,10 @@ static void	handle_quotes(t_lexer *list, t_token *token, char *input)
 		set_token_type_and_list_state(list, token, SINGLE_QUOTE, UNDEFINED);
 	else if (list->state == DBL_QUOTE_CAN_BE_CLOSED && input[0] == '\"')
 		set_token_type_and_list_state(list, token, DOUBLE_QUOTE, UNDEFINED);
+	else if (list->state == SGL_QUOTE_CAN_BE_CLOSED && input[0] != '\'')
+		set_token_type_and_list_state(list, token, SGL_QUOTE_STR, SGL_QUOTE_CAN_BE_CLOSED);
+	else if (list->state == DBL_QUOTE_CAN_BE_CLOSED && input[0] != '\"')
+		set_token_type_and_list_state(list, token, DBL_QUOTE_STR, DBL_QUOTE_CAN_BE_CLOSED);
 	else if (list->state == SGL_QUOTE_OPENED && input[0] == '\'')
 		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, \
 				UNDEFINED);
@@ -103,6 +109,10 @@ static void	handle_quotes(t_lexer *list, t_token *token, char *input)
 				UNDEFINED);
 	else
 		add_null_string_token_if_empty_quotes();
+	
+	//printf("Exiting quote handling\n");
+	//print_list(list);
+	printf("Exiting quote handling\n");
 }
 
 /**
