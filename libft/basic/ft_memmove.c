@@ -1,21 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/24 15:05:44 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/15 17:12:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/10/25 17:28:26 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:13:27 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#include "libft_basic.h"
 
-# include "./basic/libft_basic.h"
-# include "./printf/ft_printf.h"
-# include "./gnl/get_next_line.h"
-# include "./vec/vec.h"
+static void	*ft_memcpyr(void *dst, const void *src, size_t n)
+{
+	while (n > 0)
+	{
+		((char *)dst)[n - 1] = ((char *)src)[n - 1];
+		n--;
+	}
+	return (dst);
+}
 
-#endif
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	if (dst < src)
+	{
+		ft_memcpy(dst, src, len);
+	}
+	else if (dst > src)
+	{
+		ft_memcpyr(dst, src, len);
+	}
+	return (dst);
+}

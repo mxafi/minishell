@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/24 15:05:44 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/15 17:12:27 by malaakso         ###   ########.fr       */
+/*   Created: 2022/10/29 15:58:37 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:15:31 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#include "libft_basic.h"
 
-# include "./basic/libft_basic.h"
-# include "./printf/ft_printf.h"
-# include "./gnl/get_next_line.h"
-# include "./vec/vec.h"
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	size_t			i;
+	unsigned char	*p1;
+	unsigned char	*p2;
 
-#endif
+	p1 = (unsigned char *)s1;
+	p2 = (unsigned char *)s2;
+	if (n == 0)
+		return (0);
+	i = 0;
+	while ((i < (n - 1)) && p1[i] == p2[i])
+		i++;
+	return (p1[i] - p2[i]);
+}

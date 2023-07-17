@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/24 15:05:44 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/15 17:12:27 by malaakso         ###   ########.fr       */
+/*   Created: 2023/07/09 12:00:45 by malaakso          #+#    #+#             */
+/*   Updated: 2023/07/09 12:01:32 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#include "libft_basic.h"
 
-# include "./basic/libft_basic.h"
-# include "./printf/ft_printf.h"
-# include "./gnl/get_next_line.h"
-# include "./vec/vec.h"
+char	*ft_strndup(const char *s1, size_t n)
+{
+	char	*p;
+	size_t	i;
 
-#endif
+	p = ft_calloc(n + 1, 1);
+	if (!p)
+		return (0);
+	p[n] = '\0';
+	i = 0;
+	while (s1[i] && i < n)
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	return (p);
+}
