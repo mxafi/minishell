@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:58:31 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/17 11:34:18 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 19:02:59 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_return_value	validate_redirectors(t_lexer *list)
 	t_token	*next_token;
 
 	current = list->head;
-	while (current != NULL)
+	while (current->next != NULL)
 	{
 		if (token_is_redirector(current))
 		{
@@ -81,7 +81,7 @@ t_return_value	validate_redirectors(t_lexer *list)
 		}
 		current = current->next;
 	}
-	if (current != NULL && token_is_redirector(current))
+	if (current->next == NULL && token_is_redirector(current))
 	{
 		print_syntax_error(NULL);
 		list->error_code = EXIT_SYNTAX_ERROR;
