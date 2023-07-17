@@ -6,7 +6,7 @@
 #    By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/12 15:52:24 by lclerc           ###   ########.fr        #
+#    Updated: 2023/07/17 10:27:04 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,14 @@ INPUT_C			=	input.c
 LEXER_H			=	lexer.h	
 LEXER_C			=	lexer.c \
 					lexer_utils.c \
+					lexer_label_token_type.c \
+					lexer_validate_syntax.c \
+					lexer_validate_quotes.c \
+					lexer_string_concatenation.c \
+					lexer_validate_pipes.c \
+					lexer_validate_redirectors.c \
 					DELETE_ME_AND_FCT_IN_HEADER.c
+					
 
 H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H)
 C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C)

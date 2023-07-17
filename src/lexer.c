@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/12 10:43:07 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 11:48:04 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_test_substr(const char *s, unsigned int input, size_t len)
 	else
 		sub = malloc(max_sub_len + 1);
 	if (!sub)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (i < max_sub_len && i < len)
 	{
@@ -64,7 +64,7 @@ int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 
 	assert(str);
 	// uses some test substr, see below and above function, check
-	if (!(token->content = ft_test_substr(str, 0, length)) == FAILURE)
+	if ((token->content = ft_test_substr(str, 0, length)) == NULL)
 	{
 		list->error_code = FAILURE;
 		return (FAILURE);
@@ -129,7 +129,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	int		length;
 
 	new_token = NULL;
-	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
+	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
 	{
@@ -144,7 +144,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	else
 	{
 		length = 1;
-		label_token_type(token_list, new_token, UNDEFINED, input);
+		label_token_type(token_list, new_token, UNDEFINED_TOKEN, input);
 	}
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (NULL);
@@ -169,6 +169,7 @@ static int	tokenize_readline(t_lexer *token_list)
 
 	delimiter = NULL;
 	input = token_list->readlined;
+	printf("tokenize_readline\n");
 	while (*input != '\0')
 	{
 		delimiter = ft_strpbrk(input, DELIMITERS);
@@ -210,6 +211,7 @@ int	lexer(char *input)
 	if (input)
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
+		printf("lexer()\n");
 		tokenize_readline(&token_list);
 		print_list(&token_list);
 		if ((validate_syntax(&token_list)) == FAILURE)

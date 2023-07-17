@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/12 15:53:57 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 11:46:48 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	display_prompt(void)
 		input = get_input();
 		if (!input)
 			return ;
-		//lexer(input);
+		lexer(input);
 		free(input);
 	}
 }

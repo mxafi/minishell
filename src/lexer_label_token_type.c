@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/12 10:42:12 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 10:41:53 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * @param token 
  * @param input 
  */
-static void	add_null_string_token_if_empty_quote(void)
+static void	add_null_string_token_if_empty_quotes(void)
 {
 	printf("THis was never meant to be read, what are you doing here\n");
 //	t_token	*new_token;
@@ -60,7 +60,7 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
 	token->type = type;
 	list->state = state;
 	if (token->type == QUOTE_NEED_NULL_STR)
-		token->content == "";
+		token->content = NULL;
 }
 
 /**
@@ -77,8 +77,7 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
  * @param token	Current token 
  * @param input Current input string being tokenized 
  */
-static void	handle_quotes(t_lexer *list, t_token *token, t_token_type type,
-		char *input)
+static void	handle_quotes(t_lexer *list, t_token *token, char *input)
 {
 	if (list->state == UNDEFINED && input[0] == '\'')
 		set_token_type_and_list_state(list, token, SINGLE_QUOTE, \
@@ -118,7 +117,7 @@ static void	handle_quotes(t_lexer *list, t_token *token, t_token_type type,
  * @param token_type	The type of token 
  * @param input			The input string currently being handled 
  */
-t_return_value	label_token_type(t_lexer *list, t_token *token, \
+void	label_token_type(t_lexer *list, t_token *token, \
 				t_token_type token_type, char *input)
 {
 	if (list->state == UNDEFINED)
@@ -128,7 +127,7 @@ t_return_value	label_token_type(t_lexer *list, t_token *token, \
 		else
 		{
 			if (input[0] == '\'' || input[0] == '\"')
-				handle_quotes(list, token, token_type, input);
+				handle_quotes(list, token, input);
 			else if (input[0] == '>')
 				token->type = OUTFILE;
 			else if (input[0] == '<')
@@ -142,5 +141,7 @@ t_return_value	label_token_type(t_lexer *list, t_token *token, \
 	else if (list->state == SGL_QUOTE_OPENED || list->state == DBL_QUOTE_OPENED \
 		|| list->state == SGL_QUOTE_CAN_BE_CLOSED || \
 		list->state == DBL_QUOTE_CAN_BE_CLOSED)
-		handle_quotes(list, token, token_type, input);
+		handle_quotes(list, token, input);
+	else
+		printf("If you read this, the token type was not handled properly in label_token_type()"); // delete me 
 }

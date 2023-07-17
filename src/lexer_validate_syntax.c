@@ -90,9 +90,9 @@ static void	remove_spaces(t_lexer *list)
  */
 static void	expand_from_env(t_lexer *list)
 {
-	t_token	*current;
-	char	*env_key;
-	char	*env_value;
+	t_token		*current;
+	char		*env_key;
+	const char	*env_value;
 
 	current = list->head;
 	env_key = NULL;
@@ -133,7 +133,7 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	expand_from_env(token_list);
 	concatenate_adjacent_strings(token_list);
 	remove_spaces(token_list);
-	validate_pipe(token_list);
+	validate_pipes(token_list);
 	if (token_list->error_code != SUCCESS)
 		return (token_list->error_code);
 	validate_redirectors(token_list);

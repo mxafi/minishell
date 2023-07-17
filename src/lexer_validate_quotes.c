@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:41:02 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/13 14:42:15 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 11:08:10by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,21 @@ void	remove_quote_tokens(t_lexer *token_list)
  */
 t_return_value	validate_quotes(t_lexer *token_list)
 {
-	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED ||
+	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED || \
 		token_list->state == SGL_QUOTE_OPENED)
 	{
 		printf("Shellfish> syntax error expecting closing single quotes `\''\n");
-		token_list -
-			return (FAILURE);
+		token_list->error_code = EXIT_SYNTAX_ERROR;
+		return (token_list->error_code);
 	}
-	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED ||
+	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED || \
 				token_list->state == DBL_QUOTE_OPENED)
 	{
 		printf("Shellfish> syntax error expecting closing double quotes `\"'\n");
-		return (FAILURE);
+		token_list->error_code = EXIT_SYNTAX_ERROR;
+		return (token_list->error_code);
 	}
 	remove_quote_tokens(token_list);
-	token_list->error_code = UNDEFINED;
-	return (SUCCESS);
+	token_list->error_code = SUCCESS;
+	return (token_list->error_code);
 }

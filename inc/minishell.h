@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/12 17:40:18 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 09:52:05 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@
 # include "input.h"
 # include "env.h"
 # include "lexer.h"
+
+// Includes assert functions
+# include "assert.h"
 
 typedef struct s_minishell
 {

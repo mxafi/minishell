@@ -29,7 +29,7 @@
  * @param token_list		List of token 
  * @return t_return_value	SUCCESS or EXIT_SYNTAX_ERROR
  */
-t_return_value	validate_pipe(t_lexer *token_list)
+t_return_value	validate_pipes(t_lexer *token_list)
 {
 	t_token	*previous;
 	t_token	*current;
