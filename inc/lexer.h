@@ -136,9 +136,14 @@ t_return_value			validate_quotes(t_lexer *token_list);
 void	label_token_type(t_lexer *list, t_token *token, \
 		t_token_type token_type, char *input);
 
-	/**
+/**
  * contained in lexer_string_concatenation.c 
  */
 void					concatenate_adjacent_strings(t_lexer *list);
+
+/**
+ * Contained in lexer_expansion.c
+ */
+void	expand_from_env(t_lexer *list);
 
 #endif

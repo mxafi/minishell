@@ -6,7 +6,7 @@
 #    By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/17 10:27:04 by lclerc           ###   ########.fr        #
+#    Updated: 2023/07/18 11:31:55 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ LEXER_C			=	lexer.c \
 					lexer_string_concatenation.c \
 					lexer_validate_pipes.c \
 					lexer_validate_redirectors.c \
+					lexer_expansion.c \
 					DELETE_ME_AND_FCT_IN_HEADER.c
 					
 

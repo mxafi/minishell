@@ -36,7 +36,7 @@ t_return_value	validate_pipes(t_lexer *token_list)
 
 	previous = NULL;
 	current = token_list->head;
-	while (current != NULL)
+	while (current != NULL && token_list->error_code != EXIT_SYNTAX_ERROR)
 	{
 		if ((current->type == PIPE && previous == NULL) || (current->type == PIPE
 				&& (previous->type == PIPE || previous->type == INFILE

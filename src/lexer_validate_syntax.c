@@ -23,7 +23,8 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
 /**
- * @brief	Labels tokens as CMD or ARG based on their position in the token list.
+
+		* @brief	Labels tokens as CMD or ARG based on their position in the token list.
  * 
  * @details	The first encountered STRING tokenS of the input and after each 
  * 			pipes are labeled as CMD, and all subsequent STRING tokens are 
@@ -50,7 +51,7 @@ void	label_CMDS_and_ARGS(t_lexer *token_list)
 		}
 		else if (current->type == PIPE)
 			token_list->CMD_found = NOT_YET;
-	current = current->next;
+		current = current->next;
 	}
 }
 
@@ -74,46 +75,7 @@ static void	remove_spaces(t_lexer *list)
 	}
 }
 
-/**
- * @brief	Expands environment variables within double-quoted strings or 
 
-					*			regular strings	the consecutive chars until the next token. A match in 
- * 			the environment KEYS 
-
-		* @details	This function searches for the occurrence of environment variables indicated
- *			by a `$` symbol within double-quoted strings or regular strings. It 
-
-				*			retrieves the corresponding values from the environment and updates the 
- *			token content accordingly. 
- *
- * @param list	The lexer list containing the tokens to process
- */
-static void	expand_from_env(t_lexer *list)
-{
-	t_token		*current;
-	char		*env_key;
-	const char	*env_value;
-
-	current = list->head;
-	env_key = NULL;
-	while (current != NULL)
-	{
-		if (current->type == DBL_QUOTE_STR || current->type == STRING)
-		{
-			env_key = ft_strchr(current->content + 1, '$');
-			if (env_key != NULL)
-			{
-				env_value = env_get_value_by_key(env_key + 1);
-				free(current->content);
-				if (env_value != NULL)
-					current->content = ft_strdup(env_value);
-				else
-					current->content = ft_strdup("");
-			}
-		}
-		current = current->next;
-	}
-}
 
 /**
  * @brief	Validates the syntax of the token list

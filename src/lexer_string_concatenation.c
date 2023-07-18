@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 13:44:48 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/17 18:57:33 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/18 11:09:24 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	concatenate_adjacent_strings(t_lexer *list)
 
 	current = list->head;
 	simplify_string_syntax(list);
-	printf("concatenating start\n");
 	while (current != NULL && current->next != NULL)
 	{
 		next_token = current->next;
@@ -95,5 +94,4 @@ void	concatenate_adjacent_strings(t_lexer *list)
 		}
 		current = current->next;
 	}
-	printf("concatenate end\n");
 }
