@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/17 18:27:50 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/18 17:04:19 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,16 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 	label_token_type(token_list, new_token, STRING, input);
 	input = delimiter;
 	// CHECK IF RETURN VALUES ARE USED
-	return (token_list->error_code = SUCCESS);}
+	return (token_list->error_code = SUCCESS);
+}
 
 /**
  * @brief	Tokenizes delimiters
  * @details	Heredoc and append delimiters are determined separately from the 
  * 			other delimiters. A call to set_token_type_and_quote_state is made
  * 			which will set the token type to the node, as well as an 
- * 			initialization of the token list's state needed by the quote handlers
+
+				* 			initialization of the token list's state needed by the quote handlers
  *			in add_null_string_token_if_empty_quote function.
  *
  * @param token_list	Information and token list placeholder.
@@ -136,11 +138,9 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	{
 		length = 2;
 		if (*input == OUTFILE)
-			label_token_type(token_list, new_token, \
-			APPEND_TO, input);
+			label_token_type(token_list, new_token, APPEND_TO, input);
 		else
-			label_token_type(token_list, new_token, \
-			HEREDOC, input);
+			label_token_type(token_list, new_token, HEREDOC, input);
 	}
 	else
 	{
@@ -220,6 +220,7 @@ int	lexer(char *input)
 			free_token_list(&token_list);
 			return (EXIT_SYNTAX_ERROR);
 		}
+		free_token_list(&token_list);
 	}
 	return (0);
 }

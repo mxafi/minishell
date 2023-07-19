@@ -83,6 +83,7 @@ t_return_value	free_token_list(t_lexer *delete_me)
 		current = helper;
 	}
 	delete_me->head = NULL;
+	free (delete_me->readlined);
 	//check if that return is needed
 	return (error_code);
 }

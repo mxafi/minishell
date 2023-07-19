@@ -23,8 +23,7 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
 /**
-
-		* @brief	Labels tokens as CMD or ARG based on their position in the token list.
+ * @brief	Labels tokens as CMD or ARG based on their position in the token list.
  * 
  * @details	The first encountered STRING tokenS of the input and after each 
  * 			pipes are labeled as CMD, and all subsequent STRING tokens are 
