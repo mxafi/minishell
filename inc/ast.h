@@ -6,14 +6,12 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/06 13:10:50 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:56:09 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AST_H
 # define AST_H
-
-# define AST_VALUE_NOT_DEFINED	-1
 
 // e_token_type from lexer.h for DEBUG
 typedef enum e_token_list{
@@ -62,6 +60,8 @@ typedef struct s_redir
 	char				*argument;
 }						t_redir;
 
+typedef struct s_ast_node	t_ast_node;
+
 typedef struct s_ast_node
 {
 	t_ast_node_type	type;
@@ -69,8 +69,8 @@ typedef struct s_ast_node
 	int				redir_count;
 	char			**exec_argv;
 	t_redir			**redirections;
-	struct s_ast	*left;
-	struct s_ast	*right;
+	t_ast_node		*left;
+	t_ast_node		*right;
 }					t_ast_node;
 
 void		ast_recursive_delete(t_ast_node *node);

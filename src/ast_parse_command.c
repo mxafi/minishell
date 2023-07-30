@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:05:54 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/06 12:59:33 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:57:51 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_ast_node_type	ast_get_command_type(t_token *token)
 {
-	while (token->next && token->next != PIPE)
+	while (token->next && token->next->type != PIPE)
 	{
 		if (token->type == CMD || token->type == BI_CMD)
 			break ;

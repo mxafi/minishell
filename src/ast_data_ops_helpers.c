@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 21:51:55 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/05 23:47:21 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:55:18 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ast_set_exec_argv(t_ast_node *node, char *string, int position)
 void	ast_set_type(t_ast_node *node, t_ast_node_type type)
 {
 	assert(node != NULL);
-	assert(node->type == AST_VALUE_NOT_DEFINED);
+	assert(node->type == AST_UNDEFINED);
 	node->type = type;
 }
 
