@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/17 15:37:43 by malaakso         ###   ########.fr        #
+#    Updated: 2023/07/30 11:43:53 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ INPUT_C			=	input.c
 LEXER_H			=	
 LEXER_C			=	
 
-ASTREE_H		=	astree.h
+ASTREE_H		=	ast.h
 ASTREE_C		=	ast.c \
 					ast_data_ops_helpers.c \
 					ast_data_ops_alloc.c \
