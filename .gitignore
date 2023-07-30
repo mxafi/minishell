@@ -34,6 +34,7 @@ xcuserdata
 *.dSYM
 
 # Project minishell stuff
+libft.a
 minishell
 *test*
 a.out
