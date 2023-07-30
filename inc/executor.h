@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:43:39 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/17 16:58:14 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/30 13:11:13 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,8 @@ typedef enum e_err
 }	t_err;
 
 t_err	executor(t_ast_node *ast_node);
+t_err	execute_pipeline(t_ast_node *node);
+t_err	execute_command(t_ast_node *node);
+t_err	execute_bi_cmd(t_ast_node *node);
 
 #endif
