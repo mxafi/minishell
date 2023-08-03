@@ -40,6 +40,7 @@ a.out
 *.o
 *.pdf
 *.bak
+libft.a
 
 # Lionel's stuff
 playground
