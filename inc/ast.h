@@ -16,29 +16,29 @@
 # define AST_VALUE_NOT_DEFINED	-1
 
 // e_token_type from lexer.h for DEBUG
-typedef enum e_token_list{
-	SINGLE_QUOTE,
-	DOUBLE_QUOTE,
-	OUTFILE,
-	INFILE,
-	PIPE,
-	SPACE,
-	STRING,
-	HEREDOC,
-	APPEND_TO,
-	CMD,
-	BI_CMD,
-	REDIR,
-	ARG
-}	t_token_type;
+//typedef enum e_token_list{
+//	SINGLE_QUOTE,
+//	DOUBLE_QUOTE,
+//	OUTFILE,
+//	INFILE,
+//	PIPE,
+//	SPACE,
+//	STRING,
+//	HEREDOC,
+//	APPEND_TO,
+//	CMD,
+//	BI_CMD,
+//	REDIR,
+//	ARG
+//}	t_token_type;
 
 // expected input for ast_builder from lexer, here for debug purposes
-typedef struct s_token
-{
-	t_token_type	type;
-	char			*data;
-	struct s_token	*next;
-}					t_token;
+//typedef struct s_token
+//{
+//	t_token_type	type;
+//	char			*data;
+//	struct s_token	*next;
+//}					t_token;
 
 typedef enum e_ast_node_type
 {
