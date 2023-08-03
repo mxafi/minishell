@@ -6,13 +6,14 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:50:39 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 12:51:59 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/07/30 13:47:31 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
 
-void	init_envp(void);
+int		init_envp(void);
+void	env_print_list(void);
 
 #endif
