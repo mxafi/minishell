@@ -63,8 +63,6 @@ typedef struct s_minishell
 	char	**envp;
 }	t_minishell;
 
-t_minishell	*g_minishell;
-
 // Necessary function prototype for readline.
 void	rl_replace_line(const char *text, int clear_undo);
 
