@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/08 12:51:51 by malaakso         ###   ########.fr        #
+#    Updated: 2023/07/30 11:43:53 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,17 @@ INPUT_C			=	input.c
 LEXER_H			=	
 LEXER_C			=	
 
-H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H)
-C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C)
+ASTREE_H		=	ast.h
+ASTREE_C		=	ast.c \
+					ast_data_ops_helpers.c \
+					ast_data_ops_alloc.c \
+					ast_data_ops_free.c \
+					ast_parse_command.c \
+					ast_parse_argv.c \
+					ast_parse_redirections.c
+
+H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H)
+C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C)
 
 H_PATHS			=	$(addprefix $(H_FOLDER)/, $(H_FILES))
 C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))

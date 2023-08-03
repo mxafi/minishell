@@ -13,6 +13,9 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// FOR DEBUG PURPOSES
+# include <assert.h>
+
 // Provides constants for system limits, such as maximum path length.
 # include <limits.h>
 
@@ -46,6 +49,7 @@
 // User defined headers
 # include "../libft/libft.h"
 # include "input.h"
+# include "ast.h"
 # include "env.h"
 
 typedef struct s_minishell
