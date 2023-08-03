@@ -62,12 +62,10 @@ void	label_CMDS_and_ARGS(t_lexer *token_list)
 static void	remove_spaces(t_lexer *list)
 {
 	t_token	*current;
-	t_token	*next_token;
 
 	current = list->head;
 	while (current != NULL && current->next != NULL)
 	{
-		next_token = current->next;
 		if (current->type == MY_SPACE)
 			delete_token(list, current);
 		current = current->next;
