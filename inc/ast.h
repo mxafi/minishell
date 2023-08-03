@@ -15,6 +15,8 @@
 
 # define AST_VALUE_NOT_DEFINED	-1
 
+# include "minishell.h"
+
 // e_token_type from lexer.h for DEBUG
 //typedef enum e_token_list{
 //	SINGLE_QUOTE,
