@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/30 13:19:31 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:07:06 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@
 // Includes tcsetattr and tcgetattr specific to the current terminal.
 # include <termios.h>
 
+// For ioctl
+# include <sys/ioctl.h>
+
 // User defined headers
 # include "../libft/libft.h"
 # include "input.h"
 # include "ast.h"
 # include "env.h"
 # include "lexer.h"
-
-// Includes assert functions
-# include "assert.h"
 
 typedef struct s_minishell
 {
