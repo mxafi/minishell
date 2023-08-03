@@ -34,14 +34,17 @@ xcuserdata
 *.dSYM
 
 # Project minishell stuff
+libft.a
 minishell
 *test*
 a.out
 *.o
 *.pdf
 *.bak
-libft.a
 
 # Lionel's stuff
 playground
 memory_loop.sh
+
+# Markus's stuff
+.excalidraw

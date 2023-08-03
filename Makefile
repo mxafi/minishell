@@ -6,7 +6,7 @@
 #    By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/07/18 11:31:55 by lclerc           ###   ########.fr        #
+#    Updated: 2023/07/30 11:43:53 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,17 @@ LEXER_C			=	lexer.c \
 					DELETE_ME_AND_FCT_IN_HEADER.c
 					
 
-H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H)
-C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C)
+ASTREE_H		=	ast.h
+ASTREE_C		=	ast.c \
+					ast_data_ops_helpers.c \
+					ast_data_ops_alloc.c \
+					ast_data_ops_free.c \
+					ast_parse_command.c \
+					ast_parse_argv.c \
+					ast_parse_redirections.c
+
+H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H)
+C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C)
 
 H_PATHS			=	$(addprefix $(H_FOLDER)/, $(H_FILES))
 C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))

@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:30:45 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:30 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:48:01 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,76 @@ const char	*env_get_value_by_key(const char *key)
 	}
 	return (NULL);
 }
+/**
+ * @brief Sets an environment variable to a specific value.
+ * 
+ * 
+ * @param key 
+ * @param value 
+ */
+void	env_set_value_by_key(char *key, char *value)
+{
+	size_t	i;
+	int		key_len;
+	char	*tmp;
+	char	*new;
 
-// void	env_set_value_by_key(char *key)
-// {
-// 	//todo
-// }
+	if (!key || !value)
+		return ;
+	key_len = ft_strlen(key);
+	i = 0;
+	while (g_minishell->envp[i])
+	{
+		if (ft_strncmp(g_minishell->envp[i], key, key_len) == 0
+			&& g_minishell->envp[i][key_len] == '=')
+			break ;
+		i++;
+	}
+	if (!g_minishell->envp[i])
+	{
+		tmp = ft_strjoin(key, "=");
+		if (!tmp)
+			exit (1);
+		new = ft_strjoin(tmp, value);
+		if (!new)
+			exit (1);
+		free(tmp);
+		if (vec_push(&g_minishell->env_vec, new) < 1)
+			exit (1);
+		return ;
+	}
+	tmp = ft_strjoin(key, "=");
+	if (!tmp)
+		exit (1);
+	new = ft_strjoin(tmp, value);
+	if (!new)
+		exit (1);
+	free(tmp);
+	free(g_minishell->envp[i]);
+	g_minishell->envp[i] = new;
+}
 
-// void	env_unset_key(char *key)
-// {
-// 	//todo
-// }
+void	env_unset_key(char *key)
+{
+	size_t	i;
+	int		key_len;
+
+	key_len = ft_strlen(key);
+	i = 0;
+	while (g_minishell->envp[i])
+	{
+		if (ft_strncmp(g_minishell->envp[i], key, key_len) == 0
+			&& g_minishell->envp[i][key_len] == '=')
+		{
+			break ;
+		}
+		i++;
+	}
+	if (!g_minishell->envp[i])
+		return ;
+	free(g_minishell->envp[i]);
+	vec_remove(&g_minishell->env_vec, i);
+}
 
 /**
  * @brief Matches the output of the 'env' command
@@ -98,9 +158,12 @@ void	env_print_list(void)
 }
 
 /**
- * @brief Takes the extern char** environ and copies it to the heap.
+ * @brief Takes the extern char** environ and copies it to a vector.
+ * The char** envp is also set to point to the created vector's memory.
+ * 
+ * @return int 0 on success, 1 on fail.
  */
-void	init_envp(void)
+int	init_envp(void)
 {
 	extern char	**environ;
 	size_t		i;
@@ -108,16 +171,23 @@ void	init_envp(void)
 	i = 0;
 	while (environ[i])
 		i++;
-	g_minishell->envp = ft_calloc(1, sizeof(char *) * (i + 1));
-	if (!g_minishell->envp)
-		exit(1);
+	if (vec_new(&g_minishell->env_vec, i + 1, sizeof(char *)) < 1)
+	{
+		perror("init_envp");
+		return (1);
+	}
+	g_minishell->envp = (char **)g_minishell->env_vec.memory;
 	g_minishell->envp[i] = NULL;
 	i = 0;
 	while (environ[i])
 	{
 		g_minishell->envp[i] = ft_strdup(environ[i]);
 		if (!g_minishell->envp[i])
-			exit(1);
+		{
+			perror("init_envp");
+			return (1);
+		}
 		i++;
 	}
+	return (0);
 }
