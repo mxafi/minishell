@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/30 13:50:41 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:37:50 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ int	main(void)
 		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
 	if (init_envp())
 		return (1);
-	//display_prompt();
-	env_print_list();
+	display_prompt();
 	i = 0;
 	while (g_minishell->envp[i])
 		free(g_minishell->envp[i++]);

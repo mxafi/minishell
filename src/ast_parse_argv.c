@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_argv.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 13:02:31 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/06 13:15:24 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:34:31 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 static t_token	*skip_redirector_and_arg(t_token *token)
 {
-	if (token->type == REDIR)
+	if (token->type == HEREDOC
+			|| token->type == APPEND_TO
+			|| token->type == OUTFILE
+			|| token->type == INFILE)
 	{
 		token = token->next;
 		if (!token || token->type == PIPE)
@@ -40,11 +43,14 @@ void	ast_parse_argv(t_ast_node *node, t_token *token)
 			return ;
 		if (token->type == CMD || token->type == BI_CMD || token->type == ARG)
 		{
-			node->exec_argv[i] = token->data;
-			token->data = NULL;
+			node->exec_argv[i] = token->content;
+			token->content = NULL;
 			i++;
 		}
-		if (token->type != REDIR)
+		if (token->type != HEREDOC
+			&& token->type != APPEND_TO
+			&& token->type != OUTFILE
+			&& token->type != INFILE)
 			token = token->next;
 	}
 }

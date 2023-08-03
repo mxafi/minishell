@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_command.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:05:54 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/06 12:59:33 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:31:26 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_ast_node_type	ast_get_command_type(t_token *token)
 {
-	while (token->next && token->next != PIPE)
+	while (token->next && token->next->type != PIPE)
 	{
 		if (token->type == CMD || token->type == BI_CMD)
 			break ;
@@ -47,7 +47,10 @@ static int	ast_get_redir_count(t_token *token)
 	redir_c = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->type == REDIR)
+		if (token->type == HEREDOC
+			|| token->type == APPEND_TO
+			|| token->type == OUTFILE
+			|| token->type == INFILE)
 			redir_c++;
 	}
 	return (redir_c);

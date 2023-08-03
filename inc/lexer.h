@@ -27,6 +27,7 @@ typedef enum e_token_type
 	HEREDOC,
 	APPEND_TO,
 	CMD,
+	BI_CMD,
 	ARG,
 	SGL_QUOTE_STR,
 	DBL_QUOTE_STR,
@@ -69,12 +70,14 @@ typedef enum e_boolean
 	FOUND,
 }						t_boolean;
 
+typedef struct s_token	t_token;
+
 typedef struct s_token
 {
 	t_token_type		type;
 	int					token_count; //not used should be removed
 	char				*content;
-	struct s_token		*next;
+	t_token				*next;
 }						t_token;
 
 typedef struct s_lexer
