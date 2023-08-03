@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+t_minishell	*g_minishell;
+
 void	display_prompt(void)
 {
 	char	*input;
