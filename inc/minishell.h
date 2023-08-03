@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
 /*   Updated: 2023/07/30 13:19:31 by malaakso         ###   ########.fr       */
@@ -51,6 +51,10 @@
 # include "input.h"
 # include "ast.h"
 # include "env.h"
+# include "lexer.h"
+
+// Includes assert functions
+# include "assert.h"
 
 typedef struct s_minishell
 {
@@ -66,5 +70,10 @@ void	rl_replace_line(const char *text, int clear_undo);
 
 // Function prototypes from minishell.c
 void	display_prompt(void);
+
+/*
+ * Contained in lexer.c
+ */
+int	lexer(char	*input);
 
 #endif
