@@ -35,8 +35,8 @@ void	print_list(t_lexer *list)
 	{
 		if (current_token->type == UNDEFINED_TOKEN)
 			strncpy(token_type, "UNDEFINED_TOKEN", sizeof(token_type) - 1);
-		else if (current_token->type == SPACE)
-			strncpy(token_type, "SPACE", sizeof(token_type) - 1);
+		else if (current_token->type == MY_SPACE)
+			strncpy(token_type, "MY_SPACE", sizeof(token_type) - 1);
 		else if (current_token->type == STRING)
 			strncpy(token_type, "STRING", sizeof(token_type) - 1);
 		else if (current_token->type == HEREDOC)

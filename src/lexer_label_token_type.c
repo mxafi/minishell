@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_label_token_type.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/17 16:06:41 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/03 17:03:00 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void	label_token_type(t_lexer *list, t_token *token, \
 			else if (input[0] == '|')
 				token->type = PIPE;
 			else if (input[0] == ' ')
-				token->type = SPACE;
+				token->type = MY_SPACE;
 		}
 	}
 	else if (list->state == SGL_QUOTE_OPENED || list->state == DBL_QUOTE_OPENED \

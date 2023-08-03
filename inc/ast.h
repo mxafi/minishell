@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/03 16:26:11 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/03 17:03:00 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_token		t_token;
 //	OUTFILE,
 //	INFILE,
 //	PIPE,
-//	SPACE,
+//	MY_SPACE,
 //	STRING,
 //	HEREDOC,
 //	APPEND_TO,

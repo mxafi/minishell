@@ -22,7 +22,7 @@
 typedef enum e_token_type
 {
 	UNDEFINED_TOKEN,
-	SPACE,
+	MY_SPACE,
 	STRING,
 	HEREDOC,
 	APPEND_TO,

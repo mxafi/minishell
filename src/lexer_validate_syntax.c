@@ -68,7 +68,7 @@ static void	remove_spaces(t_lexer *list)
 	while (current != NULL && current->next != NULL)
 	{
 		next_token = current->next;
-		if (current->type == SPACE)
+		if (current->type == MY_SPACE)
 			delete_token(list, current);
 		current = current->next;
 	}
