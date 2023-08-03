@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:30:45 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/30 14:03:56 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:48:01 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,26 +69,53 @@ const char	*env_get_value_by_key(const char *key)
 	}
 	return (NULL);
 }
-
-void	env_set_value_by_key(char *key)
+/**
+ * @brief Sets an environment variable to a specific value.
+ * 
+ * 
+ * @param key 
+ * @param value 
+ */
+void	env_set_value_by_key(char *key, char *value)
 {
 	size_t	i;
 	int		key_len;
+	char	*tmp;
+	char	*new;
 
+	if (!key || !value)
+		return ;
 	key_len = ft_strlen(key);
 	i = 0;
 	while (g_minishell->envp[i])
 	{
 		if (ft_strncmp(g_minishell->envp[i], key, key_len) == 0
 			&& g_minishell->envp[i][key_len] == '=')
-		{
 			break ;
-		}
 		i++;
 	}
 	if (!g_minishell->envp[i])
-		// create a key:value pair, push pointer into vector, return
-	// if here, key found already, malloc enough for key=value\0, free old one, replace with new one
+	{
+		tmp = ft_strjoin(key, "=");
+		if (!tmp)
+			exit (1);
+		new = ft_strjoin(tmp, value);
+		if (!new)
+			exit (1);
+		free(tmp);
+		if (vec_push(&g_minishell->env_vec, new) < 1)
+			exit (1);
+		return ;
+	}
+	tmp = ft_strjoin(key, "=");
+	if (!tmp)
+		exit (1);
+	new = ft_strjoin(tmp, value);
+	if (!new)
+		exit (1);
+	free(tmp);
+	free(g_minishell->envp[i]);
+	g_minishell->envp[i] = new;
 }
 
 void	env_unset_key(char *key)
