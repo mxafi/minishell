@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:41:02 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/13 14:42:15 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 11:08:10by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,22 @@ void	remove_quote_tokens(t_lexer *token_list)
 	t_token	*next_token;
 
 	current = token_list->head;
+	
 	while (current != NULL)
 	{
 		next_token = current->next;
+		printf("Error Removing quote\n");
+		print_list(token_list);
 		if (current->type == SINGLE_QUOTE || current->type == DOUBLE_QUOTE)
 			delete_token(token_list, current);
-		if (current->type == QUOTE_NEED_NULL_STR)
+		else if (current->type == QUOTE_NEED_NULL_STR)
 		{
 			current->type = STRING;
 			ft_strlcpy(current->content, "", 1);
 		}
-		if (current->next != NULL)
-			current = current->next;
+	//	if (current->next != NULL)
+		//	current = current->next;
+		current = current->next;
 	}
 }
 
@@ -59,20 +63,23 @@ void	remove_quote_tokens(t_lexer *token_list)
  */
 t_return_value	validate_quotes(t_lexer *token_list)
 {
-	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED ||
+	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED || \
 		token_list->state == SGL_QUOTE_OPENED)
 	{
 		printf("Shellfish> syntax error expecting closing single quotes `\''\n");
-		token_list -
-			return (FAILURE);
+		token_list->error_code = EXIT_SYNTAX_ERROR;
+		return (token_list->error_code);
 	}
-	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED ||
+	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED || \
 				token_list->state == DBL_QUOTE_OPENED)
 	{
 		printf("Shellfish> syntax error expecting closing double quotes `\"'\n");
-		return (FAILURE);
+		token_list->error_code = EXIT_SYNTAX_ERROR;
+		return (token_list->error_code);
 	}
+	printf("validating quotes going to remove quote tokens\n");
 	remove_quote_tokens(token_list);
-	token_list->error_code = UNDEFINED;
-	return (SUCCESS);
+	printf("validating quotes returning from quote removal\n");
+	token_list->error_code = SUCCESS;
+	return (token_list->error_code);
 }

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_validate_redirector.c                        :+:      :+:    :+:   */
+/*   lexer_validate_redirectors.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:58:31 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/14 16:34:57 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/17 19:02:59 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/lexer.h"
+#include "../inc/minishell.h"
 
 /* Syntax check as I have gathered it.. hopefully, nothing is missing:
 1/ Check first character -> cannot be pipe
@@ -28,7 +28,7 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
  * @param 	token	token being checked 
  * @return			SUCCESS or FAILURE according to validity 
  */
-t_return_value	token_is_redirector(t_token *token)
+static t_return_value	token_is_redirector(t_token *token)
 {
 	if (token->type == OUTFILE || token->type == INFILE ||
 		token->type == HEREDOC || token->type == APPEND_TO)
@@ -44,7 +44,7 @@ t_return_value	token_is_redirector(t_token *token)
 static void	print_syntax_error(char *unexpected_token)
 {
 	if (!unexpected_token)
-		ft_printf("shellfish> syntax error near unexpected token `newline'\n");
+		printf("shellfish> syntax error near unexpected token `newline'\n");
 	else
 		printf("shellfish> syntax error near unexpected token `%s'\n",
 				unexpected_token);
@@ -67,9 +67,9 @@ t_return_value	validate_redirectors(t_lexer *list)
 	t_token	*next_token;
 
 	current = list->head;
-	while (current != NULL)
+	while (current->next != NULL)
 	{
-		if (token_is_redirector(current->type))
+		if (token_is_redirector(current))
 		{
 			next_token = current->next;
 			if (current->next != NULL && next_token->type != STRING)
@@ -81,7 +81,7 @@ t_return_value	validate_redirectors(t_lexer *list)
 		}
 		current = current->next;
 	}
-	if (current != NULL && token_is_redirector(current->type))
+	if (current->next == NULL && token_is_redirector(current))
 	{
 		print_syntax_error(NULL);
 		list->error_code = EXIT_SYNTAX_ERROR;

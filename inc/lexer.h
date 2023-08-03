@@ -57,7 +57,7 @@ typedef enum e_validation_state
  */
 typedef enum e_return_value
 {
-	FAILURE = 0,
+	FAILURE,
 	CALLOC_FAIL,
 	SUCCESS,
 	EXIT_SYNTAX_ERROR = 258,
@@ -72,7 +72,7 @@ typedef enum e_boolean
 typedef struct s_token
 {
 	t_token_type		type;
-	int					token_count;
+	int					token_count; //not used should be removed
 	char				*content;
 	struct s_token		*next;
 }						t_token;
@@ -83,7 +83,7 @@ typedef struct s_lexer
 	t_validation_state	state;
 	t_return_value		error_code;
 	t_boolean			CMD_found;
-	int					token_amount;
+	int					token_amount; //not used should be removed
 	char				*readlined;
 	t_token				*head;
 }						t_lexer;
@@ -99,9 +99,8 @@ int						tokenize_node(t_lexer *list, t_token *token, char *str,
 /*
  * contained in lexer_utils.c
  */
-int						free_token_list(t_lexer *token_list);
-int						make_new_node(t_lexer *token_to_node,
-							t_token *new_token);
+t_return_value			free_token_list(t_lexer *token_list);
+t_return_value			make_new_node(t_lexer *token_to_node, t_token **new_token);
 void					delete_token(t_lexer *list, t_token *token);
 char					*ft_strpbrk(const char *string, const char *delimiters);
 
@@ -118,32 +117,33 @@ t_return_value			validate_syntax(t_lexer *token_list);
 /**
  * contained in lexer_validate_redirector.c 
  */
-void					redirector_is_valid(t_lexer *token_list,
-							t_token *token);
-void					token_is_redirector(t_lexer *token_list,
-							t_token *token);
-t_return_value			is_token_type_redirector(t_lexer *token_list,
-							t_token *token);
+t_return_value	validate_redirectors(t_lexer *list);
+
 
 /**
  * contained in lexer_validate_pipes.c 
  */
-void					pipes_are_valid(t_lexer *token_list, t_token *token);
+t_return_value			validate_pipes(t_lexer *token_list);
 
 /**
  * contained in lexer_validate_quote.c
  */
-t_return_value			validate_pipes(t_lexer *token_list);
+t_return_value			validate_quotes(t_lexer *token_list);
 
 /**
  * contained in lexer_label_token_type.c
  */
-t_return_value	label_token_type(t_lexer *list, t_token *token,
-		t_token_type token_type, char *input)
+void	label_token_type(t_lexer *list, t_token *token, \
+		t_token_type token_type, char *input);
 
-	/**
+/**
  * contained in lexer_string_concatenation.c 
  */
 void					concatenate_adjacent_strings(t_lexer *list);
+
+/**
+ * Contained in lexer_expansion.c
+ */
+void	expand_from_env(t_lexer *list);
 
 #endif

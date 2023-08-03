@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/12 10:43:07 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/07/18 17:04:19 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_test_substr(const char *s, unsigned int input, size_t len)
 	else
 		sub = malloc(max_sub_len + 1);
 	if (!sub)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (i < max_sub_len && i < len)
 	{
@@ -64,7 +64,7 @@ int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 
 	assert(str);
 	// uses some test substr, see below and above function, check
-	if (!(token->content = ft_test_substr(str, 0, length)) == FAILURE)
+	if ((token->content = ft_test_substr(str, 0, length)) == NULL)
 	{
 		list->error_code = FAILURE;
 		return (FAILURE);
@@ -95,28 +95,30 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 		char *delimiter)
 {
 	t_token	*new_token;
-	int		length;
+	size_t	length;
 
 	new_token = NULL;
 	if (delimiter == NULL)
 		length = ft_strlen(input);
 	else
 		length = delimiter - input;
-	if (make_new_node(token_list, new_token) == CALLOC_FAIL)
+	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (token_list->error_code = CALLOC_FAIL);
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (token_list->error_code = CALLOC_FAIL);
 	label_token_type(token_list, new_token, STRING, input);
 	input = delimiter;
 	// CHECK IF RETURN VALUES ARE USED
-	return (token_list->error_code = SUCCESS);}
+	return (token_list->error_code = SUCCESS);
+}
 
 /**
  * @brief	Tokenizes delimiters
  * @details	Heredoc and append delimiters are determined separately from the 
  * 			other delimiters. A call to set_token_type_and_quote_state is made
  * 			which will set the token type to the node, as well as an 
- * 			initialization of the token list's state needed by the quote handlers
+
+				* 			initialization of the token list's state needed by the quote handlers
  *			in add_null_string_token_if_empty_quote function.
  *
  * @param token_list	Information and token list placeholder.
@@ -129,22 +131,21 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	int		length;
 
 	new_token = NULL;
+	printf("delimiter_to_token()\n");
 	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
 	{
 		length = 2;
 		if (*input == OUTFILE)
-			label_token_type(token_list, new_token, \
-			APPEND_TO, input);
+			label_token_type(token_list, new_token, APPEND_TO, input);
 		else
-			label_token_type(token_list, new_token, \
-			HEREDOC, input);
+			label_token_type(token_list, new_token, HEREDOC, input);
 	}
 	else
 	{
 		length = 1;
-		label_token_type(token_list, new_token, UNDEFINED, input);
+		label_token_type(token_list, new_token, UNDEFINED_TOKEN, input);
 	}
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
 		return (NULL);
@@ -169,7 +170,7 @@ static int	tokenize_readline(t_lexer *token_list)
 
 	delimiter = NULL;
 	input = token_list->readlined;
-	while (*input != '\0')
+	while (input && *input != '\0')
 	{
 		delimiter = ft_strpbrk(input, DELIMITERS);
 		if (!delimiter)
@@ -186,6 +187,7 @@ static int	tokenize_readline(t_lexer *token_list)
 		if (token_list->error_code == CALLOC_FAIL)
 			break ;
 	}
+	printf("tokenize_readline\n");
 	return (token_list->error_code);
 }
 
@@ -207,16 +209,18 @@ int	lexer(char *input)
 	t_lexer	token_list;
 
 	ft_bzero(&token_list, sizeof(t_lexer));
-	if (input)
+	if (input && *input != '\0')
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
 		tokenize_readline(&token_list);
 		print_list(&token_list);
+		printf("lexer() validation to come\n");
 		if ((validate_syntax(&token_list)) == FAILURE)
 		{
 			free_token_list(&token_list);
 			return (EXIT_SYNTAX_ERROR);
 		}
+		free_token_list(&token_list);
 	}
 	return (0);
 }

@@ -50,7 +50,7 @@ void	label_CMDS_and_ARGS(t_lexer *token_list)
 		}
 		else if (current->type == PIPE)
 			token_list->CMD_found = NOT_YET;
-	current = current->next;
+		current = current->next;
 	}
 }
 
@@ -74,46 +74,7 @@ static void	remove_spaces(t_lexer *list)
 	}
 }
 
-/**
- * @brief	Expands environment variables within double-quoted strings or 
 
-					*			regular strings	the consecutive chars until the next token. A match in 
- * 			the environment KEYS 
-
-		* @details	This function searches for the occurrence of environment variables indicated
- *			by a `$` symbol within double-quoted strings or regular strings. It 
-
-				*			retrieves the corresponding values from the environment and updates the 
- *			token content accordingly. 
- *
- * @param list	The lexer list containing the tokens to process
- */
-static void	expand_from_env(t_lexer *list)
-{
-	t_token	*current;
-	char	*env_key;
-	char	*env_value;
-
-	current = list->head;
-	env_key = NULL;
-	while (current != NULL)
-	{
-		if (current->type == DBL_QUOTE_STR || current->type == STRING)
-		{
-			env_key = ft_strchr(current->content + 1, '$');
-			if (env_key != NULL)
-			{
-				env_value = env_get_value_by_key(env_key + 1);
-				free(current->content);
-				if (env_value != NULL)
-					current->content = ft_strdup(env_value);
-				else
-					current->content = ft_strdup("");
-			}
-		}
-		current = current->next;
-	}
-}
 
 /**
  * @brief	Validates the syntax of the token list
@@ -127,18 +88,32 @@ static void	expand_from_env(t_lexer *list)
  */
 t_return_value	validate_syntax(t_lexer *token_list)
 {
-	validate_quotes(token_list);
-	if (token_list->error_code != SUCCESS)
+	printf("validate_syntax()\n");
+	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
+	printf("validate_syntax()quote validated\n");
+	print_list(token_list);
 	expand_from_env(token_list);
+	printf("validate_syntax()expanded\n");
+	print_list(token_list);
 	concatenate_adjacent_strings(token_list);
+	printf("validate_syntax()concatenated\n");
+	print_list(token_list);
 	remove_spaces(token_list);
-	validate_pipe(token_list);
+	printf("validate_syntax()removed spaces\n");
+	print_list(token_list);
+	if (validate_pipes(token_list) == EXIT_SYNTAX_ERROR)
+		return (token_list->error_code);
+	printf("validate_syntax()validated pipes\n");
+	print_list(token_list);
 	if (token_list->error_code != SUCCESS)
 		return (token_list->error_code);
-	validate_redirectors(token_list);
-	if (token_list->error_code != SUCCESS)
+	if (validate_redirectors(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
+	printf("validate_syntax()redirector validated\n");
+	print_list(token_list);
 	label_CMDS_and_ARGS(token_list);
+	printf("validate_syntax()token CMD ARGS labelled\n");
+	print_list(token_list);
 	return (token_list->error_code);
 }
