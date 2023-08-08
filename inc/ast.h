@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 13:10:16 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:16:58 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ typedef enum e_ast_redir_type
 {
 	AST_INFILE,
 	AST_OUTFILE,
-	AST_APPEND
+	AST_APPEND,
+	AST_HEREDOC,
+	AST_UNKNOWN_REDIR
 }	t_ast_redir_type;
 
 typedef struct s_redir

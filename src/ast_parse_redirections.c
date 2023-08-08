@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_redirections.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 12:57:53 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/03 16:35:42 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/08 14:17:44 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 static void	assign_redir_type(t_ast_node *node, t_token *token, int i)
 { //need to debug strncmp in regards to > and >> checking, false matches?
-	if (ft_strncmp("<", token->content, 1) == 0)
+	if (ft_strncmp("<", token->content, 2) == 0)
+		node->redirections[i]->type = AST_HEREDOC;
+	else if (ft_strncmp("<", token->content, 1) == 0)
 		node->redirections[i]->type = AST_INFILE;
 	else if (ft_strncmp(">", token->content, 2) == 0)
+		node->redirections[i]->type = AST_APPEND;
+	else if (ft_strncmp(">", token->content, 1) == 0)
 		node->redirections[i]->type = AST_OUTFILE;
 	else
-		node->redirections[i]->type = AST_APPEND;
+		node->redirections[i]->type = AST_UNKNOWN_REDIR;
 }
 
 static void	set_redir_arg(t_ast_node *node, t_token *token, int i)
