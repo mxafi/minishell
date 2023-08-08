@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/18 17:04:19 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/08 14:02:09 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,7 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
  * @details	Heredoc and append delimiters are determined separately from the 
  * 			other delimiters. A call to set_token_type_and_quote_state is made
  * 			which will set the token type to the node, as well as an 
-
-				* 			initialization of the token list's state needed by the quote handlers
+ * 			initialization of the token list's state needed by the quote handlers
  *			in add_null_string_token_if_empty_quote function.
  *
  * @param token_list	Information and token list placeholder.
@@ -156,7 +155,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
  * @brief 	Readline string is tokenized using a self implemented version 
  * 			of strpbrk
  * @details	The strpbrk seeks the input string for delimiters: spaces, 
- * 			tabs, redirection pipes and quotes to output delimited strings in 
+ * 			tabs, redirection, pipes and quotes to output delimited strings in 
  * 			a tokenized linked list. The delimiter itself is then tokenized.
  * 
  * @param token_list	Token list and list information placeholder.

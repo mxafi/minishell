@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/18 16:07:41 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/08 15:07:08 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ static void	process_token(t_token *current)
 /**
  * @brief	Expands environment variables within double-quoted strings or 
  *			regular strings with KEYs in environment variables.
- * @details	* This function expands environment variables within double-quoted 
- * strings or regular strings that contain environment keys. It searches for 
- * the * occurrence of environment variables indicated by a `$` symbol within 
+ * @details	Expands environment variables within double-quoted strings or 
+ * regular strings that contain environment keys. It searches for the 
+ * occurrence of environment variables indicated by a `$` symbol within 
  * tokens. It retrieves the corresponding values from the environment and
  * updates the token content accordingly. The searched string starts after 
  * the `$` sign and extends until the next token or the next non-alphanumeric 

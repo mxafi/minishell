@@ -29,7 +29,7 @@ void	remove_quote_tokens(t_lexer *token_list)
 	
 	while (current != NULL)
 	{
-		printf("Error Removing quote\n");
+		printf("Debug: Error Removing quote\n");
 		print_list(token_list);
 		if (current->type == SINGLE_QUOTE || current->type == DOUBLE_QUOTE)
 			delete_token(token_list, current);

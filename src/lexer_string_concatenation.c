@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_string_concatenation.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 13:44:48 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/18 11:09:24 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/08 15:39:30 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../inc/minishell.h"
 
 /**
- * @brief	Concatenate current and following token
- * @details	Concatenation results in the deletion of the next token.
+ * @brief Concatenates the content of current and following tokens.
+ * @details This function concatenates the content of the current token and the
+ *          following token, resulting in the deletion of the next token. The
+ *          content of the current token is updated with the concatenated string.
  * 
- * @param list			The list of token
- * @param current 		Current token which will hold the new string
- * @param next_token 	Token being deleted after concatenation
+ * @param list       The list of tokens.
+ * @param current    The current token that will hold the new string.
+ * @param next_token The token to be deleted after concatenation.
  */
-static void	concatenate_strings(t_lexer *list, t_token *current,
+void	concatenate_strings(t_lexer *list, t_token *current,
 		t_token *next_token)
 {
 	size_t	length;
@@ -44,12 +46,12 @@ static void	concatenate_strings(t_lexer *list, t_token *current,
 }
 
 /**
- * @brief		Format all string types to STRING
- * @details		In order to save space in the subsequent concatenation of string
- * 				and since all action on specific quotes as SGL or DBL_QUOTE_STR
- * 				have been handled, those latest are now irrelevant.
- *
- * @param list	The list of token
+ * @brief Simplifies the syntax of string tokens.
+ * @details This function traverses the token list and converts single-quoted and
+ *          double-quoted string tokens into regular string tokens. This is done
+ *          to simplify the handling of string concatenation.
+ * 
+ * @param list List of tokens to process.
  */
 static void	simplify_string_syntax(t_lexer *list)
 {
@@ -65,12 +67,13 @@ static void	simplify_string_syntax(t_lexer *list)
 }
 
 /**
- * @brief	Expands environment variables within double-quoted strings or 
+ * @brief Concatenates adjacent string tokens into a single token.
  *
- * @brief 		Search for concatenable strings
- * @details		Search for consecutive strings for concatenation
+ * @details This function searches for consecutive string tokens and concatenates
+ *          them into a single token. The resulting token will have the combined
+ *          content of all consecutive string tokens.
  * 
- * @param list	List of token.
+ * @param list List of tokens to process.
  */
 void	concatenate_adjacent_strings(t_lexer *list)
 {
