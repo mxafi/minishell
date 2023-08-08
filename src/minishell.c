@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/08 13:29:27 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:37:50 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+t_minishell	*g_minishell;
 
 void	display_prompt(void)
 {
@@ -21,17 +23,24 @@ void	display_prompt(void)
 		input = get_input();
 		if (!input)
 			return ;
-		//lexer(input);
+		lexer(input);
 		free(input);
 	}
 }
 
 int	main(void)
 {
+	size_t	i;
+
 	g_minishell = ft_calloc(1, sizeof(t_minishell));
 	if (!g_minishell)
 		exit(1); //display an error of some kind before exiting and set errno (set by malloc already tho)?
-	init_envp();
+	if (init_envp())
+		return (1);
 	display_prompt();
+	i = 0;
+	while (g_minishell->envp[i])
+		free(g_minishell->envp[i++]);
+	vec_free(&g_minishell->env_vec);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:05:54 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/30 11:57:51 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/08 13:13:06 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ static int	ast_get_redir_count(t_token *token)
 	redir_c = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->type == REDIR)
+		if (token->type == HEREDOC
+			|| token->type == APPEND_TO
+			|| token->type == OUTFILE
+			|| token->type == INFILE)
 			redir_c++;
 	}
 	return (redir_c);

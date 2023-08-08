@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_data_ops_free.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:01:04 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/05 23:47:46 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:23:27 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	ast_recursive_token_list_delete(t_token *list)
 {
 	if (!list)
 		return ;
-	if (list->data != NULL)
-		free(list->data);
+	if (list->content != NULL)
+		free(list->content);
 	ast_recursive_token_list_delete(list->next);
 	free(list);
 }
@@ -74,7 +74,7 @@ t_token	*free_current_token_return_next(t_token *token)
 
 	assert(token != NULL);
 	ret = token->next;
-	free(token->data);
+	free(token->content);
 	free(token);
 	return (ret);
 }

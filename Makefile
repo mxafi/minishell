@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
+#    By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
 #    Updated: 2023/07/30 11:44:49 by malaakso         ###   ########.fr        #
@@ -29,8 +29,18 @@ SHELL_C			=	minishell.c \
 INPUT_H			=	input.h
 INPUT_C			=	input.c
 
-LEXER_H			=	
-LEXER_C			=	
+LEXER_H			=	lexer.h	
+LEXER_C			=	lexer.c \
+					lexer_utils.c \
+					lexer_label_token_type.c \
+					lexer_validate_syntax.c \
+					lexer_validate_quotes.c \
+					lexer_string_concatenation.c \
+					lexer_validate_pipes.c \
+					lexer_validate_redirectors.c \
+					lexer_expansion.c \
+					DELETE_ME_AND_FCT_IN_HEADER.c
+					
 
 ASTREE_H		=	ast.h
 ASTREE_C		=	ast.c \
@@ -76,7 +86,7 @@ $(LIBFT_FOLDER)/$(LIBFT):
 	$(MAKE) -C $(LIBFT_FOLDER)
 
 $(FOLDER_LIST):
-	mkdir -p $@
+	mkdir $@
 
 .PHONY: clean
 clean:
