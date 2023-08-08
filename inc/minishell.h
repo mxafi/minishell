@@ -6,15 +6,12 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 16:10:10 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:11:43 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-# define TRUE 1
-# define FALSE 0
 
 // FOR DEBUG PURPOSES
 # include <assert.h>
@@ -66,6 +63,12 @@ typedef struct s_minishell
 	t_vec	env_vec;
 	char	**envp;
 }	t_minishell;
+
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}	t_bool;
 
 t_minishell	*g_minishell;
 
