@@ -64,11 +64,11 @@ typedef enum e_return_value
 	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;
 
-typedef enum e_boolean
+typedef enum e_is_found
 {
 	NOT_YET,
 	FOUND,
-}						t_boolean;
+}						t_is_found;
 
 typedef struct s_token	t_token;
 
@@ -85,7 +85,7 @@ typedef struct s_lexer
 	int					calloc_count;
 	t_validation_state	state;
 	t_return_value		error_code;
-	t_boolean			CMD_found;
+	t_is_found			CMD_found;
 	int					token_amount; //not used should be removed
 	char				*readlined;
 	t_token				*head;
