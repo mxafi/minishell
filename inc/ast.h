@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 14:16:58 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:56:40 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ typedef struct s_redir
 	char				*argument;
 }						t_redir;
 
+typedef struct s_ast_node	t_ast_node;
+
 typedef struct s_ast_node
 {
 	t_ast_node_type	type;
@@ -72,8 +74,8 @@ typedef struct s_ast_node
 	int				redir_count;
 	char			**exec_argv;
 	t_redir			**redirections;
-	struct s_ast	*left;
-	struct s_ast	*right;
+	t_ast_node		*left;
+	t_ast_node		*right;
 }					t_ast_node;
 
 void		ast_recursive_delete(t_ast_node *node);
