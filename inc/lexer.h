@@ -85,7 +85,7 @@ typedef struct s_lexer
 	int					calloc_count;
 	t_validation_state	state;
 	t_return_value		error_code;
-	t_is_found			CMD_found;
+	t_is_found			cmd_found;
 	int					token_amount; //not used should be removed
 	char				*readlined;
 	t_token				*head;

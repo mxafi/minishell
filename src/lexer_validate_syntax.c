@@ -23,7 +23,8 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
 /**
- * @brief	Labels tokens as CMD or ARG based on their position in the token list.
+
+		* @brief	Labels tokens as CMD or ARG based on their position in the token list.
  * 
  * @details	The first encountered STRING tokenS of the input and after each 
  * 			pipes are labeled as CMD, and all subsequent STRING tokens are 
@@ -31,7 +32,7 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
  * 			field of the tokens.
  * @param token_list The list to process and label.
  */
-void	label_CMDS_and_ARGS(t_lexer *token_list)
+void	label_cmds_and_args(t_lexer *token_list)
 {
 	t_token	*current;
 
@@ -40,16 +41,16 @@ void	label_CMDS_and_ARGS(t_lexer *token_list)
 	{
 		if (current->type == STRING)
 		{
-			if (token_list->CMD_found == FOUND)
+			if (token_list->cmd_found == FOUND)
 				current->type = ARG;
 			else
 			{
 				current->type = CMD;
-				token_list->CMD_found = FOUND;
+				token_list->cmd_found = FOUND;
 			}
 		}
 		else if (current->type == PIPE)
-			token_list->CMD_found = NOT_YET;
+			token_list->cmd_found = NOT_YET;
 		current = current->next;
 	}
 }
@@ -71,8 +72,6 @@ static void	remove_spaces(t_lexer *list)
 		current = current->next;
 	}
 }
-
-
 
 /**
  * @brief	Validates the syntax of the token list
@@ -116,7 +115,8 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	printf("_______________________________________________________________________________\n");
 	print_list(token_list);
 	printf("validate_syntax()redirector validated\n");
-	label_CMDS_and_ARGS(token_list);
+	label_cmds_and_args(token_list);
+	print_list(token_list);
 	printf("validate_syntax()token CMD ARGS labelled\n");
 	return (token_list->error_code);
 }
