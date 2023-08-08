@@ -6,21 +6,21 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 12:57:53 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 14:17:44 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:23:35 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 static void	assign_redir_type(t_ast_node *node, t_token *token, int i)
-{ //need to debug strncmp in regards to > and >> checking, false matches?
-	if (ft_strncmp("<", token->content, 2) == 0)
+{
+	if (token->type == HEREDOC)
 		node->redirections[i]->type = AST_HEREDOC;
-	else if (ft_strncmp("<", token->content, 1) == 0)
+	else if (token->type == INFILE)
 		node->redirections[i]->type = AST_INFILE;
-	else if (ft_strncmp(">", token->content, 2) == 0)
+	else if (token->type == APPEND_TO)
 		node->redirections[i]->type = AST_APPEND;
-	else if (ft_strncmp(">", token->content, 1) == 0)
+	else if (token->type == OUTFILE)
 		node->redirections[i]->type = AST_OUTFILE;
 	else
 		node->redirections[i]->type = AST_UNKNOWN_REDIR;
