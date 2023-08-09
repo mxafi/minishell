@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 13:44:48 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/08 15:39:30 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/09 11:26:30 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	concatenate_strings(t_lexer *list, t_token *current,
 	new_string = (char *)ft_calloc(length + 1, sizeof(char));
 	if (new_string != NULL)
 	{
-		ft_strlcpy(new_string, current->content, length);
+		ft_strlcpy(new_string, current->content, length + 1);
 		ft_strlcat(new_string, next_token->content, length + 1);
 		free(current->content);
 		current->content = new_string;
