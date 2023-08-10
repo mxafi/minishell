@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 15:26:00 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/10 09:35:02 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/10 11:46:10 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_input_heredoc(int is_heredoc)
 
 	ignore_signals();
 	toggle_echoctl();
-	line_read = readline(is_heredoc ? "" : "shellfish🦞> ");
+	line_read = readline("> ");
 	if (!line_read)
 		exit(0); // Handle C-d, should return the exit code of the previous command.
 	if (*line_read && !is_heredoc)
