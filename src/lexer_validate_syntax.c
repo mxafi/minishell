@@ -96,10 +96,6 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	print_list(token_list);
 	printf("validate_syntax()expanded\n");
 	printf("_______________________________________________________________________________\n");
-	//process_heredoc(token_list);
-	print_list(token_list);
-	printf("process_heredoc() validated");
-	printf("_______________________________________________________________________________\n");
 	concatenate_adjacent_strings(token_list);
 	print_list(token_list);
 	printf("validate_syntax()concatenated\n");
@@ -119,6 +115,10 @@ t_return_value	validate_syntax(t_lexer *token_list)
 		return (token_list->error_code);
 	print_list(token_list);
 	printf("validate_syntax()redirector validated\n");
+	printf("_______________________________________________________________________________\n");
+	process_heredoc(token_list);
+	print_list(token_list);
+	printf("process_heredoc() validated");
 	printf("_______________________________________________________________________________\n");
 	label_cmds_and_args(token_list);
 	print_list(token_list);
