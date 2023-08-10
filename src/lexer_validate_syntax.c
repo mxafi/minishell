@@ -86,37 +86,43 @@ static void	remove_spaces(t_lexer *list)
 t_return_value	validate_syntax(t_lexer *token_list)
 {
 	printf("validate_syntax()\n");
+	printf("_______________________________________________________________________________\n");
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	printf("_______________________________________________________________________________\n");
 	print_list(token_list);
 	printf("validate_syntax()quote validated\n");
-	expand_from_env(token_list);
 	printf("_______________________________________________________________________________\n");
+	expand_from_env(token_list);
 	print_list(token_list);
 	printf("validate_syntax()expanded\n");
-	concatenate_adjacent_strings(token_list);
 	printf("_______________________________________________________________________________\n");
+	process_heredoc(token_list);
+	print_list(token_list);
+	printf("process_heredoc() validated");
+	printf("_______________________________________________________________________________\n");
+	concatenate_adjacent_strings(token_list);
 	print_list(token_list);
 	printf("validate_syntax()concatenated\n");
-	remove_spaces(token_list);
 	printf("_______________________________________________________________________________\n");
+	remove_spaces(token_list);
 	print_list(token_list);
 	printf("validate_syntax()removed spaces\n");
+	printf("_______________________________________________________________________________\n");
 	if (validate_pipes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	printf("_______________________________________________________________________________\n");
 	print_list(token_list);
 	printf("validate_syntax()validated pipes\n");
 	if (token_list->error_code != SUCCESS)
 		return (token_list->error_code);
+	printf("_______________________________________________________________________________\n");
 	if (validate_redirectors(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	printf("_______________________________________________________________________________\n");
 	print_list(token_list);
 	printf("validate_syntax()redirector validated\n");
+	printf("_______________________________________________________________________________\n");
 	label_cmds_and_args(token_list);
 	print_list(token_list);
 	printf("validate_syntax()token CMD ARGS labelled\n");
+	printf("_______________________________________________________________________________\n");
 	return (token_list->error_code);
 }
