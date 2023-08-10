@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:05:54 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 18:05:58 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/10 22:13:56 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static int	ast_get_arg_count(t_token *token)
 	{
 		if (token->type == ARG)
 			all_arg_c++;
+		token = token->next;
 	}
 	return (all_arg_c);
 }
@@ -52,6 +53,7 @@ static int	ast_get_redir_count(t_token *token)
 			|| token->type == OUTFILE
 			|| token->type == INFILE)
 			redir_c++;
+		token = token->next;
 	}
 	return (redir_c);
 }
@@ -70,27 +72,20 @@ t_ast_node	*ast_parse_command(t_token *token)
 
 	if (!token)
 		return (NULL);
-	printf("Debug: ast_parse_command: calling ast_create_node\n");
 	node = ast_create_node(NULL, AST_UNDEFINED);
 	if (!node)
 		return (NULL);
-	printf("Debug: ast_parse_command: ast_create_node RETURN\n");
-	printf("Debug: ast_parse_command: calling ast_get_command_type\n");
 	node->type = ast_get_command_type(token);
-	printf("Debug: ast_parse_command: calling ast_get_redir_count\n");
 	node->redir_count = ast_get_redir_count(token);
-	printf("Debug: ast_parse_command: calling ast_get_arg_count\n");
 	node->argv_count = ast_get_arg_count(token) - node->redir_count + 1;
-	printf("Debug: ast_parse_command: calling ast_create_empty_exec_argv\n");
 	node->exec_argv = ast_create_empty_exec_argv(node->argv_count);
-	printf("Debug: ast_parse_command: calling ast_create_empty_redirections\n");
 	node->redirections = ast_create_empty_redirections(node->redir_count);
-	printf("Debug: ast_parse_command: basic stuff parsed\n");
-	if (!node->exec_argv || !node->redirections)
+	if (!node->exec_argv || (!node->redirections && node->redir_count > 0))
+	{
 		ast_recursive_delete(node);
+		exit(1);
+	}
 	ast_parse_argv(node, token);
-	printf("Debug: ast_parse_command: argv parsed\n");
 	ast_parse_redirections(node, token);
-	printf("Debug: ast_parse_command: redirections parsed\n");
 	return (node);
 }

@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:13 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 17:34:11 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/10 22:01:21 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_bool	execute_bi_cmd(t_ast_node *node)
 	else if (!ft_strncmp(node->exec_argv[0], "echo", 5))
 		exit(1);//wip run echo
 	else if (!ft_strncmp(node->exec_argv[0], "cd", 3))
-		exit(1);//wip run cd
+		exit(69);//wip run cd
 	else if (!ft_strncmp(node->exec_argv[0], "env", 4))
 		env_print_list();//wip
 	else if (!ft_strncmp(node->exec_argv[0], "export", 7))

@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 21:47:24 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/05 23:45:18 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/10 21:41:17 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**ast_create_empty_exec_argv(int length)
 
 	if (length < 1)
 		return (NULL);
-	array = ft_calloc(1, sizeof(char *) * (length + 1));
+	array = ft_calloc(length + 1, sizeof(char *));
 	if (!array)
 		return (NULL);
 	array[length] = NULL;
@@ -44,7 +44,7 @@ t_redir	**ast_create_empty_redirections(int count)
 
 	if (count < 1)
 		return (NULL);
-	array_of_structs = ft_calloc(1, sizeof(t_redir *) * (count + 1));
+	array_of_structs = ft_calloc(count + 1, sizeof(t_redir *));
 	if (!array_of_structs)
 		return (NULL);
 	array_of_structs[count] = NULL;

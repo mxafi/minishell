@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/10 17:55:04 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/10 22:14:33 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,6 @@ int	lexer(char *input)
 			free_token_list(&token_list);
 			return (EXIT_SYNTAX_ERROR);
 		}
-		printf("Debug: lexer: starting ast_builder\n");
 		ast_root = ast_builder(token_list.head);
 		executor(ast_root);
 		ast_recursive_delete(ast_root);
