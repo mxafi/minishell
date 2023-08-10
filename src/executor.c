@@ -6,13 +6,23 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:44:33 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 15:56:25 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/10 11:04:02 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-pid_t	wrap_fork()
+int	ret_exit_status(int termination_status)
+{
+	int	exit_status;
+
+	exit_status = 1;
+	if (WIFEXITED(termination_status))
+		exit_status = WEXITSTATUS(termination_status);
+	return (exit_status);
+}
+
+pid_t	wrap_fork(void)
 {
 	pid_t	pid;
 
@@ -31,17 +41,12 @@ pid_t	wrap_fork()
  * 
  * @param ast_node the root node of the AST.
  */
-t_err	executor(t_ast_node *node)
+void	executor(t_ast_node *node)
 {
-	t_err	ret;
-
 	if (!node)
-		return (FAILURE);
-	ret = SUCCESS;
+		return ;
 	if (node->type == AST_PIPE)
-		ret = execute_pipeline(node);
+		execute_pipeline(node);
 	else if (node->type == AST_COMMAND)
-		ret = execute_command(node);
-	g_minishell->exit_status = g_minishell->exit_status % 255; //remember to use WIFEXISTED and WEXITSTATUS
-	return (ret);
+		execute_command(node);
 }

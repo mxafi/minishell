@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 16:11:43 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/10 10:56:55 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@
 typedef struct s_minishell
 {
 	int		exit_status;
+	int		termination_status;
 	t_vec	env_vec;
 	char	**envp;
 }	t_minishell;
