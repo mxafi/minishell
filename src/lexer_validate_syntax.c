@@ -96,7 +96,7 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	print_list(token_list);
 	printf("validate_syntax()expanded\n");
 	printf("_______________________________________________________________________________\n");
-	process_heredoc(token_list);
+	//process_heredoc(token_list);
 	print_list(token_list);
 	printf("process_heredoc() validated");
 	printf("_______________________________________________________________________________\n");

@@ -6,26 +6,35 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/08 15:07:08 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/10 14:07:36 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 /**
- * @brief	Extracts the alphanumeric part from the environment key.
- * @details	This function extracts the alphanumeric part from the environment 
- * 			key. It starts from the beginning of the key and stops when a 
- *			non-alphanumeric character is encountered.
- *
- * @param env_key	The environment key 
- * @return			The extracted alphanumeric part of the key 
+ * @brief Extracts the alphanumeric part of an environment variable key.
+ * 
+ * @details This function extracts the alphanumeric part of an environment
+ * variable key, which is used for variable expansion. If the key starts with
+ * '?', it returns a string containing '?' to represent the exit status. If the
+ * key is alphanumeric, including underscores, it extracts the continuous
+ * alphanumeric characters until a non-alphanumeric character is encountered.
+ * 
+ * @param env_key The environment variable key to extract from.
+ * @return A dynamically allocated string containing the extracted alphanumeric
+ * part. The caller is responsible for freeing the memory.
  */
 static char	*extract_alphanumeric_part(const char *env_key)
 {
 	int		i;
 	char	*alphanumeric_part;
 
+	if (env_key[0] == '?')
+	{
+		alphanumeric_part = ft_strdup("?");
+		return alphanumeric_part;
+	}
 	i = 0;
 	while (env_key[i] != '\0')
 	{
@@ -48,7 +57,8 @@ static char	*extract_alphanumeric_part(const char *env_key)
  * @param non_alnum_part	The non-alphanumeric part of the token.
  */
 static void	concatenate_expanded_content(t_token *current,
-		const char *env_value, const char *non_alnum_part)
+											const char *env_value,
+											const char *non_alnum_part)
 {
 	char	*expanded_content;
 	char	*new_content;
@@ -73,14 +83,16 @@ static void	concatenate_expanded_content(t_token *current,
 }
 
 /**
- * @brief	Processes a token for environment variable expansion.
- * @details	This function processes a token for environment variable expansion.
- * 			It checks if the token contains a `$` symbol and if so, extracts 
- * 			the alphanumeric part, retrieves the environment value, and 
- *			concatenates the expanded content. It frees the memory of the
- *			extracted alphanumeric part.
+ * @brief Processes a token for environment variable expansion.
  * 
- * @param current	The current token to process.
+ * @details This function processes a token for environment variable expansion.
+ * It checks if the token contains a '$' symbol and if so, extracts the
+ * alphanumeric part of the environment variable key. If the extracted part is
+ * '?', it replaces it with the exit status value. Otherwise, it retrieves the
+ * environment value by the key and concatenates the expanded content. It frees
+ * the memory of the extracted alphanumeric part.
+ * 
+ * @param current The current token to process.
  */
 static void	process_token(t_token *current)
 {
@@ -93,7 +105,11 @@ static void	process_token(t_token *current)
 	if (env_key != NULL)
 	{
 		alpha_part = extract_alphanumeric_part(env_key + 1);
-		env_value = env_get_value_by_key(alpha_part);
+		printf("\n\nalpha_part is %s\n\n", alpha_part);
+		if (ft_strncmp(alpha_part, "?", 1) == 0)
+			env_value = ft_itoa(g_minishell->exit_code);
+		else
+			env_value = env_get_value_by_key(alpha_part);
 		non_alpha_part = env_key + 1 + ft_strlen(alpha_part);
 		concatenate_expanded_content(current, env_value, non_alpha_part);
 		free(alpha_part);
