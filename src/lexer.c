@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/18 17:04:19 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/10 17:55:04 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,8 @@ static int	tokenize_readline(t_lexer *token_list)
  */
 int	lexer(char *input)
 {
-	t_lexer	token_list;
+	t_lexer		token_list;
+	t_ast_node	*ast_root;
 
 	ft_bzero(&token_list, sizeof(t_lexer));
 	if (input && *input != '\0')
@@ -220,6 +221,10 @@ int	lexer(char *input)
 			free_token_list(&token_list);
 			return (EXIT_SYNTAX_ERROR);
 		}
+		printf("Debug: lexer: starting ast_builder\n");
+		ast_root = ast_builder(token_list.head);
+		executor(ast_root);
+		ast_recursive_delete(ast_root);
 		free_token_list(&token_list);
 	}
 	return (0);
