@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_command.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:05:54 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/03 16:31:26 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/10 22:13:56 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static int	ast_get_arg_count(t_token *token)
 	{
 		if (token->type == ARG)
 			all_arg_c++;
+		token = token->next;
 	}
 	return (all_arg_c);
 }
@@ -52,6 +53,7 @@ static int	ast_get_redir_count(t_token *token)
 			|| token->type == OUTFILE
 			|| token->type == INFILE)
 			redir_c++;
+		token = token->next;
 	}
 	return (redir_c);
 }
@@ -78,8 +80,11 @@ t_ast_node	*ast_parse_command(t_token *token)
 	node->argv_count = ast_get_arg_count(token) - node->redir_count + 1;
 	node->exec_argv = ast_create_empty_exec_argv(node->argv_count);
 	node->redirections = ast_create_empty_redirections(node->redir_count);
-	if (!node->exec_argv || !node->redirections)
+	if (!node->exec_argv || (!node->redirections && node->redir_count > 0))
+	{
 		ast_recursive_delete(node);
+		exit(1);
+	}
 	ast_parse_argv(node, token);
 	ast_parse_redirections(node, token);
 	return (node);

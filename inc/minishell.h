@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 10:04:58 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/10 17:57:41 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@
 # include "ast.h"
 # include "env.h"
 # include "lexer.h"
+# include "executor.h"
 
 typedef struct s_minishell
 {
-	int		exit_code;
+	int		exit_status;
+	int		termination_status;
 	t_vec	env_vec;
 	char	**envp;
 }	t_minishell;
@@ -74,12 +76,10 @@ t_minishell	*g_minishell;
 // Necessary function prototype for readline.
 void	rl_replace_line(const char *text, int clear_undo);
 
-// Function prototypes from minishell.c
-void	display_prompt(void);
-
-/*
- * Contained in lexer.c
- */
-int	lexer(char	*input);
+// Function prototypes for user created functions
+void		display_prompt(void);
+int			lexer(char	*input);
+t_ast_node	*ast_builder(t_token *token);
+void		executor(t_ast_node *node);
 
 #endif
