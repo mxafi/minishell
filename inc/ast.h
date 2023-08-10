@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 14:56:40 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:45:37 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_ast_node
 	int				argv_count;
 	int				redir_count;
 	char			**exec_argv;
+	char			*exec_file;
 	t_redir			**redirections;
 	t_ast_node		*left;
 	t_ast_node		*right;
