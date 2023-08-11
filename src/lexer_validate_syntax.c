@@ -125,7 +125,8 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	print_list(token_list);
 	printf("validate_syntax()redirector validated\n");
 	printf("_______________________________________________________________________________\n");
-	//process_heredoc(token_list);
+	if (process_heredoc(token_list) != SUCCESS)
+		return(token_list->error_code);
 	print_list(token_list);
 	printf("process_heredoc() validated");
 	printf("_______________________________________________________________________________\n");

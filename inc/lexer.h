@@ -59,8 +59,11 @@ typedef enum e_validation_state
 typedef enum e_return_value
 {
 	FAILURE,
-	CALLOC_FAIL,
 	SUCCESS,
+	CALLOC_FAIL,
+	FORK_FAIL,
+	WAIT_FAIL,
+	FILE_OPEN_ERROR,
 	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;
 
