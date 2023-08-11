@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/10 14:07:36 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/11 09:42:12 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void	process_token(t_token *current)
 		alpha_part = extract_alphanumeric_part(env_key + 1);
 		printf("\n\nalpha_part is %s\n\n", alpha_part);
 		if (ft_strncmp(alpha_part, "?", 1) == 0)
-			env_value = ft_itoa(g_minishell->exit_code);
+			env_value = ft_itoa(g_minishell->exit_status);
 		else
 			env_value = env_get_value_by_key(alpha_part);
 		non_alpha_part = env_key + 1 + ft_strlen(alpha_part);

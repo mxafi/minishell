@@ -23,7 +23,6 @@ void	delete_token(t_lexer *list, t_token *token)
 	t_token	*previous;
 	t_token	*current;
 
-	assert(token && list && list->head); //DEL THIS ASSERT
 	previous = NULL;
 	current = list->head;
 	while (current != NULL && current != token)

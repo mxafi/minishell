@@ -4,16 +4,9 @@
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
-<<<<<<< Updated upstream
-#    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/08/10 21:32:50 by malaakso         ###   ########.fr        #
-=======
-#    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/08/11 09:34:35 by lclerc           ###   ########.fr        #
+#    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
+#    Updated: 2023/08/11 09:39:43 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

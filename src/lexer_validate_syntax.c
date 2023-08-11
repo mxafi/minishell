@@ -56,23 +56,32 @@ void	label_cmds_and_args(t_lexer *token_list)
 }
 
 /**
- * @brief		Remove space tokens from the token list.
- * 
- * @param list	The list of tokens to be processed.
+ * @brief Removes space tokens from the token list.
+ *
+ * This function iterates through the token list and removes tokens of type
+ * `MY_SPACE`. It updates the list pointers and frees the memory associated
+ * with the removed tokens.
+ *
+ * @param list The list of tokens to be processed.
  */
 static void	remove_spaces(t_lexer *list)
 {
 	t_token	*current;
+	t_token	*temp;
 
 	current = list->head;
 	while (current != NULL && current->next != NULL)
 	{
 		if (current->type == MY_SPACE)
+		{
+			temp = current->next;
 			delete_token(list, current);
-		current = current->next;
+			current = temp;
+		}
+		else
+			current = current->next;
 	}
 }
-
 /**
  * @brief	Validates the syntax of the token list
  * @details	This function performs a series of syntax validations on the token
@@ -116,13 +125,15 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	print_list(token_list);
 	printf("validate_syntax()redirector validated\n");
 	printf("_______________________________________________________________________________\n");
-	process_heredoc(token_list);
+	//process_heredoc(token_list);
 	print_list(token_list);
 	printf("process_heredoc() validated");
 	printf("_______________________________________________________________________________\n");
 	label_cmds_and_args(token_list);
 	print_list(token_list);
 	printf("validate_syntax()token CMD ARGS labelled\n");
-	printf("_______________________________________________________________________________\n");
+	printf("################################################################################\n");
+	printf("#                                   OUTPUT                                     #\n");
+	printf("################################################################################\n");
 	return (token_list->error_code);
 }
