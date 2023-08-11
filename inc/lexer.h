@@ -62,7 +62,7 @@ typedef enum e_return_value
 	SUCCESS,
 	CALLOC_FAIL,
 	FORK_FAIL,
-	WAIT_FAIL,
+	WAIT_PID_FAIL,
 	FILE_OPEN_ERROR,
 	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;

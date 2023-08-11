@@ -12,6 +12,14 @@
 
 #include "../inc/lexer.h"
 
+/**
+ * @brief Handles the child process responsible for reading heredoc input
+ *        and writing it to the specified file descriptor.
+ * 
+ * @param list      The token list.
+ * @param token     The current heredoc token.
+ * @param fd        The file descriptor to write heredoc content to.
+ */
 static t_return_value	child_processes_heredoc(t_lexer *list, t_token *token,
 		int fd)
 {
@@ -39,30 +47,50 @@ static t_return_value	child_processes_heredoc(t_lexer *list, t_token *token,
 	close(fd);
 	exit(0);
 }
-
-static t_return_value	parent_wait_for_child(list, fd, child_pid)
+/**
+ * @brief Waits for the child process to complete and examines its exit status.
+ * 
+ * This function uses the `waitpid` system call to wait for the specified child
+ * process to complete its execution. It also examines the exit status of the
+ * child process to determine the reason for its termination.
+ * 
+ * @param list      The token list.
+ * @param fd        The file descriptor associated with the child process.
+ * @param child_pid The process ID of the child process.
+ * @return t_return_value The error code associated with the child process.
+ *         If the child process terminated normally, the return value is
+ *         the exit status of the child process. If the child process was
+ *         terminated by a signal, the return value is the corresponding
+ *         signal number.
+ */
+static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
+		int child_pid)
 {
-	int	status;
+	int	exit_status;
 
-	// Wait for the child process to finish
-	if (waitpid(child_pid, &status, 0) == -1)
+	if (waitpid(child_pid, &exit_status, 0) == -1)
 	{
+		list->error_code = WAIT_PID_FAIL;
 		perror("waitpid");
-		return ;
 	}
-	// Check if the child process exited normally
-	if (WIFEXITED(status))
-	{
-		// Handle the child's exit status if needed
-	}
-	else if (WIFSIGNALED(status))
-	{
-		// Handle the case where the child was terminated by a signal
-	}
-	// Close the file descriptor
+	else if (WIFEXITED(exit_status))
+		list->error_code = WEXITSTATUS(exit_status);
+	else if (WIFSIGNALED(exit_status))
+		list->error_code = WIFSIGNALED;
 	close(fd);
+	return (list->error_code);
 }
-
+/**
+ * @brief Sets up the child process for heredoc input and waits for its completion.
+ * 
+ * This function creates a child process using the `fork` system call to handle
+ * the heredoc input. The child process reads user input until a specified
+ * delimiter is encountered and writes the input to the provided file descriptor.
+ * 
+ * @param list      The token list.
+ * @param current   The current token representing the heredoc.
+ * @return t_return_value The error code associated with the process.
+ */
 static t_return_value	get_heredoc_input(t_lexer *list, t_token *current)
 {
 	int	child_pid;
@@ -79,19 +107,28 @@ static t_return_value	get_heredoc_input(t_lexer *list, t_token *current)
 	{
 		perror("fork");
 		list->error_code = FORK_FAIL;
-		return (list->error_code);
+		close(fd);
+		return (FORK_FAIL);
 	}
 	if (child_pid == 0)
 		child_processes_heredoc(list, current, fd);
-	if (parent_wait_for_child(fd, child_pid) != SUCCESS)
-	{
-		list->error_code = WAIT_FAIL;
-		return (list->error_code);
-	}
+	if (parent_wait_for_child(list, fd, child_pid) != SUCCESS)
+		return (WAIT_PID_FAIL);
 	close(fd);
-	return (list->error_code);
+	return (SUCCESS);
 }
-
+/**
+ * @brief Generates a temporary file path for heredoc content based on the pipe counter.
+ * 
+ * This function constructs a unique temporary file path for storing heredoc content.
+ * The path includes a combination of a base path and a pipe counter to ensure
+ * uniqueness for each heredoc instance.
+ * 
+ * @param list          The token list.
+ * @param current       The current token representing the heredoc.
+ * @param pipe_counter  The count of pipes encountered so far.
+ * @return t_return_value The error code associated with generating the file path.
+ */
 static t_return_value	get_temp_file_path(t_lexer *list, t_token *current,
 		int pipe_counter)
 {
@@ -114,7 +151,13 @@ static t_return_value	get_temp_file_path(t_lexer *list, t_token *current,
 	current->content = temp_file_path;
 	return (SUCCESS);
 }
-
+/**
+ * @brief Processes heredoc tokens by coordinating temporary file creation,
+ *        heredoc input handling, and memory cleanup.
+ * 
+ * @param token_list The token list containing the heredoc tokens.
+ * @return t_return_value The final error code of the heredoc processing.
+ */
 t_return_value	process_heredoc(t_lexer *token_list)
 {
 	t_token	*current;

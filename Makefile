@@ -6,7 +6,7 @@
 #    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
-#    Updated: 2023/08/11 09:39:43 by lclerc           ###   ########.fr        #
+#    Updated: 2023/08/11 18:33:29 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ LEXER_C			=	lexer.c \
 					lexer_validate_pipes.c \
 					lexer_validate_redirectors.c \
 					lexer_expansion.c \
+					lexer_heredoc_validation.c \
 					DELETE_ME_AND_FCT_IN_HEADER.c
 					
 
