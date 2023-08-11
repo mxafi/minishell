@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_argv.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 13:02:31 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/03 16:34:31 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/10 22:13:33 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ast_parse_argv(t_ast_node *node, t_token *token)
 		token = skip_redirector_and_arg(token);
 		if (!token || token->type == PIPE)
 			return ;
-		if (token->type == CMD || token->type == BI_CMD || token->type == ARG)
+		if (token->type == CMD || token->type == ARG)
 		{
 			node->exec_argv[i] = token->content;
 			token->content = NULL;

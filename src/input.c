@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:08:47 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 11:54:58 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/11 09:26:12 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ char	*get_input(void)
 	toggle_echoctl();
 	line_read = readline("shellfish🦞> ");
 	if (!line_read)
-		exit(0);// This is to handle C-d, should return the exit code of the previous command, also toggleechoctl back to default.
+	{
+		toggle_echoctl();
+		exit(g_minishell->exit_status);
+	}
 	if (*line_read)
 		add_history(line_read);
 	restore_signal_defaults();

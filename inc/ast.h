@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/03 17:03:00 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/10 17:42:45 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ typedef enum e_ast_redir_type
 {
 	AST_INFILE,
 	AST_OUTFILE,
-	AST_APPEND
+	AST_APPEND,
+	AST_HEREDOC,
+	AST_UNKNOWN_REDIR
 }	t_ast_redir_type;
 
 typedef struct s_redir
@@ -71,6 +73,7 @@ typedef struct s_ast_node
 	int				argv_count;
 	int				redir_count;
 	char			**exec_argv;
+	char			*exec_file;
 	t_redir			**redirections;
 	t_ast_node		*left;
 	t_ast_node		*right;
@@ -85,5 +88,6 @@ t_redir		**ast_create_empty_redirections(int count);
 t_ast_node	*ast_parse_command(t_token *token);
 void		ast_parse_argv(t_ast_node *node, t_token *token);
 void		ast_parse_redirections(t_ast_node *node, t_token *token);
+t_ast_node	*ast_builder(t_token *token);
 
 #endif

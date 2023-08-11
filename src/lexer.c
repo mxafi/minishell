@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/08 14:02:09 by lclerc           ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/08/11 09:27:08 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../inc/minishell.h"
 
@@ -205,7 +206,8 @@ static int	tokenize_readline(t_lexer *token_list)
  */
 int	lexer(char *input)
 {
-	t_lexer	token_list;
+	t_lexer		token_list;
+	t_ast_node	*ast_root;
 
 	ft_bzero(&token_list, sizeof(t_lexer));
 	if (input && *input != '\0')
@@ -219,6 +221,9 @@ int	lexer(char *input)
 			free_token_list(&token_list);
 			return (EXIT_SYNTAX_ERROR);
 		}
+		ast_root = ast_builder(token_list.head);
+		executor(ast_root);
+		ast_recursive_delete(ast_root);
 		free_token_list(&token_list);
 	}
 	return (0);
