@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-t_return_value	ft_pwd(void)
+static t_return_value	ft_pwd(void)
 {
 	char	*working_directory_path;
 
@@ -25,6 +25,35 @@ t_return_value	ft_pwd(void)
 	printf("%s\n", working_directory_path);
 	free(working_directory_path);
 	return (SUCCESS);
+}
+
+static void	ft_echo(t_token *current)
+{
+	t_bool	print_newline;
+
+	print_newline = TRUE;
+	if (current->next->type == ARG)
+	{
+		current = current->next;
+		if (current->next != NULL && ft_strncmp(current->content, "-n", 2) == 0)
+		{
+			print_newline = FALSE;
+			current = current->next;
+		}
+	}
+	while (current->type == ARG)
+	{
+		printf("%s", current->content);
+		if (current->next->type == ARG)
+		{
+			current = current->next;
+			printf(" ");
+		}
+		else
+			break ;
+	}
+	if (print_newline == TRUE)
+		printf("\n");
 }
 
 void	execute_builtins(t_lexer *token_list)
@@ -43,6 +72,13 @@ void	execute_builtins(t_lexer *token_list)
 				printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
 			}
 			// Add more if statements for other built-ins here
+		}
+		else if (ft_strncmp(current->content, "echo", 4) == 0)
+		{
+			// Execute the pwd built-in
+			printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
+			ft_echo(current);
+			printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
 		}
 		current = current->next;
 	}
