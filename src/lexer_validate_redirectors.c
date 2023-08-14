@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_validate_redirectors.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:58:31 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/17 19:02:59 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/14 14:04:04 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_return_value	validate_redirectors(t_lexer *list)
 	current = list->head;
 	while (current->next != NULL)
 	{
-		if (token_is_redirector(current))
+		if (token_is_redirector(current) == SUCCESS)
 		{
 			next_token = current->next;
 			if (current->next != NULL && next_token->type != STRING)
@@ -81,7 +81,7 @@ t_return_value	validate_redirectors(t_lexer *list)
 		}
 		current = current->next;
 	}
-	if (current->next == NULL && token_is_redirector(current))
+	if (current->next == NULL && (token_is_redirector(current) == SUCCESS))
 	{
 		print_syntax_error(NULL);
 		list->error_code = EXIT_SYNTAX_ERROR;

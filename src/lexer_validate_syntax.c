@@ -68,7 +68,7 @@ static void	remove_spaces(t_lexer *list)
 {
 	t_token	*current;
 	t_token	*temp;
-
+	printf("REMOVING SPACE_ list error_code %d\n", list->error_code);
 	current = list->head;
 	while (current != NULL && current->next != NULL)
 	{
@@ -94,10 +94,11 @@ static void	remove_spaces(t_lexer *list)
  */
 t_return_value	validate_syntax(t_lexer *token_list)
 {
-	//int debug_error =0;
+	int	debug_error;
 
 	printf("validate_syntax()\n");
 	printf("_______________________________________________________________________________\n");
+		printf("________list error_code %d\n", token_list->error_code);
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
 	print_list(token_list);
@@ -113,26 +114,32 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	printf("_______________________________________________________________________________\n");
 	remove_spaces(token_list);
 	print_list(token_list);
+	printf("list error_code %d\n", token_list->error_code);
 	printf("validate_syntax()removed spaces\n");
 	printf("_______________________________________________________________________________\n");
+
 	if (validate_pipes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
 	print_list(token_list);
+	printf("list error_code %d\n", token_list->error_code);
 	printf("validate_syntax()validated pipes\n");
 	if (token_list->error_code != SUCCESS)
 		return (token_list->error_code);
+	
 	printf("_______________________________________________________________________________\n");
 	if (validate_redirectors(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
 	print_list(token_list);
 	printf("validate_syntax()redirector validated\n");
 	printf("_______________________________________________________________________________\n");
-	//debug_error = process_heredoc(token_list);
-	//if (debug_error != SUCCESS)
-	// {
-	//	printf("heredoc error detected :%d:\n", debug_error);
-	//	return(token_list->error_code);
-	// }
+	debug_error = process_heredoc(token_list);
+	printf("list error_code %d\n", token_list->error_code);
+	if (debug_error != SUCCESS)
+	{
+		printf("heredoc error detected :%d:\n", debug_error);
+		print_list(token_list);
+		return (token_list->error_code);
+	}
 	print_list(token_list);
 	printf("process_heredoc() validated");
 	printf("_______________________________________________________________________________\n");

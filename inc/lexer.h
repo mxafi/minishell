@@ -58,8 +58,8 @@ typedef enum e_validation_state
  */
 typedef enum e_return_value
 {
-	FAILURE,
 	SUCCESS,
+	FAILURE,
 	CALLOC_FAIL,
 	FORK_FAIL,
 	WAIT_PID_FAIL,
