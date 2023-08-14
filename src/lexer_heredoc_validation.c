@@ -183,7 +183,6 @@ t_return_value	process_heredoc(t_lexer *token_list)
 				return (token_list->error_code);
 			if (get_heredoc_input(token_list, current) != SUCCESS)
 				return (token_list->error_code);
-			free(current->content);
 		}
 		current = current->next;
 	}
