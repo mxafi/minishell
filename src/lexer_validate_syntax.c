@@ -145,6 +145,10 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	label_cmds_and_args(token_list);
 	print_list(token_list);
 	printf("validate_syntax()token CMD ARGS labelled\n");
+	printf("_______________________________________________________________________________\n");
+	execute_builtins(token_list);
+	print_list(token_list);
+	printf("executed builtins\n");
 	printf("################################################################################\n");
 	printf("#                                   OUTPUT                                     #\n");
 	printf("################################################################################\n");

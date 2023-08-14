@@ -154,4 +154,10 @@ void	expand_from_env(t_lexer *list);
 
 t_return_value			process_heredoc(t_lexer *list);
 
+/**
+ * contained in builtins.c
+ */
+void	execute_builtins(t_lexer *token_list);
+
+
 #endif
