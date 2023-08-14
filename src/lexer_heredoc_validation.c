@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/lexer.h"
+#include "../inc/minishell.h"
 
 /**
  * @brief Handles the child process responsible for reading heredoc input
@@ -20,8 +20,7 @@
  * @param token     The current heredoc token.
  * @param fd        The file descriptor to write heredoc content to.
  */
-static t_return_value	child_processes_heredoc(t_lexer *list, t_token *token,
-		int fd)
+static t_return_value	child_processes_heredoc(t_token *token, int fd)
 {
 	char	*line_read;
 	char	*delimiter;
@@ -45,8 +44,10 @@ static t_return_value	child_processes_heredoc(t_lexer *list, t_token *token,
 	restore_signal_defaults();
 	toggle_echoctl();
 	close(fd);
+	printf("child here\n");
 	exit(0);
 }
+
 /**
  * @brief Waits for the child process to complete and examines its exit status.
  * 
@@ -76,16 +77,20 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 	else if (WIFEXITED(exit_status))
 		list->error_code = WEXITSTATUS(exit_status);
 	else if (WIFSIGNALED(exit_status))
-		list->error_code = WIFSIGNALED;
+		list->error_code = WIFSIGNALED(exit_status);
 	close(fd);
+	printf("Parent is waiting\n");
 	return (list->error_code);
 }
+
 /**
- * @brief Sets up the child process for heredoc input and waits for its completion.
+
+	* @brief Sets up the child process for heredoc input and waits for its completion.
  * 
  * This function creates a child process using the `fork` system call to handle
  * the heredoc input. The child process reads user input until a specified
- * delimiter is encountered and writes the input to the provided file descriptor.
+
+	* delimiter is encountered and writes the input to the provided file descriptor.
  * 
  * @param list      The token list.
  * @param current   The current token representing the heredoc.
@@ -96,7 +101,8 @@ static t_return_value	get_heredoc_input(t_lexer *list, t_token *current)
 	int	child_pid;
 	int	fd;
 
-	fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	printf("current->content is :%s:\n", current->content);
+	fd = open(current->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		list->error_code = FILE_OPEN_ERROR;
@@ -111,23 +117,28 @@ static t_return_value	get_heredoc_input(t_lexer *list, t_token *current)
 		return (FORK_FAIL);
 	}
 	if (child_pid == 0)
-		child_processes_heredoc(list, current, fd);
+		child_processes_heredoc(current, fd);
 	if (parent_wait_for_child(list, fd, child_pid) != SUCCESS)
 		return (WAIT_PID_FAIL);
 	close(fd);
+	printf(" I was in get_heredoc_input \n");
 	return (SUCCESS);
 }
+
 /**
- * @brief Generates a temporary file path for heredoc content based on the pipe counter.
+
+	* @brief Generates a temporary file path for heredoc content based on the pipe counter.
  * 
- * This function constructs a unique temporary file path for storing heredoc content.
+
+	* This function constructs a unique temporary file path for storing heredoc content.
  * The path includes a combination of a base path and a pipe counter to ensure
  * uniqueness for each heredoc instance.
  * 
  * @param list          The token list.
  * @param current       The current token representing the heredoc.
  * @param pipe_counter  The count of pipes encountered so far.
- * @return t_return_value The error code associated with generating the file path.
+
+	* @return t_return_value The error code associated with generating the file path.
  */
 static t_return_value	get_temp_file_path(t_lexer *list, t_token *current,
 		int pipe_counter)
@@ -136,6 +147,7 @@ static t_return_value	get_temp_file_path(t_lexer *list, t_token *current,
 	char	*pipe_counter_str;
 
 	pipe_counter_str = ft_itoa(pipe_counter);
+	printf("pipe_counter_str :%s:\n", pipe_counter_str);
 	if (!pipe_counter_str)
 	{
 		list->error_code = CALLOC_FAIL;
@@ -143,14 +155,17 @@ static t_return_value	get_temp_file_path(t_lexer *list, t_token *current,
 	}
 	temp_file_path = ft_strjoin("/tmp/minishell_heredoc.tmp", pipe_counter_str);
 	free(pipe_counter_str);
+	printf("temp_file_path is :%s:\n", temp_file_path);
 	if (!temp_file_path)
 	{
 		list->error_code = CALLOC_FAIL;
 		return (list->error_code);
 	}
 	current->content = temp_file_path;
+	printf(" I was in get_temp_file_path \n");
 	return (SUCCESS);
 }
+
 /**
  * @brief Processes heredoc tokens by coordinating temporary file creation,
  *        heredoc input handling, and memory cleanup.
@@ -162,15 +177,20 @@ t_return_value	process_heredoc(t_lexer *token_list)
 {
 	t_token	*current;
 	int		pipe_counter;
+	int		heredoc_counter = 0;
+	int		token_counter = 0;
 
 	current = token_list->head;
-	pipe_counter = 0;
-	while (current != NULL && current->next != NULL)
+	pipe_counter = 1;
+	while (current->next != NULL)
 	{
+		printf("debug token_counter :%d:\n", token_counter++);
 		if (current->type == PIPE)
 			pipe_counter++;
+		printf("pipe counter %d\n", pipe_counter);
 		if (current->type == HEREDOC)
 		{
+			printf("debug heredoc_counter :%d:\n", heredoc_counter++);
 			if (get_temp_file_path(token_list, current,
 					pipe_counter) != SUCCESS)
 				return (CALLOC_FAIL);

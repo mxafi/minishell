@@ -94,6 +94,8 @@ static void	remove_spaces(t_lexer *list)
  */
 t_return_value	validate_syntax(t_lexer *token_list)
 {
+	//int debug_error =0;
+
 	printf("validate_syntax()\n");
 	printf("_______________________________________________________________________________\n");
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
@@ -125,8 +127,12 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	print_list(token_list);
 	printf("validate_syntax()redirector validated\n");
 	printf("_______________________________________________________________________________\n");
-	if (process_heredoc(token_list) != SUCCESS)
-		return(token_list->error_code);
+	//debug_error = process_heredoc(token_list);
+	//if (debug_error != SUCCESS)
+	// {
+	//	printf("heredoc error detected :%d:\n", debug_error);
+	//	return(token_list->error_code);
+	// }
 	print_list(token_list);
 	printf("process_heredoc() validated");
 	printf("_______________________________________________________________________________\n");
