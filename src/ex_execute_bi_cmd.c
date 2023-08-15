@@ -14,7 +14,6 @@
 
 t_bool	execute_bi_cmd(t_ast_node *node)
 {
-	//TODO: create custom function for each that sanitizes and validates input, as well as, does the job
 	if (!ft_strncmp(node->exec_argv[0], "exit", 5))
 		exit(0);//wip run exit
 	else if (!ft_strncmp(node->exec_argv[0], "echo", 5))
