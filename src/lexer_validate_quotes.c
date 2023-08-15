@@ -24,26 +24,41 @@
 void	remove_quote_tokens(t_lexer *token_list)
 {
 	t_token	*current;
-	t_token *temp;
+	t_token	*temp;
 
 	current = token_list->head;
-	while (current != NULL && current->next != NULL)
+	while (current != NULL)
 	{
-		printf("Debug: Error Removing quote\n");
+		printf("Debug: Removing quote\n");
 		print_list(token_list);
 		if (current->type == SINGLE_QUOTE || current->type == DOUBLE_QUOTE)
-		 {
+		{
 			temp = current->next;
 			delete_token(token_list, current);
 			current = temp;
-		 }
-		else if (current->type == QUOTE_NEED_NULL_STR)
+		}
+		else
+			current = current->next;
+	}
+}
+/**
+ * @brief Add null string for empty quotes.
+ *
+ * @param token_list The list being checked and holding list information.
+ */
+void	add_null_string_for_empty_quotes(t_lexer *token_list)
+{
+	t_token	*current;
+
+	current = token_list->head;
+	while (current != NULL)
+	{
+		if (current->type == QUOTE_NEED_NULL_STR)
 		{
 			current->type = STRING;
 			ft_strlcpy(current->content, "", 1);
 		}
-		else 
-			current = current->next;
+		current = current->next;
 	}
 }
 
@@ -53,7 +68,7 @@ void	remove_quote_tokens(t_lexer *token_list)
  * 			strings the state of opened quotes labelled as single SGL or double
  * 			DBL *_QUOTE_OPENED or *_QUOTE_CAN_BE_CLOSED) is kept in the
  *			token_list->state placeholder. If this state remains, the syntax
- *			validation process is printing a corresponding syntax error, if 
+ *			validation process is printing a corresponding syntax error. If 
  *			quotes are present, but have matching closing quote,
  *			token_list->state is UNDEFINED. This is not a bash behaviour but
  *			a requisite from the subject.
@@ -64,14 +79,14 @@ void	remove_quote_tokens(t_lexer *token_list)
  */
 t_return_value	validate_quotes(t_lexer *token_list)
 {
-	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED || \
+	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED ||
 		token_list->state == SGL_QUOTE_OPENED)
 	{
 		printf("Shellfish> syntax error expecting closing single quotes `\''\n");
 		token_list->error_code = EXIT_SYNTAX_ERROR;
 		return (token_list->error_code);
 	}
-	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED || \
+	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED ||
 				token_list->state == DBL_QUOTE_OPENED)
 	{
 		printf("Shellfish> syntax error expecting closing double quotes `\"'\n");
@@ -80,6 +95,7 @@ t_return_value	validate_quotes(t_lexer *token_list)
 	}
 	printf("validating quotes going to remove quote tokens\n");
 	remove_quote_tokens(token_list);
+	add_null_string_for_empty_quotes(token_list);
 	printf("validating quotes returning from quote removal\n");
 	token_list->error_code = SUCCESS;
 	return (token_list->error_code);
