@@ -64,6 +64,8 @@ typedef enum e_return_value
 	FORK_FAIL,
 	WAIT_PID_FAIL,
 	FILE_OPEN_ERROR,
+	DIRECTORY_NOT_FOUND,
+	INVALID_ARGUMENT,
 	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;
 
