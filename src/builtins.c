@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:58:09 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/15 16:44:40 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/15 18:03:34 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,3 +92,29 @@ void	ft_cd(t_ast_node *node)
 	g_minishell->exit_status = 0;
 }
 
+void	ft_exit(t_ast_node *node)
+{
+	int	i;
+
+	ft_putstr_fd("exit\n", 1);
+	g_minishell->exit_status = 0;
+	if (node->argv_count > 2)
+	{
+		ft_putstr_fd("shellfishy: exit: too many arguments\n", 2);
+		g_minishell->exit_status = 1;
+	}
+	else if (node->argv_count == 2)
+	{
+		i = 0;
+		while (ft_isdigit((int)node->exec_argv[i]))
+			i++;
+		if (node->exec_argv[i] == '\0')
+			exit(ft_atoi(node->exec_argv[1]) % 255);
+		ft_putstr_fd("shellfishy: exit: ", 2);
+		ft_putstr_fd(node->exec_argv[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		exit(255);
+	}
+	else
+		exit(0);
+}

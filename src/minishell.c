@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 13:19:57 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:36:52 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	display_prompt(void)
 		if (!input)
 			return ;
 		lexer(input);
-		free(input);
+		//free(input); free in lexer
 	}
 }
 

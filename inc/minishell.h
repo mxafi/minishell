@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/15 15:27:33 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/15 18:02:37 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,6 @@ void		executor(t_ast_node *node);
 void	ft_pwd(void);
 void	ft_echo(t_ast_node *node);
 void	ft_cd(t_ast_node *node);
+void	ft_exit(t_ast_node *node);
+
 #endif

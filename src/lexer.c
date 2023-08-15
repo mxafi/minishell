@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/15 15:00:56 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/15 17:40:56 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ int	lexer(char *input)
 	if (input && *input != '\0')
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
+		free(input);
 		tokenize_readline(&token_list);
 		//print_list(&token_list);
 		//printf("lexer() validation to come\n");
