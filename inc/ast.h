@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 17:42:45 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/15 14:11:06 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef enum e_ast_node_type
 {
 	AST_PIPE,
 	AST_COMMAND,
-	AST_BI_CMD,
+	AST_BI_CMD, //Currently in the process of being obsoleted
 	AST_UNDEFINED
 }	t_ast_node_type;
 

@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/14 12:09:07 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/15 15:00:56 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	int		length;
 
 	new_token = NULL;
-	printf("delimiter_to_token()\n");
+	//printf("delimiter_to_token()\n");
 	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
@@ -187,7 +187,6 @@ static int	tokenize_readline(t_lexer *token_list)
 		if (token_list->error_code == CALLOC_FAIL)
 			break ;
 	}
-	printf("tokenize_readline\n");
 	return (token_list->error_code);
 }
 
@@ -214,8 +213,8 @@ int	lexer(char *input)
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
 		tokenize_readline(&token_list);
-		print_list(&token_list);
-		printf("lexer() validation to come\n");
+		//print_list(&token_list);
+		//printf("lexer() validation to come\n");
 		if ((validate_syntax(&token_list)) == FAILURE)
 		{
 			free_token_list(&token_list);

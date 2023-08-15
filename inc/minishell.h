@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 17:57:41 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/15 14:49:42 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,8 @@ void		display_prompt(void);
 int			lexer(char	*input);
 t_ast_node	*ast_builder(t_token *token);
 void		executor(t_ast_node *node);
+
+// Builtins
+void	ft_pwd(void);
 
 #endif

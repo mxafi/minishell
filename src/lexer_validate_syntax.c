@@ -95,62 +95,60 @@ static void	remove_spaces(t_lexer *list)
 t_return_value	validate_syntax(t_lexer *token_list)
 {
 
-	printf("validate_syntax()\n");
-	printf("_______________________________________________________________________________\n");
-		printf("________list error_code %d\n", token_list->error_code);
+	//printf("validate_syntax()\n");
+	//printf("_______________________________________________________________________________\n");
+		//printf("________list error_code %d\n", token_list->error_code);
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	print_list(token_list);
-	printf("validate_syntax()quote validated\n");
-	printf("_______________________________________________________________________________\n");
+	//print_list(token_list);
+	//printf("validate_syntax()quote validated\n");
+	//printf("_______________________________________________________________________________\n");
 	expand_from_env(token_list);
-	print_list(token_list);
-	printf("validate_syntax()expanded\n");
-	printf("_______________________________________________________________________________\n");
+	//print_list(token_list);
+	//printf("validate_syntax()expanded\n");
+	//printf("_______________________________________________________________________________\n");
 	concatenate_adjacent_strings(token_list);
-	print_list(token_list);
-	printf("validate_syntax()concatenated\n");
-	printf("_______________________________________________________________________________\n");
+	//print_list(token_list);
+	//printf("validate_syntax()concatenated\n");
+	//printf("_______________________________________________________________________________\n");
 	remove_spaces(token_list);
-	print_list(token_list);
-	printf("list error_code %d\n", token_list->error_code);
-	printf("validate_syntax()removed spaces\n");
-	printf("_______________________________________________________________________________\n");
-
+//	print_list(token_list);
+	//printf("list error_code %d\n", token_list->error_code);
+	//printf("validate_syntax()removed spaces\n");
+	//printf("_______________________________________________________________________________\n");
 	if (validate_pipes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	print_list(token_list);
-	printf("list error_code %d\n", token_list->error_code);
-	printf("validate_syntax()validated pipes\n");
+	//print_list(token_list);
+	//printf("list error_code %d\n", token_list->error_code);
+	//printf("validate_syntax()validated pipes\n");
 	if (token_list->error_code != SUCCESS)
 		return (token_list->error_code);
-	
-	printf("_______________________________________________________________________________\n");
+	//printf("_______________________________________________________________________________\n");
 	if (validate_redirectors(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	print_list(token_list);
-	printf("validate_syntax()redirector validated\n");
-	printf("_______________________________________________________________________________\n");
+	//print_list(token_list);
+	//printf("validate_syntax()redirector validated\n");
+	//printf("_______________________________________________________________________________\n");
 	int debug_error = process_heredoc(token_list);
-	printf("list error_code %d\n", token_list->error_code);
+	//printf("list error_code %d\n", token_list->error_code);
 	if (debug_error != SUCCESS)
 	{
-		printf("heredoc error detected :%d:\n", debug_error);
-		print_list(token_list);
+		//printf("heredoc error detected :%d:\n", debug_error);
+		//print_list(token_list);
 		return (token_list->error_code);
 	}
-	print_list(token_list);
-	printf("process_heredoc() validated");
-	printf("_______________________________________________________________________________\n");
+	//print_list(token_list);
+	//printf("process_heredoc() validated");
+	//printf("_______________________________________________________________________________\n");
 	label_cmds_and_args(token_list);
-	print_list(token_list);
-	printf("validate_syntax()token CMD ARGS labelled\n");
-	printf("_______________________________________________________________________________\n");
-	execute_builtins(token_list);
-	print_list(token_list);
-	printf("executed builtins\n");
-	printf("################################################################################\n");
-	printf("#                                   OUTPUT                                     #\n");
-	printf("################################################################################\n");
+	//print_list(token_list);
+	//printf("validate_syntax()token CMD ARGS labelled\n");
+	//printf("_______________________________________________________________________________\n");
+	//execute_builtins(token_list);
+	//print_list(token_list);
+	//printf("executed builtins\n");
+	//printf("################################################################################\n");
+	//printf("#                                   OUTPUT                                     #\n");
+	//printf("################################################################################\n");
 	return (token_list->error_code);
 }

@@ -29,8 +29,8 @@ static void	remove_quote_tokens(t_lexer *token_list)
 	current = token_list->head;
 	while (current != NULL)
 	{
-		printf("Debug: Removing quote\n");
-		print_list(token_list);
+		//printf("Debug: Removing quote\n");
+		//print_list(token_list);
 		if (current->type == SINGLE_QUOTE || current->type == DOUBLE_QUOTE)
 		{
 			temp = current->next;
@@ -95,10 +95,10 @@ t_return_value	validate_quotes(t_lexer *token_list)
 		token_list->error_code = EXIT_SYNTAX_ERROR;
 		return (token_list->error_code);
 	}
-	printf("validating quotes going to remove quote tokens\n");
+	//printf("validating quotes going to remove quote tokens\n");
 	remove_quote_tokens(token_list);
 	add_null_string_for_empty_quotes(token_list);
-	printf("validating quotes returning from quote removal\n");
+	//printf("validating quotes returning from quote removal\n");
 	token_list->error_code = SUCCESS;
 	return (token_list->error_code);
 }

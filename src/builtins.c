@@ -19,7 +19,7 @@
  * 
  * @return t_return_value Success or Failure.
  */
-static t_return_value	ft_pwd(void)
+void	ft_pwd(void)
 {
 	char	*working_directory_path;
 
@@ -27,12 +27,15 @@ static t_return_value	ft_pwd(void)
 	if (working_directory_path == NULL)
 	{
 		perror("getcwd");
-		return (FAILURE);
+		g_minishell->exit_status = FAILURE; // Set exit status
+		return ;
 	}
 	ft_putstr_fd(working_directory_path, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	free(working_directory_path);
-	return (SUCCESS);
+
+	// Set the proper exit status
+	g_minishell->exit_status = SUCCESS;
 }
 
 /**
