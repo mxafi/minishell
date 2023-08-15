@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:58:09 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/14 16:38:44by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/15 16:44:40 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 /**
  * @brief Execute the pwd built-in command.
  * 
- * This function prints the current working directory to stdout.
- * 
- * @return t_return_value Success or Failure.
+ * This function prints the current working directory to stdout and updates the
+ * exit status in g_minishell.
  */
 void	ft_pwd(void)
 {
@@ -27,106 +26,69 @@ void	ft_pwd(void)
 	if (working_directory_path == NULL)
 	{
 		perror("getcwd");
-		g_minishell->exit_status = FAILURE; // Set exit status
+		g_minishell->exit_status = 1; // Set exit status
 		return ;
 	}
 	ft_putstr_fd(working_directory_path, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	free(working_directory_path);
-
 	// Set the proper exit status
-	g_minishell->exit_status = SUCCESS;
+	g_minishell->exit_status = 0;
 }
 
 /**
  * @brief Execute the echo built-in command.
  * 
- * This function prints the arguments to stdout with an optional newline.
+ * This function prints the arguments to stdout with an optional newline and
+ * updates the exit status in g_minishell.
  * 
- * @param current The token representing the echo command.
+ * @param node The AST node representing the echo command.
  */
-
-static void	ft_echo(t_token *current)
+void	ft_echo(t_ast_node *node)
 {
 	t_bool	print_newline;
+	int		argument_count;
 
+	argument_count = 1;
 	print_newline = TRUE;
-	if (current->next->type == ARG)
+	if (node->argv_count > 1 && !ft_strncmp(node->exec_argv[1], "-n", 2))
 	{
-		current = current->next;
-		if (current->next != NULL && ft_strncmp(current->content, "-n", 2) == 0)
-		{
-			print_newline = FALSE;
-			current = current->next;
-		}
+		print_newline = FALSE;
+		argument_count++;
 	}
-	while (current->type == ARG && current != NULL)
+	while (argument_count < node->argv_count)
 	{
-		ft_putstr_fd(current->content, STDOUT_FILENO);
-		if (current->next != NULL && current->type == ARG)
-		{
-			current = current->next;
+		ft_putstr_fd(node->exec_argv[argument_count], STDOUT_FILENO);
+		if (argument_count < node->argv_count - 1)
 			ft_putstr_fd(" ", STDOUT_FILENO);
-		}
-		else
-			break ;
+		argument_count++;
 	}
 	if (print_newline == TRUE)
+	{
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	}
+	g_minishell->exit_status = 0;
 }
+
 /**
  * @brief Execute the cd built-in command.
  * 
- * @param current The token representing the cd command.
- * @return t_return_value Success or Failure.
+ * This function changes the current working directory and updates the exit 
+ * status in g_minishell.
+ * 
+ * @param node The AST node representing the cd command.
  */
-static t_return_value	ft_cd(t_token *current)
+void	ft_cd(t_ast_node *node)
 {
 	char	*path;
 
-	if (current->next == NULL || current->next->type != ARG)
+	path = node->exec_argv[1];
+	if (chdir(path) != 0)
 	{
-		ft_putstr_fd("Shellfish☠️> cd: missing directory\n", STDERR_FILENO);
-		return (INVALID_ARGUMENT);
+		perror("☠️  shellfishy ☠️  > cd");
+		g_minishell->exit_status = 1;
+		return ;
 	}
-	path = current->next->content;
-	if (chdir(path) == -1)
-	{
-		perror("Shellfish> cd");
-		return (DIRECTORY_NOT_FOUND);
-	}
-	return (SUCCESS);
+	g_minishell->exit_status = 0;
 }
 
-void	execute_builtins(t_lexer *token_list)
-{
-	t_token *current;
-
-	current = token_list->head;
-	while (current != NULL)
-	{
-		if (current->type == CMD)
-		{
-			if (ft_strncmp(current->content, "pwd", 3) == 0)
-			{
-				// Execute the pwd built-in
-				printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
-				ft_pwd();
-				printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
-			}
-			else if (ft_strncmp(current->content, "echo", 4) == 0)
-			{
-				// Execute the pwd built-in
-				printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
-				ft_echo(current);
-				printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
-			}
-			else if (ft_strncmp(current->content, "cd", 2) == 0)
-			{
-				ft_cd(current);
-				printf("how to handle errors here\n");
-			}
-		}
-		current = current->next;
-	}
-}

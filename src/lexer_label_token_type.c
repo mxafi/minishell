@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/11 14:07:46 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/15 16:14:22 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
  */
 static void	handle_quotes(t_lexer *list, t_token *token, char *input)
 {
-	printf("Entering quote handling\n");
-	//print_list(list);
 	if (list->state == UNDEFINED && input[0] == '\'')
 		set_token_type_and_list_state(list, token, SINGLE_QUOTE, \
 				SGL_QUOTE_OPENED);
@@ -77,8 +75,6 @@ static void	handle_quotes(t_lexer *list, t_token *token, char *input)
 	else if (list->state == DBL_QUOTE_OPENED && input[0] == '\"')
 		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, \
 				UNDEFINED);
-	else
-		printf("Error: tHis was never meant to be read, what are you doing here\n"); // DEL ME
 }
 
 /**
