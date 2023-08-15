@@ -68,7 +68,7 @@ static void	remove_spaces(t_lexer *list)
 {
 	t_token	*current;
 	t_token	*temp;
-	printf("REMOVING SPACE_ list error_code %d\n", list->error_code);
+
 	current = list->head;
 	while (current != NULL && current->next != NULL)
 	{

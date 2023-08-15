@@ -41,10 +41,10 @@ static void	ft_echo(t_token *current)
 			current = current->next;
 		}
 	}
-	while (current->type == ARG)
+	while (current->type == ARG && current != NULL)
 	{
 		printf("%s", current->content);
-		if (current->next->type == ARG)
+		if (current->next != NULL && current->type == ARG)
 		{
 			current = current->next;
 			printf(" ");
@@ -71,14 +71,13 @@ void	execute_builtins(t_lexer *token_list)
 				ft_pwd();
 				printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
 			}
-			// Add more if statements for other built-ins here
-		}
-		else if (ft_strncmp(current->content, "echo", 4) == 0)
-		{
-			// Execute the pwd built-in
-			printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
-			ft_echo(current);
-			printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
+			else if (ft_strncmp(current->content, "echo", 4) == 0)
+			{
+				// Execute the pwd built-in
+				printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
+				ft_echo(current);
+				printf("#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_\n");
+			}
 		}
 		current = current->next;
 	}

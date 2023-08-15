@@ -82,7 +82,6 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 }
 
 /**
-
 	* @brief Sets up the child process for heredoc input and waits for its completion.
  * 
  * This function creates a child process using the `fork` system call to handle

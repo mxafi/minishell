@@ -24,23 +24,26 @@
 void	remove_quote_tokens(t_lexer *token_list)
 {
 	t_token	*current;
+	t_token *temp;
 
 	current = token_list->head;
-	
-	while (current != NULL)
+	while (current != NULL && current->next != NULL)
 	{
 		printf("Debug: Error Removing quote\n");
 		print_list(token_list);
 		if (current->type == SINGLE_QUOTE || current->type == DOUBLE_QUOTE)
+		 {
+			temp = current->next;
 			delete_token(token_list, current);
+			current = temp;
+		 }
 		else if (current->type == QUOTE_NEED_NULL_STR)
 		{
 			current->type = STRING;
 			ft_strlcpy(current->content, "", 1);
 		}
-	//	if (current->next != NULL)
-		//	current = current->next;
-		current = current->next;
+		else 
+			current = current->next;
 	}
 }
 
