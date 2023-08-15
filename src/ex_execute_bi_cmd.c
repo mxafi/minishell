@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:13 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 22:01:21 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:04:43 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 t_bool	execute_bi_cmd(t_ast_node *node)
 {
-	//TODO: create custom function for each that sanitizes and validates input, as well as, does the job
 	if (!ft_strncmp(node->exec_argv[0], "exit", 5))
 		exit(0);//wip run exit
 	else if (!ft_strncmp(node->exec_argv[0], "echo", 5))

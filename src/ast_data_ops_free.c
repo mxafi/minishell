@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_data_ops_free.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:01:04 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/03 16:23:27 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/15 14:54:37 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	ast_recursive_delete(t_ast_node *node)
 		return ;
 	delete_argv(node->exec_argv, node->argv_count);
 	delete_redirections(node->redirections, node->argv_count);
+	if (node->exec_file)
+		free(node->exec_file);
 	ast_recursive_delete(node->left);
 	ast_recursive_delete(node->right);
 	free(node);
