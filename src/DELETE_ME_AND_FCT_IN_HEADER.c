@@ -22,10 +22,18 @@ void	print_list(t_lexer *list)
 	
 	if (list->error_code == FAILURE)
 		strncpy(list_error, "FAILURE", sizeof(list_error) - 1);
-	if (list->error_code == CALLOC_FAIL)
-		strncpy(list_error, "CALLOC_FAIL", sizeof(list_error) - 1);
 	if (list->error_code == SUCCESS)
 		strncpy(list_error, "SUCCESS", sizeof(list_error) - 1);
+	if (list->error_code == CALLOC_FAIL)
+		strncpy(list_error, "CALLOC_FAIL", sizeof(list_error) - 1);
+
+	if (list->error_code == FORK_FAIL)
+		strncpy(list_error, "FORK_FAIL", sizeof(list_error) - 1);
+	if (list->error_code == WAIT_PID_FAIL)
+		strncpy(list_error, "WAIT_PID_FAIL", sizeof(list_error) - 1);
+	if (list->error_code == FILE_OPEN_ERROR)
+		strncpy(list_error, "FILE_OPEN_ERROR", sizeof(list_error) - 1);
+
 	if (list->error_code == EXIT_SYNTAX_ERROR)
 		strncpy(list_error, "EXIT_SYNTAX_ERROR", sizeof(list_error) - 1);
 	list_error[sizeof(list_error) - 1] = '\0';
@@ -64,7 +72,7 @@ void	print_list(t_lexer *list)
 		else if (current_token->type == PIPE)
 			strncpy(token_type, "PIPE", sizeof(token_type) - 1);
 		token_type[sizeof(token_type) - 1] = '\0';
-		printf("Token[#%d] [%s]:\t%s\n", current_token->token_count, token_type,
+		printf("Token[#%d] [%s]:\t:%s:\n", current_token->token_count, token_type,
 				current_token->content);
 		current_token = current_token->next;
 	}

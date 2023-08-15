@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 15:26:38 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/10 22:14:33 by malaakso         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/08/15 15:00:56 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../inc/minishell.h"
 
@@ -117,8 +118,7 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
  * @details	Heredoc and append delimiters are determined separately from the 
  * 			other delimiters. A call to set_token_type_and_quote_state is made
  * 			which will set the token type to the node, as well as an 
-
-				* 			initialization of the token list's state needed by the quote handlers
+ * 			initialization of the token list's state needed by the quote handlers
  *			in add_null_string_token_if_empty_quote function.
  *
  * @param token_list	Information and token list placeholder.
@@ -131,7 +131,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	int		length;
 
 	new_token = NULL;
-	printf("delimiter_to_token()\n");
+	//printf("delimiter_to_token()\n");
 	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
@@ -156,7 +156,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
  * @brief 	Readline string is tokenized using a self implemented version 
  * 			of strpbrk
  * @details	The strpbrk seeks the input string for delimiters: spaces, 
- * 			tabs, redirection pipes and quotes to output delimited strings in 
+ * 			tabs, redirection, pipes and quotes to output delimited strings in 
  * 			a tokenized linked list. The delimiter itself is then tokenized.
  * 
  * @param token_list	Token list and list information placeholder.
@@ -187,7 +187,6 @@ static int	tokenize_readline(t_lexer *token_list)
 		if (token_list->error_code == CALLOC_FAIL)
 			break ;
 	}
-	printf("tokenize_readline\n");
 	return (token_list->error_code);
 }
 
@@ -214,8 +213,8 @@ int	lexer(char *input)
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
 		tokenize_readline(&token_list);
-		print_list(&token_list);
-		printf("lexer() validation to come\n");
+		//print_list(&token_list);
+		//printf("lexer() validation to come\n");
 		if ((validate_syntax(&token_list)) == FAILURE)
 		{
 			free_token_list(&token_list);

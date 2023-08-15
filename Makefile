@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
+#    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/09 12:33:11 by malaakso          #+#    #+#              #
-#    Updated: 2023/08/10 21:32:50 by malaakso         ###   ########.fr        #
+#    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
+#    Updated: 2023/08/14 16:45:36 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,10 @@ LEXER_C			=	lexer.c \
 					lexer_validate_pipes.c \
 					lexer_validate_redirectors.c \
 					lexer_expansion.c \
+					lexer_heredoc_validation.c \
 					DELETE_ME_AND_FCT_IN_HEADER.c
 					
+BUILTINS_C		= 	builtins.c
 
 ASTREE_H		=	ast.h
 ASTREE_C		=	ast.c \
@@ -58,7 +60,7 @@ EXECUTOR_C		=	executor.c \
 					ex_execute_bi_cmd.c
 
 H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H) $(EXECUTOR_H)
-C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C) $(EXECUTOR_C)
+C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C) $(EXECUTOR_C) $(BUILTINS_C)
 
 H_PATHS			=	$(addprefix $(H_FOLDER)/, $(H_FILES))
 C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))

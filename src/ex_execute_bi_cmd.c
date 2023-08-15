@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_execute_bi_cmd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:13 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/15 17:04:43 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:26:29 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,16 @@ t_bool	execute_bi_cmd(t_ast_node *node)
 	if (!ft_strncmp(node->exec_argv[0], "exit", 5))
 		exit(0);//wip run exit
 	else if (!ft_strncmp(node->exec_argv[0], "echo", 5))
-		exit(1);//wip run echo
+		ft_echo(node);
 	else if (!ft_strncmp(node->exec_argv[0], "cd", 3))
-		exit(69);//wip run cd
+	 	ft_cd(node);
+		//exit(69);//wip run cd
 	else if (!ft_strncmp(node->exec_argv[0], "env", 4))
 		env_print_list();//wip
 	else if (!ft_strncmp(node->exec_argv[0], "export", 7))
 		exit(1);//wip run export
 	else if (!ft_strncmp(node->exec_argv[0], "pwd", 4))
-		exit(1);//wip run pwd
+		ft_pwd();
 	else if (!ft_strncmp(node->exec_argv[0], "unset", 6))
 		env_unset_key(node->exec_argv[1]);//wip
 	else

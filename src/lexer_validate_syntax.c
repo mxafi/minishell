@@ -23,7 +23,8 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
 */
 
 /**
- * @brief	Labels tokens as CMD or ARG based on their position in the token list.
+
+		* @brief	Labels tokens as CMD or ARG based on their position in the token list.
  * 
  * @details	The first encountered STRING tokenS of the input and after each 
  * 			pipes are labeled as CMD, and all subsequent STRING tokens are 
@@ -31,7 +32,7 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
  * 			field of the tokens.
  * @param token_list The list to process and label.
  */
-void	label_CMDS_and_ARGS(t_lexer *token_list)
+void	label_cmds_and_args(t_lexer *token_list)
 {
 	t_token	*current;
 
@@ -40,40 +41,47 @@ void	label_CMDS_and_ARGS(t_lexer *token_list)
 	{
 		if (current->type == STRING)
 		{
-			if (token_list->CMD_found == FOUND)
+			if (token_list->cmd_found == FOUND)
 				current->type = ARG;
 			else
 			{
 				current->type = CMD;
-				token_list->CMD_found = FOUND;
+				token_list->cmd_found = FOUND;
 			}
 		}
 		else if (current->type == PIPE)
-			token_list->CMD_found = NOT_YET;
+			token_list->cmd_found = NOT_YET;
 		current = current->next;
 	}
 }
 
 /**
- * @brief		Remove space tokens from the token list.
- * 
- * @param list	The list of tokens to be processed.
+ * @brief Removes space tokens from the token list.
+ *
+ * This function iterates through the token list and removes tokens of type
+ * `MY_SPACE`. It updates the list pointers and frees the memory associated
+ * with the removed tokens.
+ *
+ * @param list The list of tokens to be processed.
  */
 static void	remove_spaces(t_lexer *list)
 {
 	t_token	*current;
+	t_token	*temp;
 
 	current = list->head;
 	while (current != NULL && current->next != NULL)
 	{
 		if (current->type == MY_SPACE)
+		{
+			temp = current->next;
 			delete_token(list, current);
-		current = current->next;
+			current = temp;
+		}
+		else
+			current = current->next;
 	}
 }
-
-
-
 /**
  * @brief	Validates the syntax of the token list
  * @details	This function performs a series of syntax validations on the token
@@ -86,32 +94,61 @@ static void	remove_spaces(t_lexer *list)
  */
 t_return_value	validate_syntax(t_lexer *token_list)
 {
-	printf("validate_syntax()\n");
+
+	//printf("validate_syntax()\n");
+	//printf("_______________________________________________________________________________\n");
+		//printf("________list error_code %d\n", token_list->error_code);
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	printf("validate_syntax()quote validated\n");
-	print_list(token_list);
+	//print_list(token_list);
+	//printf("validate_syntax()quote validated\n");
+	//printf("_______________________________________________________________________________\n");
 	expand_from_env(token_list);
-	printf("validate_syntax()expanded\n");
-	print_list(token_list);
+	//print_list(token_list);
+	//printf("validate_syntax()expanded\n");
+	//printf("_______________________________________________________________________________\n");
 	concatenate_adjacent_strings(token_list);
-	printf("validate_syntax()concatenated\n");
-	print_list(token_list);
+	//print_list(token_list);
+	//printf("validate_syntax()concatenated\n");
+	//printf("_______________________________________________________________________________\n");
 	remove_spaces(token_list);
-	printf("validate_syntax()removed spaces\n");
-	print_list(token_list);
+//	print_list(token_list);
+	//printf("list error_code %d\n", token_list->error_code);
+	//printf("validate_syntax()removed spaces\n");
+	//printf("_______________________________________________________________________________\n");
 	if (validate_pipes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	printf("validate_syntax()validated pipes\n");
-	print_list(token_list);
+	//print_list(token_list);
+	//printf("list error_code %d\n", token_list->error_code);
+	//printf("validate_syntax()validated pipes\n");
 	if (token_list->error_code != SUCCESS)
 		return (token_list->error_code);
+	//printf("_______________________________________________________________________________\n");
 	if (validate_redirectors(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	printf("validate_syntax()redirector validated\n");
-	print_list(token_list);
-	label_CMDS_and_ARGS(token_list);
-	printf("validate_syntax()token CMD ARGS labelled\n");
-	print_list(token_list);
+	//print_list(token_list);
+	//printf("validate_syntax()redirector validated\n");
+	//printf("_______________________________________________________________________________\n");
+	int debug_error = process_heredoc(token_list);
+	//printf("list error_code %d\n", token_list->error_code);
+	if (debug_error != SUCCESS)
+	{
+		//printf("heredoc error detected :%d:\n", debug_error);
+		//print_list(token_list);
+		return (token_list->error_code);
+	}
+	//print_list(token_list);
+	//printf("process_heredoc() validated");
+	//printf("_______________________________________________________________________________\n");
+	label_cmds_and_args(token_list);
+	//print_list(token_list);
+	//printf("validate_syntax()token CMD ARGS labelled\n");
+	//printf("_______________________________________________________________________________\n");
+	//execute_builtins(token_list);
+	//print_list(token_list);
+	//printf("executed builtins\n");
+	//printf("################################################################################\n");
+	//printf("#                                   OUTPUT                                     #\n");
+	//printf("################################################################################\n");
 	return (token_list->error_code);
 }

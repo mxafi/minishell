@@ -58,17 +58,22 @@ typedef enum e_validation_state
  */
 typedef enum e_return_value
 {
+	SUCCESS,
 	FAILURE,
 	CALLOC_FAIL,
-	SUCCESS,
+	FORK_FAIL,
+	WAIT_PID_FAIL,
+	FILE_OPEN_ERROR,
+	DIRECTORY_NOT_FOUND,
+	INVALID_ARGUMENT,
 	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;
 
-typedef enum e_boolean
+typedef enum e_is_found
 {
 	NOT_YET,
 	FOUND,
-}						t_boolean;
+}						t_is_found;
 
 typedef struct s_token	t_token;
 
@@ -85,7 +90,7 @@ typedef struct s_lexer
 	int					calloc_count;
 	t_validation_state	state;
 	t_return_value		error_code;
-	t_boolean			CMD_found;
+	t_is_found			cmd_found;
 	int					token_amount; //not used should be removed
 	char				*readlined;
 	t_token				*head;
@@ -148,5 +153,13 @@ void					concatenate_adjacent_strings(t_lexer *list);
  * Contained in lexer_expansion.c
  */
 void	expand_from_env(t_lexer *list);
+
+t_return_value			process_heredoc(t_lexer *list);
+
+/**
+ * contained in builtins.c
+ */
+void	execute_builtins(t_lexer *token_list);
+
 
 #endif

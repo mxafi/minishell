@@ -6,43 +6,13 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/03 17:03:00 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/15 16:14:22 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 
-/**
- * @brief 
- * 
- * 
- * @param list 
- * @param token 
- * @param input 
- */
-static void	add_null_string_token_if_empty_quotes(void)
-{
-	printf("Error: tHis was never meant to be read, what are you doing here\n");
-//	t_token	*new_token;
-//
-//	if (input[0] == '\'')
-//		token->type = SGL_QUOTE_STR;
-//	else if (input[0] == '\"')
-//		token->type = DBL_QUOTE_STR;
-//	token->string_length = 0;
-//	if (tokenize_node(list, token, '\0') == CALLOC_FAIL)
-//		return (list->error_code = CALLOC_FAIL);
-//	new_token = list->head;
-//	while (new_token != NULL)
-//		new_token = new_token->next;
-//	if (make_new_node(list, &new_token) == CALLOC_FAIL)
-//		return (list->error_code = CALLOC_FAIL);
-//	if (label_new_token_as_quote(list, new_token, input) == CALLOC_FAIL)
-//		return (list->error_code = CALLOC_FAIL);
-//	return (SUCCESS);
-}
-//
 /**
  * @brief			Labels token types and token list's state 
  * @details			If empty quotes occur, a QUOTE_NEED_NULL_STR will mark
@@ -79,8 +49,6 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
  */
 static void	handle_quotes(t_lexer *list, t_token *token, char *input)
 {
-	printf("Entering quote handling\n");
-	//print_list(list);
 	if (list->state == UNDEFINED && input[0] == '\'')
 		set_token_type_and_list_state(list, token, SINGLE_QUOTE, \
 				SGL_QUOTE_OPENED);
@@ -107,12 +75,6 @@ static void	handle_quotes(t_lexer *list, t_token *token, char *input)
 	else if (list->state == DBL_QUOTE_OPENED && input[0] == '\"')
 		set_token_type_and_list_state(list, token, QUOTE_NEED_NULL_STR, \
 				UNDEFINED);
-	else
-		add_null_string_token_if_empty_quotes();
-	
-	//printf("Exiting quote handling\n");
-	//print_list(list);
-	printf("Exiting quote handling\n");
 }
 
 /**
