@@ -21,7 +21,7 @@
  *
  * @param token_list The list being checked and holding list information.
  */
-void	remove_quote_tokens(t_lexer *token_list)
+static void	remove_quote_tokens(t_lexer *token_list)
 {
 	t_token	*current;
 	t_token	*temp;
@@ -46,7 +46,7 @@ void	remove_quote_tokens(t_lexer *token_list)
  *
  * @param token_list The list being checked and holding list information.
  */
-void	add_null_string_for_empty_quotes(t_lexer *token_list)
+static void	add_null_string_for_empty_quotes(t_lexer *token_list)
 {
 	t_token	*current;
 
@@ -82,14 +82,16 @@ t_return_value	validate_quotes(t_lexer *token_list)
 	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED ||
 		token_list->state == SGL_QUOTE_OPENED)
 	{
-		printf("Shellfish> syntax error expecting closing single quotes `\''\n");
+		ft_putstr_fd("Shellfish> syntax error: expecting closing single quotes \
+		`\''\n", STDERR_FILENO);
 		token_list->error_code = EXIT_SYNTAX_ERROR;
 		return (token_list->error_code);
 	}
 	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED ||
 				token_list->state == DBL_QUOTE_OPENED)
 	{
-		printf("Shellfish> syntax error expecting closing double quotes `\"'\n");
+		ft_putstr_fd("Shellfish> syntax error: expecting closing double quotes \
+		`\"'\n", STDERR_FILENO);
 		token_list->error_code = EXIT_SYNTAX_ERROR;
 		return (token_list->error_code);
 	}
