@@ -26,13 +26,12 @@ void	ft_pwd(void)
 	if (working_directory_path == NULL)
 	{
 		perror("getcwd");
-		g_minishell->exit_status = 1; // Set exit status
+		g_minishell->exit_status = 1;
 		return ;
 	}
 	ft_putstr_fd(working_directory_path, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	free(working_directory_path);
-	// Set the proper exit status
 	g_minishell->exit_status = 0;
 }
 
@@ -53,7 +52,7 @@ void	ft_echo(t_ast_node *node)
 	argument_count = 1;
 	print_newline = TRUE;
 	flag_length = ft_strlen(node->exec_argv[1]);
-	if (node->argv_count > 1 && !ft_strncmp(node->exec_argv[1], "-n", 2) &&
+	if (node->argv_count > 1 && !ft_strncmp(node->exec_argv[1], "-n", 2) && \
 		flag_length == 2)
 	{
 		print_newline = FALSE;
@@ -93,6 +92,13 @@ void	ft_cd(t_ast_node *node)
 	g_minishell->exit_status = 0;
 }
 
+/**
+ * @brief Execute the exit built-in command.
+ * 
+ * This function terminates the shell with a given exit status.
+ * 
+ * @param node The AST node representing the exit command.
+ */
 void	ft_exit(t_ast_node *node)
 {
 	int	i;
@@ -139,62 +145,3 @@ void	ft_unset(t_ast_node *node)
 	}
 	g_minishell->exit_status = 0;
 }
-
-static void	ft_export_validate_and_execute(char *key, char *value)
-{
-	char *sanitize_check = key;
-
-	while (*sanitize_check != '\0')
-	{
-		if (!(ft_isalpha(*sanitize_check) || *sanitize_check == '_'))
-		{
-			printf("Invalid variable name: %s\n", key);
-			g_minishell->exit_status = 1;
-			return ;
-		}
-		sanitize_check++;
-	}
-	env_set_value_by_key(key, value);
-}
-
-void	ft_export(t_ast_node *node)
-{
-	int		i;
-	char	*arg;
-	char	*equal_sign;
-	char	*key;
-	char	*value;
-
-	i = 0;
-	if (node->argv_count == 1)
-	{
-		env_print_list();
-		return ;
-	}
-	while (++i < node->argv_count)
-	{
-		arg = node->exec_argv[i];
-		equal_sign = ft_strchr(arg, '=');
-		if (equal_sign) // Split the argument at '=' to get key and value
-		{
-			*equal_sign = '\0';
-			key = arg;
-			value = equal_sign + 1;
-			if (*key) // Check if key is not empty
-				ft_export_validate_and_execute(key, value);
-		}
-		else // Export the key with an empty value and check if key is valid
-			ft_export_validate_and_execute(arg, "");
-		
-		//if (*key && *value) // Preserve the exported variables across new shell sessions
-		//{
-			//char *declaration = (char *)malloc(strlen(key) + strlen(value) + 15);
-			//sprintf(declaration, "declare -x %s=\"%s\"", key, value);
-			//env_set_value_by_key(declaration, ""); // Export as an empty value
-			//free(declaration);
-		//}
-	}
-	g_minishell->exit_status = 0;
-}
-
-
