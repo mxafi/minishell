@@ -113,9 +113,9 @@ void	ft_exit(t_ast_node *node)
 	else if (node->argv_count == 2)
 	{
 		i = 0;
-		while (ft_isdigit((int)node->exec_argv[i]))
+		while (ft_isdigit(node->exec_argv[1][i]))
 			i++;
-		if (node->exec_argv[i] == '\0')
+		if (node->exec_argv[1][i] == '\0')
 			exit(ft_atoi(node->exec_argv[1]) % 255);
 		ft_putstr_fd("shellfishy: exit: ", 2);
 		ft_putstr_fd(node->exec_argv[1], 2);
