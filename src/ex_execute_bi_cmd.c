@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:13 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/15 18:02:05 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/16 11:26:21 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ t_bool	execute_bi_cmd(t_ast_node *node)
 	else if (!ft_strncmp(node->exec_argv[0], "env", 4))
 		env_print_list();//wip
 	else if (!ft_strncmp(node->exec_argv[0], "export", 7))
-		exit(1);//wip run export
+		ft_export(node);
 	else if (!ft_strncmp(node->exec_argv[0], "pwd", 4))
 		ft_pwd();
 	else if (!ft_strncmp(node->exec_argv[0], "unset", 6))
-		env_unset_key(node->exec_argv[1]);//wip
+		ft_unset(node);//wip
 	else
 		return (FALSE);
 	return (TRUE);
