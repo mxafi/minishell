@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:30:45 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/16 11:42:04 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/16 18:39:45 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ const char	*env_get_value_by_key(const char *key)
 	}
 	return (NULL);
 }
+
 /**
  * @brief Sets an environment variable to a specific value.
  * 
@@ -103,8 +104,9 @@ void	env_set_value_by_key(char *key, char *value)
 		if (!new)
 			exit (1);
 		free(tmp);
-		if (vec_push(&g_minishell->env_vec, new) < 1)
+		if (vec_push(&g_minishell->env_vec, new) < 1) //should probably insert!!!
 			exit (1);
+		g_minishell->envp = (char **)g_minishell->env_vec.memory;
 		return ;
 	}
 	tmp = ft_strjoin(key, "=");
@@ -138,6 +140,7 @@ void	env_unset_key(char *key)
 		return ;
 	free(g_minishell->envp[i]);
 	vec_remove(&g_minishell->env_vec, i);
+	g_minishell->envp = (char **)g_minishell->env_vec.memory;
 }
 
 /**
@@ -176,6 +179,7 @@ int	init_envp(void)
 		perror("init_envp");
 		return (1);
 	}
+	g_minishell->env_vec.len = i + 1;
 	g_minishell->envp = (char **)g_minishell->env_vec.memory;
 	g_minishell->envp[i] = NULL;
 	i = 0;
