@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:47:45 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/16 17:07:34 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/17 11:04:21 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	ft_export_validate_and_execute(char *key, char *value)
  *
  * @param arg The argument containing the variable with an equal sign.
  */
-static void	ft_export_handle_equal_sign(char *arg)
+static t_return_value	ft_export_handle_equal_sign(char *arg)
 {
 	char	*equal_sign;
 	char	*key;
@@ -63,7 +63,9 @@ static void	ft_export_handle_equal_sign(char *arg)
 		value = equal_sign + 1;
 		if (*key)
 			ft_export_validate_and_execute(key, value);
+		return (SUCCESS);
 	}
+	return (FAILURE);
 }
 
 /**
@@ -90,8 +92,10 @@ void	ft_export(t_ast_node *node)
 	while (++i < node->argv_count)
 	{
 		arg = node->exec_argv[i];
-		ft_export_handle_equal_sign(arg);
-		ft_export_validate_and_execute(arg, "");
+		if (ft_export_handle_equal_sign(arg) == SUCCESS)
+			;
+		else 
+			ft_export_validate_and_execute(arg, "");
 	}
 	g_minishell->exit_status = 0;
 }
