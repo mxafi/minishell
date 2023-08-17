@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/15 17:12:43 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:21:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,69 @@ void	execute_real_cmd(t_ast_node *node)
 	print_signal(g_minishell->termination_status);
 }
 
+int	open_redir_file(const char *file_path, int flags)
+{
+	const int	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	const int	file = open(file_path, flags, mode);
+
+	if (file == -1)
+	{
+		ft_putstr_fd("shellfishy: opening redirection files: ", 2);
+		perror(file_path);
+	}
+	return (file);
+}
+
+void	execute_command_redirections(t_ast_node *node)
+{
+	int					current_redir_idx;
+	t_ast_redir_type	c_type;
+	t_redir				*c_redir;
+
+	current_redir_idx = 0;
+	while (current_redir_idx < node->redir_count)
+	{
+		c_redir = node->redirections[current_redir_idx];
+		c_type = c_redir->type;
+		if (c_type == AST_INFILE)
+		{
+			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_RDONLY);
+			dup2(c_redir->file_descriptor, STDIN_FILENO);
+		}
+		else if (c_type == AST_OUTFILE)
+		{
+			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_CREAT | O_WRONLY | O_TRUNC);
+			dup2(c_redir->file_descriptor, STDOUT_FILENO);
+		}
+		else if (c_type == AST_APPEND)
+		{
+			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_CREAT | O_WRONLY | O_APPEND);
+			dup2(c_redir->file_descriptor, STDOUT_FILENO);
+		}
+		else if (c_type == AST_HEREDOC)
+		{
+			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_RDONLY);
+			dup2(c_redir->file_descriptor, STDIN_FILENO);
+		}
+		else
+		{
+			ft_putstr_fd("error: execute_command_redirections\n", 2);
+			exit(1);
+		}
+		// create a fancy dup2 wrapper that automatically prints error and exits if it fails
+		//if (SOME ERROR)
+			//DO GRACEFUL CLOSING ETC...
+		current_redir_idx++;
+	}
+}
+
 void	execute_command(t_ast_node *node)
 {
 	if (node->redir_count > 0)
 	{
 		if (wrap_fork() == 0)
 		{
-			// exec and handle redirections
+			execute_command_redirections(node);
 			if (execute_bi_cmd(node) == FALSE)
 				execute_real_cmd(node);
 			// clean up redirections (and heredoc files if exists /tmp/minishell_heredoc.tmp)
