@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:30:45 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/16 18:39:45 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/17 12:17:22 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,22 +99,22 @@ void	env_set_value_by_key(char *key, char *value)
 	{
 		tmp = ft_strjoin(key, "=");
 		if (!tmp)
-			exit (1);
+			exit(1);
 		new = ft_strjoin(tmp, value);
 		if (!new)
-			exit (1);
+			exit(1);
 		free(tmp);
-		if (vec_push(&g_minishell->env_vec, new) < 1) //should probably insert!!!
-			exit (1);
+		if (vec_insert(&g_minishell->env_vec, &new, g_minishell->env_vec.len - 1) < 1)
+			exit(1);
 		g_minishell->envp = (char **)g_minishell->env_vec.memory;
 		return ;
 	}
 	tmp = ft_strjoin(key, "=");
 	if (!tmp)
-		exit (1);
+		exit(1);
 	new = ft_strjoin(tmp, value);
 	if (!new)
-		exit (1);
+		exit(1);
 	free(tmp);
 	free(g_minishell->envp[i]);
 	g_minishell->envp[i] = new;
@@ -149,7 +149,7 @@ void	env_unset_key(char *key)
  */
 void	env_print_list(void)
 {
-	size_t		i;
+	size_t	i;
 
 	i = 0;
 	while (g_minishell->envp[i])

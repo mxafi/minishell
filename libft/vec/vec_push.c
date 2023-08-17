@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vec_push.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:06:07 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/13 16:54:37 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/17 12:11:28 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec.h"
-
 /**
  * @brief Pushes the src element to the end of the dst vector.
  * 

@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:58:31 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/14 14:04:04 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/17 13:36:27 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ static t_return_value	token_is_redirector(t_token *token)
 static void	print_syntax_error(char *unexpected_token)
 {
 	if (!unexpected_token)
-		printf("shellfish> syntax error near unexpected token `newline'\n");
+		printf("☠️  shellfishy ☠️  > syntax error near unexpected token `newline'\n");
 	else
-		printf("shellfish> syntax error near unexpected token `%s'\n",
+		printf("☠️  shellfishy ☠️  > syntax error near unexpected token `%s'\n",
 				unexpected_token);
 }
 

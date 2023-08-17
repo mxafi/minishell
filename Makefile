@@ -6,7 +6,7 @@
 #    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
-#    Updated: 2023/08/16 16:04:28 by lclerc           ###   ########.fr        #
+#    Updated: 2023/08/16 16:33:08 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ LEXER_C			=	lexer.c \
 					lexer_heredoc_validation.c \
 					DELETE_ME_AND_FCT_IN_HEADER.c
 					
-BUILTINS_C		= 	builtins.c
+BUILTINS_C		= 	builtins.c \
+					builtins_export.c
 
 ASTREE_H		=	ast.h
 ASTREE_C		=	ast.c \
