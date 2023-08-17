@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:47:45 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/17 11:04:21 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/17 13:40:42 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	ft_export_validate_and_execute(char *key, char *value)
 	{
 		if (!(ft_isalpha(*sanitize_check) || *sanitize_check == '_'))
 		{
-			printf("Invalid variable name: %s\n", key);
+			printf("☠️  shellfishy ☠️ > Invalid variable name: %s\n", key);
 			g_minishell->exit_status = 1;
 			return ;
 		}

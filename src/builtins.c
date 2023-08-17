@@ -51,8 +51,9 @@ void	ft_echo(t_ast_node *node)
 
 	argument_count = 1;
 	print_newline = TRUE;
-	flag_length = ft_strlen(node->exec_argv[1]);
-	if (node->argv_count > 1 && !ft_strncmp(node->exec_argv[1], "-n", 2) && \
+	if (node->argv_count > 1)
+		flag_length = ft_strlen(node->exec_argv[1]);
+	if (node->argv_count > 1 && !ft_strncmp(node->exec_argv[1], "-n", 2) &&
 		flag_length == 2)
 	{
 		print_newline = FALSE;
@@ -85,7 +86,7 @@ void	ft_cd(t_ast_node *node)
 	path = node->exec_argv[1];
 	if (chdir(path) != 0)
 	{
-		perror("☠️  shellfishy ☠️  > cd");
+		perror("☠️  shellfishy ☠️ > cd");
 		g_minishell->exit_status = 1;
 		return ;
 	}
@@ -104,7 +105,6 @@ void	ft_exit(t_ast_node *node)
 	int	i;
 
 	ft_putstr_fd("exit\n", 1);
-	g_minishell->exit_status = 0;
 	if (node->argv_count > 2)
 	{
 		ft_putstr_fd("shellfishy: exit: too many arguments\n", 2);
@@ -117,13 +117,14 @@ void	ft_exit(t_ast_node *node)
 			i++;
 		if (node->exec_argv[1][i] == '\0')
 			exit(ft_atoi(node->exec_argv[1]) % 255);
-		ft_putstr_fd("shellfishy: exit: ", 2);
+		ft_putstr_fd("shellfishy : ", 2);
 		ft_putstr_fd(node->exec_argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}
+
 	else
-		exit(0);
+		exit (g_minishell->exit_status);
 }
 
 /**

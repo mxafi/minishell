@@ -42,12 +42,12 @@ t_return_value	validate_pipes(t_lexer *token_list)
 				&& (previous->type == PIPE || previous->type == INFILE
 					|| previous->type == APPEND_TO)))
 		{
-			printf("shellfish> syntax error near unexpected token `|'\n");
+			printf("☠️  shellfishy ☠️  > syntax error near unexpected token `|'\n");
 			token_list->error_code = EXIT_SYNTAX_ERROR;
 		}
 		else if (current->type == PIPE && current->next == NULL)
 		{
-			printf("shellfish> syntax error near unexpected token `newline'\n");
+			printf("☠️  shellfishy ☠️  > syntax error near unexpected token `newline'\n");
 			token_list->error_code = EXIT_SYNTAX_ERROR;
 		}
 		previous = current;

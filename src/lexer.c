@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/15 17:40:56 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/17 15:02:40 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,12 +214,11 @@ int	lexer(char *input)
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
 		free(input);
 		tokenize_readline(&token_list);
-		//print_list(&token_list);
-		//printf("lexer() validation to come\n");
-		if ((validate_syntax(&token_list)) == FAILURE)
+		if ((validate_syntax(&token_list)) != SUCCESS)
 		{
+			g_minishell->exit_status = token_list.error_code;
 			free_token_list(&token_list);
-			return (EXIT_SYNTAX_ERROR);
+			return (g_minishell->exit_status);
 		}
 		ast_root = ast_builder(token_list.head);
 		executor(ast_root);
