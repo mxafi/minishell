@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/17 17:12:21 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:21:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	open_redir_file(const char *file_path, int flags)
 
 	if (file == -1)
 	{
-		ft_putstr_fd("shellfishy: ", 2);
+		ft_putstr_fd("shellfishy: opening redirection files: ", 2);
 		perror(file_path);
 	}
 	return (file);
