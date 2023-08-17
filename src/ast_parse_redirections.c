@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 12:57:53 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/08 14:23:35 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/17 16:08:49 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	ast_parse_redirections(t_ast_node *node, t_token *token)
 			set_redir_arg(node, token, i);
 			i++;
 		}
-		else
-			token = token->next;
+		token = token->next;
 	}
 }
