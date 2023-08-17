@@ -41,6 +41,8 @@ static void	child_processes_heredoc(t_token *token, int fd)
 		free(line_read);
 		line_read = readline("> ");
 	}
+	if (line_read)
+		free(line_read);
 	restore_signal_defaults();
 	toggle_echoctl();
 	close(fd);
@@ -50,9 +52,9 @@ static void	child_processes_heredoc(t_token *token, int fd)
 /**
  * @brief Waits for the child process to complete and examines its exit status.
  * 
- * This function uses the `waitpid` system call to wait for the specified child
- * process to complete its execution. It also examines the exit status of the
- * child process to determine the reason for its termination.
+ * This function uses the `waitpid` system call to wait for the specified
+ * child process to complete its execution. It also examines the exit status
+ * of the child process to determine the reason for its termination.
  * 
  * @param list      The token list.
  * @param fd        The file descriptor associated with the child process.
@@ -82,12 +84,11 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 }
 
 /**
-	* @brief Sets up the child process for heredoc input and waits for its completion.
+ * @brief Sets up the child process for heredoc input and waits for its completion.
  * 
  * This function creates a child process using the `fork` system call to handle
  * the heredoc input. The child process reads user input until a specified
-
-	* delimiter is encountered and writes the input to the provided file descriptor.
+ * delimiter is encountered and writes the input to the provided file descriptor.
  * 
  * @param list      The token list.
  * @param current   The current token representing the heredoc.
