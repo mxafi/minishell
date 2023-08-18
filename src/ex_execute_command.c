@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/17 18:21:47 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/18 20:10:50 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ void	print_signal(int termination_status)
 
 void	execute_real_cmd(t_ast_node *node)
 {
+	// printf("Debug: execute_real_cmd: start with ::%s::\n", node->exec_argv[0]);
 	if (is_absolute_path(node) == TRUE)
 		node->exec_file = ft_strdup(node->exec_argv[0]);
 	else
 		parse_path(node);
 	if (wrap_fork() == 0)
 	{
+		// printf("Debug: execute_real_cmd: calling execve from child with ::%s::\n", node->exec_argv[0]);
 		if (execve(node->exec_file, node->exec_argv, g_minishell->envp) == -1)
 		{
 			ft_putstr_fd("shellfishy: ", 2);
@@ -100,6 +102,7 @@ void	execute_real_cmd(t_ast_node *node)
 	wait(&g_minishell->termination_status);
 	g_minishell->exit_status = ret_exit_status(
 			g_minishell->termination_status);
+	// printf("Debug: execute_real_cmd: returned from execve child ::%s::\n", node->exec_argv[0]);
 	print_signal(g_minishell->termination_status);
 }
 
@@ -122,11 +125,13 @@ void	execute_command_redirections(t_ast_node *node)
 	t_ast_redir_type	c_type;
 	t_redir				*c_redir;
 
+	// printf("Debug: exe_cmd_redir: current node=%s\n", node->exec_argv[0]);
 	current_redir_idx = 0;
 	while (current_redir_idx < node->redir_count)
 	{
 		c_redir = node->redirections[current_redir_idx];
 		c_type = c_redir->type;
+		// printf("Debug: exe_cmd_redir: current redir i=%i and arg=%s\n", current_redir_idx, c_redir->argument);
 		if (c_type == AST_INFILE)
 		{
 			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_RDONLY);
@@ -152,15 +157,31 @@ void	execute_command_redirections(t_ast_node *node)
 			ft_putstr_fd("error: execute_command_redirections\n", 2);
 			exit(1);
 		}
-		// create a fancy dup2 wrapper that automatically prints error and exits if it fails
-		//if (SOME ERROR)
-			//DO GRACEFUL CLOSING ETC...
+		current_redir_idx++;
+	}
+}
+
+void	execute_command_redirections_cleanup(t_ast_node *node)
+{
+	int					current_redir_idx;
+	t_ast_redir_type	c_type;
+	t_redir				*c_redir;
+
+	current_redir_idx = 0;
+	while (current_redir_idx < node->redir_count)
+	{
+		c_redir = node->redirections[current_redir_idx];
+		c_type = c_redir->type;
+		close(c_redir->file_descriptor);
+		if (c_type == AST_HEREDOC)
+			unlink(c_redir->argument);
 		current_redir_idx++;
 	}
 }
 
 void	execute_command(t_ast_node *node)
 {
+	// printf("Debug: execute_command: starting with redir_count=%i\n", node->redir_count);
 	if (node->redir_count > 0)
 	{
 		if (wrap_fork() == 0)
@@ -168,7 +189,7 @@ void	execute_command(t_ast_node *node)
 			execute_command_redirections(node);
 			if (execute_bi_cmd(node) == FALSE)
 				execute_real_cmd(node);
-			// clean up redirections (and heredoc files if exists /tmp/minishell_heredoc.tmp)
+			execute_command_redirections_cleanup(node);
 			exit(g_minishell->exit_status);
 		}
 		wait(&g_minishell->termination_status);
@@ -177,7 +198,9 @@ void	execute_command(t_ast_node *node)
 	}
 	else
 	{
+		// printf("Debug: execute_command: no redirs for node:%s\n", node->exec_argv[0]);
 		if (execute_bi_cmd(node) == FALSE)
 			execute_real_cmd(node);
+		// printf("Debug: execute_command: returned from execute_real_cmd node:%s\n", node->exec_argv[0]);
 	}
 }
