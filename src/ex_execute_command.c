@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/18 10:20:45 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/18 10:27:21 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,6 @@ void	execute_command_redirections(t_ast_node *node)
 			ft_putstr_fd("error: execute_command_redirections\n", 2);
 			exit(1);
 		}
-		// create a fancy dup2 wrapper that automatically prints error and exits if it fails
-		//if (SOME ERROR)
-			//DO GRACEFUL CLOSING ETC...
 		current_redir_idx++;
 	}
 }
