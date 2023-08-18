@@ -107,7 +107,7 @@ int						tokenize_node(t_lexer *list, t_token *token, char *str,
 /*
  * contained in lexer_utils.c
  */
-t_return_value			free_token_list(t_lexer *token_list);
+t_return_value			free_token_list(t_lexer *token_list, char *input);
 t_return_value			make_new_node(t_lexer *token_to_node, t_token **new_token);
 void					delete_token(t_lexer *list, t_token *token);
 char					*ft_strpbrk(const char *string, const char *delimiters);

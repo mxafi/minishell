@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/18 13:08:01 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/18 17:53:58 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,21 +213,20 @@ int	lexer(char *input)
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
 		if (token_list.readlined[0] == '\0')
 		{
-			free_token_list(&token_list);
+			free_token_list(&token_list, input);
 			return (0);
 		}
 		tokenize_readline(&token_list);
 		if ((validate_syntax(&token_list)) != SUCCESS)
 		{
 			g_minishell->exit_status = token_list.error_code;
-			free_token_list(&token_list);
+			free_token_list(&token_list, input);
 			return (g_minishell->exit_status);
 		}
 		ast_root = ast_builder(token_list.head);
 		executor(ast_root);
 		ast_recursive_delete(ast_root);
-		free_token_list(&token_list);
 	}
-	free(input);
+	free_token_list(&token_list, input);
 	return (0);
 }

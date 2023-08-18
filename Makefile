@@ -6,7 +6,7 @@
 #    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
-#    Updated: 2023/08/16 16:33:08 by lclerc           ###   ########.fr        #
+#    Updated: 2023/08/18 17:22:54 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,3 +108,8 @@ re: fclean all
 .PHONY: debug
 debug: C_FLAGS_OBJ += $(C_FLAGS_DEBUG)
 debug: all
+
+.PHONY: debug
+lldb_g: C_FLAGS_OBJ += -g
+lldb_g: all
+
