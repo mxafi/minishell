@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/15 16:00:45 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/18 13:49:03lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*extract_alphanumeric_part(const char *env_key)
 	if (env_key[0] == '?')
 	{
 		alphanumeric_part = ft_strdup("?");
-		return alphanumeric_part;
+		return (alphanumeric_part);
 	}
 	i = 0;
 	while (env_key[i] != '\0')
@@ -68,7 +68,6 @@ static void	concatenate_expanded_content(t_token *current,
 	if (expanded_content != NULL)
 	{
 		new_content = ft_strdup(expanded_content);
-		free(expanded_content);
 	}
 	if (new_content != NULL)
 	{
@@ -80,6 +79,7 @@ static void	concatenate_expanded_content(t_token *current,
 		free(current->content);
 		current->content = ft_strdup("");
 	}
+	free(expanded_content);
 }
 
 /**
@@ -94,26 +94,38 @@ static void	concatenate_expanded_content(t_token *current,
  * 
  * @param current The current token to process.
  */
-static void	process_token(t_token *current)
+static t_return_value	process_token(t_lexer *list, t_token *current)
 {
-	char		*env_key;
-	char		*alpha_part;
-	char		*non_alpha_part;
-	const char	*env_value;
+	char	*env_key;
+	char	*alpha_part;
+	char	*non_alpha_part;
 
+	const char *env_value = NULL; // Initialize to NULL
 	env_key = ft_strchr(current->content, '$');
 	if (env_key != NULL)
 	{
 		alpha_part = extract_alphanumeric_part(env_key + 1);
-		//printf("\n\nalpha_part is %s\n\n", alpha_part);
 		if (ft_strncmp(alpha_part, "?", 1) == 0)
+		{
 			env_value = ft_itoa(g_minishell->exit_status);
+			if (env_value == NULL)
+			{
+				list->error_code = CALLOC_FAIL;
+				free(alpha_part);
+				return (CALLOC_FAIL) ; // Handle the allocation failure
+			}
+		}
 		else
 			env_value = env_get_value_by_key(alpha_part);
 		non_alpha_part = env_key + 1 + ft_strlen(alpha_part);
 		concatenate_expanded_content(current, env_value, non_alpha_part);
 		free(alpha_part);
+		if (ft_strncmp(alpha_part, "?", 1) == 0)
+		{
+			free((void *)env_value);
+		}
 	}
+	return (SUCCESS);
 }
 
 /**
@@ -134,7 +146,7 @@ static void	process_token(t_token *current)
  *
  * @param list	The lexer list containing the tokens to process
  */
-void	expand_from_env(t_lexer *list)
+t_return_value	expand_from_env(t_lexer *list)
 {
 	t_token	*current;
 
@@ -143,8 +155,10 @@ void	expand_from_env(t_lexer *list)
 	{
 		if (current->type == DBL_QUOTE_STR || current->type == STRING)
 		{
-			process_token(current);
+			if (process_token(list, current) != SUCCESS)
+				return(CALLOC_FAIL);
 		}
 		current = current->next;
 	}
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/18 13:04:29 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/18 13:08:01 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ int	lexer(char *input)
 	t_ast_node	*ast_root;
 
 	ft_bzero(&token_list, sizeof(t_lexer));
-	if (input && *input != '\0')
+	if (*input != '\0')
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
 		if (token_list.readlined[0] == '\0')

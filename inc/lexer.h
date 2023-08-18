@@ -152,7 +152,7 @@ void					concatenate_adjacent_strings(t_lexer *list);
 /**
  * Contained in lexer_expansion.c
  */
-void	expand_from_env(t_lexer *list);
+t_return_value	expand_from_env(t_lexer *list);
 
 t_return_value			process_heredoc(t_lexer *list);
 
