@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/17 18:21:47 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/18 10:20:45 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,24 @@ void	execute_command_redirections(t_ast_node *node)
 	}
 }
 
+void	execute_command_redirections_cleanup(t_ast_node *node)
+{
+	int					current_redir_idx;
+	t_ast_redir_type	c_type;
+	t_redir				*c_redir;
+
+	current_redir_idx = 0;
+	while (current_redir_idx < node->redir_count)
+	{
+		c_redir = node->redirections[current_redir_idx];
+		c_type = c_redir->type;
+		close(c_redir->file_descriptor);
+		if (c_type == AST_HEREDOC)
+			unlink(c_redir->argument);
+		current_redir_idx++;
+	}
+}
+
 void	execute_command(t_ast_node *node)
 {
 	if (node->redir_count > 0)
@@ -168,7 +186,7 @@ void	execute_command(t_ast_node *node)
 			execute_command_redirections(node);
 			if (execute_bi_cmd(node) == FALSE)
 				execute_real_cmd(node);
-			// clean up redirections (and heredoc files if exists /tmp/minishell_heredoc.tmp)
+			execute_command_redirections_cleanup(node);
 			exit(g_minishell->exit_status);
 		}
 		wait(&g_minishell->termination_status);
