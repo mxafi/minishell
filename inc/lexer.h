@@ -125,6 +125,7 @@ t_return_value			validate_syntax(t_lexer *token_list);
 /**
  * contained in lexer_validate_redirector.c 
  */
+t_return_value	token_is_redirector(t_token *token);
 t_return_value	validate_redirectors(t_lexer *list);
 
 

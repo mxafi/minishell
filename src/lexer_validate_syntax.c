@@ -32,27 +32,37 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
  * 			field of the tokens.
  * @param token_list The list to process and label.
  */
-void	label_cmds_and_args(t_lexer *token_list)
+void label_cmds_and_args(t_lexer *token_list)
 {
-	t_token	*current;
+    t_token *current = token_list->head;
+    t_token *prev_token = NULL;
 
-	current = token_list->head;
-	while (current != NULL)
-	{
-		if (current->type == STRING)
-		{
-			if (token_list->cmd_found == FOUND)
-				current->type = ARG;
-			else
-			{
-				current->type = CMD;
-				token_list->cmd_found = FOUND;
-			}
-		}
-		else if (current->type == PIPE)
-			token_list->cmd_found = NOT_YET;
-		current = current->next;
-	}
+    while (current != NULL)
+    {
+        if (current->type == STRING)
+        {
+            if (prev_token != NULL && token_is_redirector(prev_token) == SUCCESS)
+            {
+                current->type = ARG;
+            }
+            else if (token_list->cmd_found == FOUND)
+            {
+                current->type = ARG;
+            }
+            else
+            {
+                current->type = CMD;
+                token_list->cmd_found = FOUND;
+            }
+        }
+        else if (current->type == PIPE)
+        {
+            token_list->cmd_found = NOT_YET;
+        }
+        
+        prev_token = current; // Remember the previous token
+        current = current->next;
+    }
 }
 
 /**
