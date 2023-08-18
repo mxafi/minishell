@@ -100,9 +100,9 @@ t_return_value	validate_syntax(t_lexer *token_list)
 		//printf("________list error_code %d\n", token_list->error_code);
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	//print_list(token_list);
-	//printf("validate_syntax()quote validated\n");
-	//printf("_______________________________________________________________________________\n");
+	////print_list(token_list);
+	////printf("validate_syntax()quote validated\n");
+	////printf("_______________________________________________________________________________\n");
 	expand_from_env(token_list);
 	//print_list(token_list);
 	//printf("validate_syntax()expanded\n");
@@ -121,8 +121,8 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//print_list(token_list);
 	//printf("list error_code %d\n", token_list->error_code);
 	//printf("validate_syntax()validated pipes\n");
-	if (token_list->error_code != SUCCESS)
-		return (token_list->error_code);
+	//if (token_list->error_code != SUCCESS)
+		//return (token_list->error_code);
 	//printf("_______________________________________________________________________________\n");
 	if (validate_redirectors(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
@@ -133,8 +133,6 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//printf("list error_code %d\n", token_list->error_code);
 	if (debug_error != SUCCESS)
 	{
-		//printf("heredoc error detected :%d:\n", debug_error);
-		//print_list(token_list);
 		return (token_list->error_code);
 	}
 	//print_list(token_list);
@@ -144,9 +142,6 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//print_list(token_list);
 	//printf("validate_syntax()token CMD ARGS labelled\n");
 	//printf("_______________________________________________________________________________\n");
-	//execute_builtins(token_list);
-	//print_list(token_list);
-	//printf("executed builtins\n");
 	//printf("################################################################################\n");
 	//printf("#                                   OUTPUT                                     #\n");
 	//printf("################################################################################\n");

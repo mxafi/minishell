@@ -6,10 +6,9 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/17 17:06:20 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/18 13:04:29 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../inc/minishell.h"
 
@@ -63,7 +62,6 @@ int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 {
 	t_token	*last_token;
 
-	assert(str);
 	// uses some test substr, see below and above function, check
 	if ((token->content = ft_test_substr(str, 0, length)) == NULL)
 	{
@@ -118,7 +116,8 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
  * @details	Heredoc and append delimiters are determined separately from the 
  * 			other delimiters. A call to set_token_type_and_quote_state is made
  * 			which will set the token type to the node, as well as an 
- * 			initialization of the token list's state needed by the quote handlers
+
+				* 			initialization of the token list's state needed by the quote handlers
  *			in add_null_string_token_if_empty_quote function.
  *
  * @param token_list	Information and token list placeholder.
@@ -208,14 +207,15 @@ int	lexer(char *input)
 	t_lexer		token_list;
 	t_ast_node	*ast_root;
 
-
 	ft_bzero(&token_list, sizeof(t_lexer));
 	if (input && *input != '\0')
 	{
 		token_list.readlined = ft_strtrim(input, WHITE_SPACES);
-		free(input);
 		if (token_list.readlined[0] == '\0')
+		{
+			free_token_list(&token_list);
 			return (0);
+		}
 		tokenize_readline(&token_list);
 		if ((validate_syntax(&token_list)) != SUCCESS)
 		{
@@ -228,5 +228,6 @@ int	lexer(char *input)
 		ast_recursive_delete(ast_root);
 		free_token_list(&token_list);
 	}
+	free(input);
 	return (0);
 }

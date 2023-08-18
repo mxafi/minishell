@@ -71,8 +71,6 @@ t_return_value	free_token_list(t_lexer *delete_me)
 	t_return_value	error_code;
 
 	current = delete_me->head;
-	//del this assert()
-	assert(delete_me->head);
 	error_code = delete_me->error_code;
 	while (current != NULL)
 	{
@@ -82,7 +80,8 @@ t_return_value	free_token_list(t_lexer *delete_me)
 		current = helper;
 	}
 	delete_me->head = NULL;
-	free (delete_me->readlined);
+	if (delete_me->readlined != NULL)
+		free(delete_me->readlined);
 	//check if that return is needed
 	return (error_code);
 }
