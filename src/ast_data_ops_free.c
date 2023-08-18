@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:01:04 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/15 14:54:37 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/17 17:16:56 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	delete_redirections(t_redir **redirections, int count)
 	i = 0;
 	while (i < count)
 	{
+		if (!redirections[i])
+			break ;
 		if (redirections[i]->argument != NULL)
 			free(redirections[i]->argument);
 		if (redirections[i] != NULL)

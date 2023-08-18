@@ -22,6 +22,7 @@ Session.vim
 Sessionx.vim
 .netrwhist
 [._]*.un~
+vim
 
 # VSCode stuff
 .vscode
