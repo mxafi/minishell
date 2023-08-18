@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:05:54 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 22:13:56 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/18 20:08:27 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_ast_node	*ast_parse_command(t_token *token)
 		ast_recursive_delete(node);
 		exit(1);
 	}
+	// printf("Debug: ast_parse_command: calling parse argv and redir with token :%s:and tokenNext:%s:\n", token->content, token->next->content);
 	ast_parse_argv(node, token);
 	ast_parse_redirections(node, token);
 	return (node);

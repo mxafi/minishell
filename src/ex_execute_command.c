@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/18 13:15:56 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/18 20:10:50 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,13 @@ void	execute_command_redirections(t_ast_node *node)
 	t_ast_redir_type	c_type;
 	t_redir				*c_redir;
 
+	// printf("Debug: exe_cmd_redir: current node=%s\n", node->exec_argv[0]);
 	current_redir_idx = 0;
 	while (current_redir_idx < node->redir_count)
 	{
 		c_redir = node->redirections[current_redir_idx];
 		c_type = c_redir->type;
+		// printf("Debug: exe_cmd_redir: current redir i=%i and arg=%s\n", current_redir_idx, c_redir->argument);
 		if (c_type == AST_INFILE)
 		{
 			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_RDONLY);
@@ -179,6 +181,7 @@ void	execute_command_redirections_cleanup(t_ast_node *node)
 
 void	execute_command(t_ast_node *node)
 {
+	// printf("Debug: execute_command: starting with redir_count=%i\n", node->redir_count);
 	if (node->redir_count > 0)
 	{
 		if (wrap_fork() == 0)
