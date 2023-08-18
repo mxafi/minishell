@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/18 10:27:21 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/18 13:15:56 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ void	print_signal(int termination_status)
 
 void	execute_real_cmd(t_ast_node *node)
 {
+	// printf("Debug: execute_real_cmd: start with ::%s::\n", node->exec_argv[0]);
 	if (is_absolute_path(node) == TRUE)
 		node->exec_file = ft_strdup(node->exec_argv[0]);
 	else
 		parse_path(node);
 	if (wrap_fork() == 0)
 	{
+		// printf("Debug: execute_real_cmd: calling execve from child with ::%s::\n", node->exec_argv[0]);
 		if (execve(node->exec_file, node->exec_argv, g_minishell->envp) == -1)
 		{
 			ft_putstr_fd("shellfishy: ", 2);
@@ -100,6 +102,7 @@ void	execute_real_cmd(t_ast_node *node)
 	wait(&g_minishell->termination_status);
 	g_minishell->exit_status = ret_exit_status(
 			g_minishell->termination_status);
+	// printf("Debug: execute_real_cmd: returned from execve child ::%s::\n", node->exec_argv[0]);
 	print_signal(g_minishell->termination_status);
 }
 
@@ -192,7 +195,9 @@ void	execute_command(t_ast_node *node)
 	}
 	else
 	{
+		// printf("Debug: execute_command: no redirs for node:%s\n", node->exec_argv[0]);
 		if (execute_bi_cmd(node) == FALSE)
 			execute_real_cmd(node);
+		// printf("Debug: execute_command: returned from execute_real_cmd node:%s\n", node->exec_argv[0]);
 	}
 }
