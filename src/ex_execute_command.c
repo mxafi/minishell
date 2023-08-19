@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/19 18:24:12 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:27:58 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,10 +200,14 @@ void	execute_command(t_ast_node *node)
 	{
 		if (wrap_fork(NULL) == 0)
 		{
+			printf("Debug: execute_command: executing redirections");
 			execute_command_redirections(node);
+			printf("Debug: execute_command: executing command");
 			if (execute_bi_cmd(node) == FALSE)
 				execute_real_cmd(node);
+			printf("Debug: execute_command: cleaning up redirections");
 			execute_command_redirections_cleanup(node);
+			printf("Debug: execute_command: exiting redir fork");
 			exit(g_minishell->exit_status);
 		}
 		wait(&g_minishell->termination_status);
@@ -212,7 +216,7 @@ void	execute_command(t_ast_node *node)
 	}
 	else
 	{
-		// printf("Debug: execute_command: no redirs for node:%s\n", node->exec_argv[0]);
+		printf("Debug: execute_command: no redirs for node:%s\n", node->exec_argv[0]);
 		if (execute_bi_cmd(node) == FALSE)
 			execute_real_cmd(node);
 		// printf("Debug: execute_command: returned from execute_real_cmd node:%s\n", node->exec_argv[0]);
