@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/19 14:21:40 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:24:12 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	execute_real_cmd(t_ast_node *node)
 		node->exec_file = ft_strdup(node->exec_argv[0]);
 	else
 		parse_path(node);
-	if (wrap_fork() == 0)
+	if (wrap_fork(NULL) == 0)
 	{
 		// printf("Debug: execute_real_cmd: calling execve from child with ::%s::\n", node->exec_argv[0]);
 		if (execve(node->exec_file, node->exec_argv, g_minishell->envp) == -1)
@@ -185,7 +185,10 @@ void	execute_command_redirections_cleanup(t_ast_node *node)
 		if (c_type == AST_HEREDOC)
 			unlink(c_redir->argument);
 		else if (c_type == AST_NULL_REDIR)
+		{
 			unlink(c_redir->argument);
+			g_minishell->exit_status = 1;
+		}
 		current_redir_idx++;
 	}
 }
@@ -195,7 +198,7 @@ void	execute_command(t_ast_node *node)
 	// printf("Debug: execute_command: starting with redir_count=%i\n", node->redir_count);
 	if (node->redir_count > 0)
 	{
-		if (wrap_fork() == 0)
+		if (wrap_fork(NULL) == 0)
 		{
 			execute_command_redirections(node);
 			if (execute_bi_cmd(node) == FALSE)
