@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/15 14:11:06 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/19 14:20:46 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ typedef enum e_ast_redir_type
 	AST_OUTFILE,
 	AST_APPEND,
 	AST_HEREDOC,
-	AST_UNKNOWN_REDIR
+	AST_UNKNOWN_REDIR,
+	AST_NULL_REDIR
 }	t_ast_redir_type;
 
 typedef struct s_redir
