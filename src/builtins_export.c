@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:47:45 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/17 13:40:42 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/19 16:45:46 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,16 @@ static void	ft_export_validate_and_execute(char *key, char *value)
 	{
 		if (!(ft_isalpha(*sanitize_check) || *sanitize_check == '_'))
 		{
-			printf("☠️  shellfishy ☠️ > Invalid variable name: %s\n", key);
+			ft_putstr_fd("shellfishy: export: `", 2);
+			ft_putstr_fd(key, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			g_minishell->exit_status = 1;
 			return ;
 		}
 		sanitize_check++;
 	}
 	env_set_value_by_key(key, value);
+	g_minishell->exit_status = 0;
 }
 
 /**
@@ -97,5 +100,4 @@ void	ft_export(t_ast_node *node)
 		else 
 			ft_export_validate_and_execute(arg, "");
 	}
-	g_minishell->exit_status = 0;
 }
