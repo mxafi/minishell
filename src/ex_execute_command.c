@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/18 20:10:50 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/19 14:21:40 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	open_redir_file(const char *file_path, int flags)
 
 	if (file == -1)
 	{
-		ft_putstr_fd("shellfishy: opening redirection files: ", 2);
+		ft_putstr_fd("shellfishy: ", 2);
 		perror(file_path);
 	}
 	return (file);
@@ -157,6 +157,15 @@ void	execute_command_redirections(t_ast_node *node)
 			ft_putstr_fd("error: execute_command_redirections\n", 2);
 			exit(1);
 		}
+		if (c_redir->file_descriptor == -1)
+		{
+			free(c_redir->argument);
+			c_redir->argument = ft_strdup("/tmp/minishell_null_redirection");
+			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_CREAT | O_WRONLY | O_TRUNC);
+			dup2(c_redir->file_descriptor, STDOUT_FILENO);
+			c_type = AST_NULL_REDIR;
+			break ;
+		}
 		current_redir_idx++;
 	}
 }
@@ -174,6 +183,8 @@ void	execute_command_redirections_cleanup(t_ast_node *node)
 		c_type = c_redir->type;
 		close(c_redir->file_descriptor);
 		if (c_type == AST_HEREDOC)
+			unlink(c_redir->argument);
+		else if (c_type == AST_NULL_REDIR)
 			unlink(c_redir->argument);
 		current_redir_idx++;
 	}
