@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:58:31 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/17 13:36:27 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/18 15:37:29 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
  * @param 	token	token being checked 
  * @return			SUCCESS or FAILURE according to validity 
  */
-static t_return_value	token_is_redirector(t_token *token)
+t_return_value	token_is_redirector(t_token *token)
 {
 	if (token->type == OUTFILE || token->type == INFILE ||
 		token->type == HEREDOC || token->type == APPEND_TO)

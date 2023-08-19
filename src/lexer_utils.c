@@ -64,15 +64,13 @@ t_return_value	make_new_node(t_lexer *token_list, t_token **new_token)
  * @param delete_me	The list to be freed.
  * @return int		The error code associated with the token list.
  */
-t_return_value	free_token_list(t_lexer *delete_me)
+t_return_value	free_token_list(t_lexer *delete_me, char *input)
 {
 	t_token			*current;
 	t_token			*helper;
 	t_return_value	error_code;
 
 	current = delete_me->head;
-	//del this assert()
-	assert(delete_me->head);
 	error_code = delete_me->error_code;
 	while (current != NULL)
 	{
@@ -82,7 +80,10 @@ t_return_value	free_token_list(t_lexer *delete_me)
 		current = helper;
 	}
 	delete_me->head = NULL;
-	free (delete_me->readlined);
+	if (input)
+		free (input);
+	if (delete_me->readlined != NULL)
+		free(delete_me->readlined);
 	//check if that return is needed
 	return (error_code);
 }

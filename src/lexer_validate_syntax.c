@@ -32,27 +32,37 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
  * 			field of the tokens.
  * @param token_list The list to process and label.
  */
-void	label_cmds_and_args(t_lexer *token_list)
+void label_cmds_and_args(t_lexer *token_list)
 {
-	t_token	*current;
+    t_token *current = token_list->head;
+    t_token *prev_token = NULL;
 
-	current = token_list->head;
-	while (current != NULL)
-	{
-		if (current->type == STRING)
-		{
-			if (token_list->cmd_found == FOUND)
-				current->type = ARG;
-			else
-			{
-				current->type = CMD;
-				token_list->cmd_found = FOUND;
-			}
-		}
-		else if (current->type == PIPE)
-			token_list->cmd_found = NOT_YET;
-		current = current->next;
-	}
+    while (current != NULL)
+    {
+        if (current->type == STRING)
+        {
+            if (prev_token != NULL && token_is_redirector(prev_token) == SUCCESS)
+            {
+                current->type = ARG;
+            }
+            else if (token_list->cmd_found == FOUND)
+            {
+                current->type = ARG;
+            }
+            else
+            {
+                current->type = CMD;
+                token_list->cmd_found = FOUND;
+            }
+        }
+        else if (current->type == PIPE)
+        {
+            token_list->cmd_found = NOT_YET;
+        }
+        
+        prev_token = current; // Remember the previous token
+        current = current->next;
+    }
 }
 
 /**
@@ -100,10 +110,11 @@ t_return_value	validate_syntax(t_lexer *token_list)
 		//printf("________list error_code %d\n", token_list->error_code);
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	//print_list(token_list);
-	//printf("validate_syntax()quote validated\n");
-	//printf("_______________________________________________________________________________\n");
-	expand_from_env(token_list);
+	////print_list(token_list);
+	////printf("validate_syntax()quote validated\n");
+	////printf("_______________________________________________________________________________\n");
+	if (expand_from_env(token_list) == CALLOC_FAIL)
+		return (token_list->error_code);
 	//print_list(token_list);
 	//printf("validate_syntax()expanded\n");
 	//printf("_______________________________________________________________________________\n");
@@ -121,8 +132,8 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//print_list(token_list);
 	//printf("list error_code %d\n", token_list->error_code);
 	//printf("validate_syntax()validated pipes\n");
-	if (token_list->error_code != SUCCESS)
-		return (token_list->error_code);
+	//if (token_list->error_code != SUCCESS)
+		//return (token_list->error_code);
 	//printf("_______________________________________________________________________________\n");
 	if (validate_redirectors(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
@@ -133,8 +144,6 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//printf("list error_code %d\n", token_list->error_code);
 	if (debug_error != SUCCESS)
 	{
-		//printf("heredoc error detected :%d:\n", debug_error);
-		//print_list(token_list);
 		return (token_list->error_code);
 	}
 	//print_list(token_list);
@@ -144,9 +153,6 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//print_list(token_list);
 	//printf("validate_syntax()token CMD ARGS labelled\n");
 	//printf("_______________________________________________________________________________\n");
-	//execute_builtins(token_list);
-	//print_list(token_list);
-	//printf("executed builtins\n");
 	//printf("################################################################################\n");
 	//printf("#                                   OUTPUT                                     #\n");
 	//printf("################################################################################\n");
