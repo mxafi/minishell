@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:43:39 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/15 16:41:55 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:07:18 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	executor(t_ast_node *ast_node);
 void	execute_pipeline(t_ast_node *node);
 void	execute_command(t_ast_node *node);
 t_bool	execute_bi_cmd(t_ast_node *node);
-pid_t	wrap_fork(void);
+pid_t	wrap_fork(pid_t	*ext_pid);
 int		ret_exit_status(int termination_status);
 
 #endif

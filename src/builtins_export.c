@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:47:45 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/19 16:45:46 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:05:34 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static void	ft_export_validate_and_execute(char *key, char *value)
 		sanitize_check++;
 	}
 	env_set_value_by_key(key, value);
-	g_minishell->exit_status = 0;
 }
 
 /**
@@ -86,18 +85,26 @@ void	ft_export(t_ast_node *node)
 	int		i;
 	char	*arg;
 
-	i = 0;
+	g_minishell->exit_status = 0;
 	if (node->argv_count == 1)
 	{
-		env_print_list();
+		i = 0;
+		while (g_minishell->envp[i])
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd(g_minishell->envp[i], 1);
+			ft_putchar_fd('\n', 1);
+			i++;
+		}
 		return ;
 	}
+	i = 0;
 	while (++i < node->argv_count)
 	{
 		arg = node->exec_argv[i];
 		if (ft_export_handle_equal_sign(arg) == SUCCESS)
 			;
-		else 
+		else
 			ft_export_validate_and_execute(arg, "");
 	}
 }
