@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/21 10:38:28 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/21 17:25:24 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,31 @@ int	open_redir_file(const char *file_path, int flags)
 	return (file);
 }
 
+void	execute_command_redirections_cleanup(t_ast_node *node)
+{
+	int					current_redir_idx;
+	t_ast_redir_type	c_type;
+	t_redir				*c_redir;
+
+	current_redir_idx = 0;
+	while (current_redir_idx < node->redir_count)
+	{
+		c_redir = node->redirections[current_redir_idx];
+		c_type = c_redir->type;
+		close(c_redir->file_descriptor);
+		if (c_type == AST_HEREDOC)
+			unlink(c_redir->argument);
+		else if (c_type == AST_NULL_REDIR)
+		{
+			unlink(c_redir->argument);
+			g_minishell->exit_status = 1;
+		}
+		if (c_redir->file_descriptor == -1)
+			exit(1);
+		current_redir_idx++;
+	}
+}
+
 void	execute_command_redirections(t_ast_node *node)
 {
 	int					current_redir_idx;
@@ -157,78 +182,62 @@ void	execute_command_redirections(t_ast_node *node)
 			ft_putstr_fd("error: execute_command_redirections\n", 2);
 			exit(1);
 		}
-		if (c_redir->file_descriptor == -1 && (c_type == AST_OUTFILE || c_type == AST_APPEND))
+		if (c_redir->file_descriptor == -1)// && (c_type == AST_OUTFILE || c_type == AST_APPEND)
 		{
-			free(c_redir->argument);
-			c_redir->argument = ft_strdup("/tmp/minishell_null_redirection");
-			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_CREAT | O_WRONLY | O_TRUNC);
-			dup2(c_redir->file_descriptor, STDOUT_FILENO);
-			c_type = AST_NULL_REDIR;
+			//free(c_redir->argument);
+			//c_redir->argument = ft_strdup("/tmp/minishell_null_redirection");
+			//c_redir->file_descriptor = open_redir_file(c_redir->argument, O_CREAT | O_WRONLY | O_TRUNC);
+			//dup2(c_redir->file_descriptor, STDOUT_FILENO);
+			//c_type = AST_NULL_REDIR;
+			execute_command_redirections_cleanup(node);
 			break ;
 		}
 		current_redir_idx++;
 	}
 }
 
-void	execute_command_redirections_cleanup(t_ast_node *node)
+int	is_unforkable_builtin(char *cmd)
 {
-	int					current_redir_idx;
-	t_ast_redir_type	c_type;
-	t_redir				*c_redir;
+	const char	*unforkable[4] = {"cd", "export", "unset", "exit"};
+	const int	unforkable_len = 4;
+	int			i;
 
-	current_redir_idx = 0;
-	while (current_redir_idx < node->redir_count)
+	i = 0;
+	while (i < unforkable_len)
 	{
-		c_redir = node->redirections[current_redir_idx];
-		c_type = c_redir->type;
-		close(c_redir->file_descriptor);
-		if (c_type == AST_HEREDOC)
-			unlink(c_redir->argument);
-		else if (c_type == AST_NULL_REDIR)
-		{
-			unlink(c_redir->argument);
-			g_minishell->exit_status = 1;
-		}
-		current_redir_idx++;
+		if (ft_strncmp(cmd, unforkable[i], 7) == 0)
+			return (1);
+		i++;
 	}
+	return (0);
 }
 
 void	execute_command(t_ast_node *node)
 {
-	int	pipe_term[2];
+	pid_t	fork_pid;
 
-	// printf("Debug: execute_command: starting with redir_count=%i\n", node->redir_count);
-	if (pipe(pipe_term) < 0)
-		exit(1);
-	close(pipe_term[WRITING_END]);
-	if (node->redir_count > 0)
+	if (g_minishell->is_pipeline || is_unforkable_builtin(node->exec_argv[0]))
 	{
-		if (wrap_fork(NULL) == 0)
-		{
-			close(pipe_term[READING_END]);
-			// printf("Debug: execute_command: executing redirections");
-			execute_command_redirections(node);
-			// printf("Debug: execute_command: executing command");
-			if (execute_bi_cmd(node) == FALSE)
-				execute_real_cmd(node);
-			// printf("Debug: execute_command: cleaning up redirections");
-			execute_command_redirections_cleanup(node);
-			// printf("Debug: execute_command: exiting redir fork");
-			write(pipe_term[WRITING_END], &g_minishell->exit_status, sizeof(int));
-			close(pipe_term[WRITING_END]);
+		execute_command_redirections(node);
+		if (execute_bi_cmd(node) == FALSE)
+			execute_real_cmd(node);
+		execute_command_redirections_cleanup(node);
+		if (g_minishell->is_pipeline)
 			exit(g_minishell->exit_status);
-		}
-		// wait(&g_minishell->termination_status);
-		// g_minishell->exit_status = ret_exit_status(
-		// 	g_minishell->termination_status);
-		read(pipe_term[READING_END], &g_minishell->exit_status, sizeof(int));
 	}
 	else
 	{
-		// printf("Debug: execute_command: no redirs for node:%s\n", node->exec_argv[0]);
-		if (execute_bi_cmd(node) == FALSE)
-			execute_real_cmd(node);
-		// printf("Debug: execute_command: returned from execute_real_cmd node:%s\n", node->exec_argv[0]);
+		// printf("Debug: execute_command: not pipeline, not unforkable builtin\n");
+		if (wrap_fork(&fork_pid) == 0)
+		{
+			execute_command_redirections(node);
+			if (execute_bi_cmd(node) == FALSE)
+				execute_real_cmd(node);
+			execute_command_redirections_cleanup(node);
+			exit(g_minishell->exit_status);
+		}
+		waitpid(fork_pid, &g_minishell->termination_status, 0);
+		g_minishell->exit_status = ret_exit_status(
+				g_minishell->termination_status);
 	}
-	close(pipe_term[READING_END]);
 }
