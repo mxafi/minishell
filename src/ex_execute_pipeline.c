@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:22 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/19 18:23:11 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:00:31 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	execute_pipeline(t_ast_node *node)
 			exit (1);
 		close(pipe_end[READING_END]);
 		executor(node->left);
+		close(pipe_end[WRITING_END]);
 		exit(g_minishell->exit_status);
 	}
 	close(pipe_end[WRITING_END]);
@@ -34,6 +35,7 @@ void	execute_pipeline(t_ast_node *node)
 			exit (1);
 		close(pipe_end[WRITING_END]);
 		executor(node->right);
+		close(pipe_end[READING_END]);
 		exit(g_minishell->exit_status);
 	}
 	waitpid(pid[0], &g_minishell->termination_status, 0);

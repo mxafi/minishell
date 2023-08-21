@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/19 18:27:58 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:38:28 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ void	execute_command_redirections(t_ast_node *node)
 			ft_putstr_fd("error: execute_command_redirections\n", 2);
 			exit(1);
 		}
-		if (c_redir->file_descriptor == -1)
+		if (c_redir->file_descriptor == -1 && (c_type == AST_OUTFILE || c_type == AST_APPEND))
 		{
 			free(c_redir->argument);
 			c_redir->argument = ft_strdup("/tmp/minishell_null_redirection");
@@ -195,30 +195,40 @@ void	execute_command_redirections_cleanup(t_ast_node *node)
 
 void	execute_command(t_ast_node *node)
 {
+	int	pipe_term[2];
+
 	// printf("Debug: execute_command: starting with redir_count=%i\n", node->redir_count);
+	if (pipe(pipe_term) < 0)
+		exit(1);
+	close(pipe_term[WRITING_END]);
 	if (node->redir_count > 0)
 	{
 		if (wrap_fork(NULL) == 0)
 		{
-			printf("Debug: execute_command: executing redirections");
+			close(pipe_term[READING_END]);
+			// printf("Debug: execute_command: executing redirections");
 			execute_command_redirections(node);
-			printf("Debug: execute_command: executing command");
+			// printf("Debug: execute_command: executing command");
 			if (execute_bi_cmd(node) == FALSE)
 				execute_real_cmd(node);
-			printf("Debug: execute_command: cleaning up redirections");
+			// printf("Debug: execute_command: cleaning up redirections");
 			execute_command_redirections_cleanup(node);
-			printf("Debug: execute_command: exiting redir fork");
+			// printf("Debug: execute_command: exiting redir fork");
+			write(pipe_term[WRITING_END], &g_minishell->exit_status, sizeof(int));
+			close(pipe_term[WRITING_END]);
 			exit(g_minishell->exit_status);
 		}
-		wait(&g_minishell->termination_status);
-		g_minishell->exit_status = ret_exit_status(
-			g_minishell->termination_status);
+		// wait(&g_minishell->termination_status);
+		// g_minishell->exit_status = ret_exit_status(
+		// 	g_minishell->termination_status);
+		read(pipe_term[READING_END], &g_minishell->exit_status, sizeof(int));
 	}
 	else
 	{
-		printf("Debug: execute_command: no redirs for node:%s\n", node->exec_argv[0]);
+		// printf("Debug: execute_command: no redirs for node:%s\n", node->exec_argv[0]);
 		if (execute_bi_cmd(node) == FALSE)
 			execute_real_cmd(node);
 		// printf("Debug: execute_command: returned from execute_real_cmd node:%s\n", node->exec_argv[0]);
 	}
+	close(pipe_term[READING_END]);
 }
