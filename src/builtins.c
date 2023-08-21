@@ -104,7 +104,8 @@ void	ft_exit(t_ast_node *node)
 {
 	int	i;
 
-	ft_putstr_fd("exit\n", 1);
+	if (!g_minishell->is_pipeline)
+		ft_putstr_fd("exit\n", 1);
 	if (node->argv_count > 2)
 	{
 		ft_putstr_fd("shellfishy: exit: too many arguments\n", 2);
@@ -122,7 +123,6 @@ void	ft_exit(t_ast_node *node)
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}
-
 	else
 		exit (g_minishell->exit_status);
 }
