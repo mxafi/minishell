@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:16 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/21 16:05:48 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:14:23 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	display_prompt(void)
 		input = get_input();
 		if (!input)
 			return ;
+		g_minishell->is_pipeline = 0;
 		lexer(input);
 	}
 }
@@ -34,7 +35,6 @@ int	main(void)
 		exit(1);
 	if (init_envp())
 		return (1);
-	g_minishell->is_pipeline = 0;
 	display_prompt();
 	i = 0;
 	while (g_minishell->envp[i])
