@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_execute_command.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/18 20:10:50 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/22 14:38:22 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,14 @@ void	print_signal(int termination_status)
 
 void	execute_real_cmd(t_ast_node *node)
 {
-	// printf("Debug: execute_real_cmd: start with ::%s::\n", node->exec_argv[0]);
+	// printf("Debug: execute_real_cmd: start with ::%p::\n", node->exec_argv[0]);
 	if (is_absolute_path(node) == TRUE)
 		node->exec_file = ft_strdup(node->exec_argv[0]);
 	else
 		parse_path(node);
 	if (wrap_fork() == 0)
 	{
-		// printf("Debug: execute_real_cmd: calling execve from child with ::%s::\n", node->exec_argv[0]);
+		// printf("Debug: execute_real_cmd: calling execve from child with ::%p::\n", node->exec_argv[0]);
 		if (execve(node->exec_file, node->exec_argv, g_minishell->envp) == -1)
 		{
 			ft_putstr_fd("shellfishy: ", 2);
@@ -102,7 +102,7 @@ void	execute_real_cmd(t_ast_node *node)
 	wait(&g_minishell->termination_status);
 	g_minishell->exit_status = ret_exit_status(
 			g_minishell->termination_status);
-	// printf("Debug: execute_real_cmd: returned from execve child ::%s::\n", node->exec_argv[0]);
+	// printf("Debug: execute_real_cmd: returned from execve child ::%p::\n", node->exec_argv[0]);
 	print_signal(g_minishell->termination_status);
 }
 
