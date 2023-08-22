@@ -30,6 +30,11 @@ static char	*extract_value_from_dollar_sign(const char *dollar_sign)
 	int		i;
 	char	*alphanumeric_part;
 
+	if (dollar_sign[0] == '\0')
+	{
+		alphanumeric_part = ft_strdup("$");
+		return (alphanumeric_part);
+	}
 	if (dollar_sign[0] == '?')
 	{
 		alphanumeric_part = ft_strdup("?");
@@ -123,9 +128,9 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 		printf("Pres_string handled:\n\tresult_string :%s:\n", result_string);
 		handled_pre_string = TRUE;
 		key_value = extract_value_from_dollar_sign(dollar_sign + 1);
-			// Returns alphanumeric key including '_' -> excludes $
-		printf("Coming from extract_value_from_dollar_sign:\n\tkey_value\t:%s:\n\n", key_value);
-		if (ft_strncmp(key_value, "?", 2) == 0) // Handle exit status
+		if (key_value && ft_strncmp(key_value, "$", 2) == 0)
+			env_value = ft_strdup("$");
+		else if (ft_strncmp(key_value, "?", 2) == 0) // Handle exit status
 		{
 			env_value = ft_itoa(g_minishell->exit_status);
 			if (env_value == NULL)
@@ -137,6 +142,7 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 		}
 		else // get env_value corresponding to the dollar_sign
 			env_value = env_get_value_by_key(key_value);
+		printf("Coming from extract_value_from_dollar_sign:\n\tkey_value\t:%s:\n\n", key_value);
 		printf("Returned from env_get_value_by_key:\n\tkey_value\t:%s:\n\tenv_value\t:%s:\n\n", key_value, env_value);
 		if (result_string == NULL && env_value)
 		{
@@ -178,7 +184,7 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 		}
 		else
 			free(key_value);
-		if (ft_strncmp(key_value, "?", 2) == 0)
+		if (ft_strncmp(key_value, "?", 2) == 0 || ft_strncmp(key_value, "$", 2) == 0)
 			free((void *)env_value);
 		if (key_value)
 		{
