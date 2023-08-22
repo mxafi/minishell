@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/22 15:16:01 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:38:24 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	print_signal(int termination_status)
 
 void	execute_real_cmd(t_ast_node *node)
 {
-	// printf("Debug: execute_real_cmd: start with ::%s::\n", node->exec_argv[0]);
 	if (is_absolute_path(node) == TRUE)
 		node->exec_file = ft_strdup(node->exec_argv[0]);
 	else
@@ -101,7 +100,6 @@ void	execute_real_cmd(t_ast_node *node)
 	wait(&g_minishell->termination_status);
 	g_minishell->exit_status = ret_exit_status(
 			g_minishell->termination_status);
-	// printf("Debug: execute_real_cmd: returned from execve child ::%s::\n", node->exec_argv[0]);
 	print_signal(g_minishell->termination_status);
 }
 
@@ -115,7 +113,6 @@ int	open_redir_file(const char *file_path, int flags)
 		ft_putstr_fd("shellfishy: ", 2);
 		perror(file_path);
 	}
-	printf("Debug: open fd:%i redir\n", file);
 	return (file);
 }
 
@@ -150,13 +147,11 @@ void	execute_command_redirections(t_ast_node *node)
 	t_ast_redir_type	c_type;
 	t_redir				*c_redir;
 
-	// printf("Debug: exe_cmd_redir: current node=%s\n", node->exec_argv[0]);
 	current_redir_idx = 0;
 	while (current_redir_idx < node->redir_count)
 	{
 		c_redir = node->redirections[current_redir_idx];
 		c_type = c_redir->type;
-		// printf("Debug: exe_cmd_redir: current redir i=%i and arg=%s\n", current_redir_idx, c_redir->argument);
 		if (c_type == AST_INFILE)
 		{
 			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_RDONLY);
