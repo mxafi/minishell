@@ -43,7 +43,9 @@ static char	*extract_value_from_dollar_sign(const char *dollar_sign)
 		i++;
 	}
 	alphanumeric_part = ft_substr(dollar_sign, 0, i); 
-	printf ("extract_value_from_dolar_sign:\n\tdollar_sign\t:%s:, alphanumeric_part\t:%s:\n\n", dollar_sign, alphanumeric_part);
+	printf("\n\t- - - - - - - - - - - - - - - -\n");
+	printf ("\textract_value_from_dolar_sign:\n\tdollar_sign\t:%s:\n\talphanumeric_part\t:%s:\n", dollar_sign, alphanumeric_part);
+	printf("\t- - - - - - - - - - - - - - - -\n\n");
 	return (alphanumeric_part);
 }
 
@@ -83,27 +85,28 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 	char		*result_string;
 	char		*input;
 	const char	*env_value;
-	t_bool		prestring_stored;
+	t_bool		handled_pre_string;
 
 	result_string = NULL;
 	input = current->content;
-	prestring_stored = FALSE;
+	handled_pre_string = FALSE;
 	while (input && *input != '\0')
 	{
 		printf("________________________________________________________________________________\n");
 		dollar_sign = ft_strchr(input, '$');
 		if (!dollar_sign)
 			break ;
-		if (input < dollar_sign && prestring_stored == FALSE) // string before $ is saved here
+		if (input < dollar_sign && handled_pre_string == FALSE) // string before $ is saved here
 		{
 			result_string = get_string_before_dollar(dollar_sign, input, result_string); 
-			printf("There is a prestring:\t\n\tdollar_sign\t:%s:\n\tcurrent->content\t:%s:\n\tresult_string\t:%s:\n\n", dollar_sign, current->content, result_string);
-			prestring_stored = TRUE;
+			printf("There is a pre_string:\t\n\tdollar_sign\t:%s:\n\tcurrent->content\t:%s:\n\tresult_string\t:%s:\n\n", dollar_sign, current->content, result_string);
 			if (!result_string)
 				return (CALLOC_FAIL);
 		}
-		else if (prestring_stored == FALSE)
+		else if (!result_string && handled_pre_string == FALSE)
 			result_string = ft_strjoin ("", NULL);
+		printf("Pres_string handled:\n\tresult_string :%s:\n", result_string);
+		handled_pre_string = TRUE;
 		key_value = extract_value_from_dollar_sign(dollar_sign + 1); // Returns alphanumeric key including '_' -> excludes $
 		printf("Coming from extract_value_from_dollar_sign:\n\tkey_value\t:%s:\n\n", key_value);
 		if (ft_strncmp(key_value, "?", 1) == 0) // Handle exit status
@@ -118,25 +121,25 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 		}
 		else // get env_value corresponding to the dollar_sign
 			env_value = env_get_value_by_key(key_value);
-		printf("Returned from env_get_value_by_key:\n\tkey_value :%s:\n\tenv_value :%s:\n\t\n", key_value, env_value);
+		printf("Returned from env_get_value_by_key:\n\tkey_value\t:%s:\n\tenv_value\t:%s:\n\n", key_value, env_value);
 		if (result_string == NULL && env_value)
 		 {
 			current->content = ft_strdup(env_value);
-			printf("Result_string == NULL &&  env_value != NULL:\n\tcurrent->content :%s: = ft_strdup(env_value :%s:)\n", current->content, env_value);
+			printf("Result_string == NULL &&  env_value != NULL:\n\tcurrent->content :%s: = ft_strdup(env_value\t:%s:)\n", current->content, env_value);
 		 }
-
 		else if (result_string && env_value)
 		{
 			printf("if (result_string && env_value) == TRUE:\n");
+			printf("\tBefore ft_strjoin:\tresult_string\t:%s:\n", result_string);
 			if (env_value) 
 				result_string = ft_strjoin(result_string, env_value);
 			else
 				*result_string = '\0';
-			printf("\tresult_string\t:%s:\n", result_string);
+			printf("\tAfter ft_strjoin:\tresult_string\t:%s:\n", result_string);
 			if (result_string == NULL)
 				return (CALLOC_FAIL);
 			current->content = ft_strdup(result_string);
-			printf("\tcurrent->content :%s:\n", current->content);
+			printf("\tcurrent->content\t:%s:\n", current->content);
 			if (!current->content)
 				return (CALLOC_FAIL);
 		}
