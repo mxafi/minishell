@@ -142,7 +142,7 @@ t_return_value			validate_quotes(t_lexer *token_list);
 /**
  * contained in lexer_label_token_type.c
  */
-void	label_token_type(t_lexer *list, t_token *token, \
+void				label_token_type(t_lexer *list, t_token *token, \
 		t_token_type token_type, char *input);
 
 /**
@@ -153,7 +153,7 @@ void					concatenate_adjacent_strings(t_lexer *list);
 /**
  * Contained in lexer_expansion.c
  */
-t_return_value	expand_from_env(t_lexer *list);
+t_return_value			expand_from_env(t_lexer *list);
 
 t_return_value			process_heredoc(t_lexer *list);
 

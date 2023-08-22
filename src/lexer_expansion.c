@@ -21,65 +21,47 @@
  * key is alphanumeric, including underscores, it extracts the continuous
  * alphanumeric characters until a non-alphanumeric character is encountered.
  * 
- * @param env_key The environment variable key to extract from.
+ * @param dollar_sign The environment variable key to extract from.
  * @return A dynamically allocated string containing the extracted alphanumeric
  * part. The caller is responsible for freeing the memory.
  */
-static char	*extract_alphanumeric_part(const char *env_key)
+static char	*extract_value_from_dollar_sign(const char *dollar_sign)
 {
 	int		i;
 	char	*alphanumeric_part;
 
-	if (env_key[0] == '?')
+	if (dollar_sign[0] == '?')
 	{
 		alphanumeric_part = ft_strdup("?");
 		return (alphanumeric_part);
 	}
 	i = 0;
-	while (env_key[i] != '\0')
+	while (dollar_sign[i] != '\0')
 	{
-		if (ft_isalnum(env_key[i]) == 0 && env_key[i] != '_')
+		if (ft_isalnum(dollar_sign[i]) == 0 && dollar_sign[i] != '_')// Characters test fails
 			break ;
 		i++;
 	}
-	alphanumeric_part = ft_substr(env_key, 0, i);
+	alphanumeric_part = ft_substr(dollar_sign, 0, i); 
+	printf ("dollar_sign\t:%s:, alphanumeric_part\t:%s:\n", dollar_sign, alphanumeric_part);
 	return (alphanumeric_part);
 }
 
 /**
- * @brief 	Concatenates the expanded content of the token.
- * @details	This function concatenates the expanded content of the token by 
- * 			joining the environment value and the non-alphanumeric part. It 
- * 			updates the content of the token accordingly.
+ * @brief 
  * 
- * @param current			The current token to process. 
- * @param env_value			The environment value to concatenate.
- * @param non_alnum_part	The non-alphanumeric part of the token.
+ * 
+ * @param dollar_sign 
+ * @param input_string 
+ * @param result_string 
+ * @return 
  */
-static void	concatenate_expanded_content(t_token *current,
-											const char *env_value,
-											const char *non_alnum_part)
+static char	*get_string_before_dollar(char *dollar_sign, char *input_string,
+		char *result_string)
 {
-	char	*expanded_content;
-	char	*new_content;
-
-	expanded_content = ft_strjoin(env_value, non_alnum_part);
-	new_content = NULL;
-	if (expanded_content != NULL)
-	{
-		new_content = ft_strdup(expanded_content);
-	}
-	if (new_content != NULL)
-	{
-		free(current->content);
-		current->content = new_content;
-	}
-	else
-	{
-		free(current->content);
-		current->content = ft_strdup("");
-	}
-	free(expanded_content);
+	if (input_string != dollar_sign && dollar_sign != NULL)
+		result_string = ft_substr(input_string, 0, dollar_sign - input_string);
+	return (result_string);
 }
 
 /**
@@ -96,35 +78,61 @@ static void	concatenate_expanded_content(t_token *current,
  */
 static t_return_value	process_token(t_lexer *list, t_token *current)
 {
-	char	*env_key;
-	char	*alpha_part;
-	char	*non_alpha_part;
+	char		*dollar_sign;
+	char		*key_value;
+	char		*result_string;
+	char		*input;
+	const char	*env_value;
 
-	const char *env_value = NULL; // Initialize to NULL
-	env_key = ft_strchr(current->content, '$');
-	if (env_key != NULL)
+	result_string = NULL;
+	input = current->content;
+	while (input && *input != '\0')
 	{
-		alpha_part = extract_alphanumeric_part(env_key + 1);
-		if (ft_strncmp(alpha_part, "?", 1) == 0)
+		dollar_sign = ft_strchr(input, '$');
+		if (!dollar_sign)
+			break ;
+		if (input < dollar_sign) // string before $ is saved here
+		{
+			result_string = get_string_before_dollar(dollar_sign, input, result_string); 
+			printf("dollar_sign\t:%s:, current->content\t:%s:, result_string\t:%s:\n", dollar_sign, current->content, result_string);
+			if (!result_string)
+				return (CALLOC_FAIL);
+		}
+		key_value = extract_value_from_dollar_sign(dollar_sign + 1); // Returns alphanumeric key including '_' -> excludes $
+		printf("key_value\t:%s:\n", key_value);
+		if (ft_strncmp(key_value, "?", 1) == 0) // Handle exit status
 		{
 			env_value = ft_itoa(g_minishell->exit_status);
 			if (env_value == NULL)
 			{
 				list->error_code = CALLOC_FAIL;
-				free(alpha_part);
-				return (CALLOC_FAIL) ; // Handle the allocation failure
+				free(key_value);
+				return (CALLOC_FAIL);
 			}
 		}
-		else
-			env_value = env_get_value_by_key(alpha_part);
-		non_alpha_part = env_key + 1 + ft_strlen(alpha_part);
-		concatenate_expanded_content(current, env_value, non_alpha_part);
-		free(alpha_part);
-		if (ft_strncmp(alpha_part, "?", 1) == 0)
+		else // get env_value corresponding to the dollar_sign
+			env_value = env_get_value_by_key(key_value);
+		if (result_string == NULL)
+			result_string = ft_strdup(env_value);
+		printf("env_value\t:%s:\n", env_value);
+		if (key_value)
+			input = dollar_sign + 1 + ft_strlen(key_value);
+		if (result_string && env_value)
 		{
-			free((void *)env_value);
+			result_string = ft_strjoin(result_string, env_value);
+			printf("result_string\t:%s:\n", result_string);
+			if (result_string == NULL)
+				return (CALLOC_FAIL);
+			current->content = ft_strdup(result_string);
+			if (!current->content)
+				return (CALLOC_FAIL);
 		}
-	}
+		else
+			free(key_value);
+		if (ft_strncmp(key_value, "?", 1) == 0)
+			free((void *)env_value);
+}
+	free(result_string);
 	return (SUCCESS);
 }
 
@@ -156,9 +164,13 @@ t_return_value	expand_from_env(t_lexer *list)
 		if (current->type == DBL_QUOTE_STR || current->type == STRING)
 		{
 			if (process_token(list, current) != SUCCESS)
-				return(CALLOC_FAIL);
+			{
+				printf("process_token failed\n");
+				list->error_code = CALLOC_FAIL;
+				break ;
+			}
 		}
 		current = current->next;
 	}
-	return (SUCCESS);
+	return (list->error_code);
 }

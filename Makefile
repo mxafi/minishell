@@ -6,7 +6,7 @@
 #    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
-#    Updated: 2023/08/18 17:22:54 by lclerc           ###   ########.fr        #
+#    Updated: 2023/08/19 14:46:13 by lclerc           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ C_PATHS			=	$(addprefix $(C_FOLDER)/, $(C_FILES))
 OBJ_PATHS		=	$(addprefix $(OBJ_FOLDER)/, \
 					$(patsubst %.c, %.o, $(C_FILES)))
 
-C_FLAGS_DEBUG	=	-g -fsanitize=address
+C_FLAGS_DEBUG	=	-g -fsanitize=address,undefined
 C_FLAGS_OBJ		=	-Wall -Wextra -Werror
 C_FLAGS_NAME		=	$(C_FLAGS_OBJ) \
 					-lreadline \
