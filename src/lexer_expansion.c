@@ -63,9 +63,15 @@ static char	*extract_value_from_dollar_sign(const char *dollar_sign)
 static char	*get_string_before_dollar(char *dollar_sign, char *input_string,
 		char *result_string)
 {
+	char	*tmp;
+
 	if (input_string != dollar_sign && dollar_sign != NULL)
-		result_string = ft_substr(input_string, 0, dollar_sign - input_string);
-	return (result_string);
+		tmp = ft_substr(input_string, 0, dollar_sign - input_string);
+	else
+		return (result_string);
+	if (result_string)
+		free(result_string);
+	return (tmp);
 }
 
 /**
@@ -88,11 +94,14 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 	char		*input;
 	const char	*env_value;
 	t_bool		handled_pre_string;
+	char		*tmp;
 
 	result_string = NULL;
 	input = current->content;
 	handled_pre_string = FALSE;
-	while (input && *input != '\0' && *input != '$')
+	//if (strncmp("$", input, 2))
+		//return (SUCCESS);
+	while (input && *input != '\0')
 	{
 		printf("________________________________________________________________________________\n");
 		dollar_sign = ft_strchr(input, '$');
@@ -108,12 +117,15 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 				return (CALLOC_FAIL);
 		}
 		else if (!result_string && handled_pre_string == FALSE)
-			result_string = ft_strjoin("", NULL);
-		printf("Pres_string handled:\n\tresult_string :%s:\n", result_string); handled_pre_string = TRUE;
+		{
+			result_string = ft_strjoin("", NULL); // result_string = "";
+		}
+		printf("Pres_string handled:\n\tresult_string :%s:\n", result_string);
+		handled_pre_string = TRUE;
 		key_value = extract_value_from_dollar_sign(dollar_sign + 1);
 			// Returns alphanumeric key including '_' -> excludes $
 		printf("Coming from extract_value_from_dollar_sign:\n\tkey_value\t:%s:\n\n", key_value);
-		if (ft_strncmp(key_value, "?", 1) == 0) // Handle exit status
+		if (ft_strncmp(key_value, "?", 2) == 0) // Handle exit status
 		{
 			env_value = ft_itoa(g_minishell->exit_status);
 			if (env_value == NULL)
@@ -128,6 +140,7 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 		printf("Returned from env_get_value_by_key:\n\tkey_value\t:%s:\n\tenv_value\t:%s:\n\n", key_value, env_value);
 		if (result_string == NULL && env_value)
 		{
+			free(current->content);
 			current->content = ft_strdup(env_value);
 			printf("Result_string == NULL &&  env_value != NULL:\n\tcurrent->content :%s: = ft_strdup(env_value\t:%s:)\n", current->content, env_value);
 		}
@@ -136,12 +149,17 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 			printf("if (result_string && env_value) == TRUE:\n");
 			printf("\tBefore ft_strjoin:\tresult_string\t:%s:\n", result_string);
 			if (env_value)
-				result_string = ft_strjoin(result_string, env_value);
+			{
+				tmp = ft_strjoin(result_string, env_value);
+				free(result_string);
+				result_string = tmp;
+			}
 			else
 				*result_string = '\0';
 			printf("\tAfter ft_strjoin:\tresult_string\t:%s:\n", result_string);
 			if (result_string == NULL)
 				return (CALLOC_FAIL);
+			free(current->content);
 			current->content = ft_strdup(result_string);
 			printf("\tcurrent->content\t:%s:\n", current->content);
 			if (!current->content)
@@ -155,14 +173,18 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 				if (!result_string)
 					return (CALLOC_FAIL);
 			}
+			free(current->content);
 			current->content = ft_strdup(result_string);
 		}
 		else
 			free(key_value);
-		if (ft_strncmp(key_value, "?", 1) == 0)
+		if (ft_strncmp(key_value, "?", 2) == 0)
 			free((void *)env_value);
 		if (key_value)
+		{
 			input = dollar_sign + 1;
+			free(key_value);
+		}
 	}
 	//if (key_value)
 		//free(key_value);
