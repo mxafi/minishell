@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/21 18:18:43 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:16:01 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	execute_real_cmd(t_ast_node *node)
 		parse_path(node);
 	if (wrap_fork(NULL) == 0)
 	{
-		// printf("Debug: execute_real_cmd: calling execve from child with ::%s::\n", node->exec_argv[0]);
 		if (execve(node->exec_file, node->exec_argv, g_minishell->envp) == -1)
 		{
 			ft_putstr_fd("shellfishy: ", 2);
@@ -217,20 +216,20 @@ void	execute_command(t_ast_node *node)
 {
 	pid_t	fork_pid;
 
-	printf("Debug: execute_command: starting, is_pipeline=%i, is_unforkable_builtin=%i\n", g_minishell->is_pipeline, is_unforkable_builtin(node->exec_argv[0]));
+	//printf("Debug: execute_command: starting, is_pipeline=%i, is_unforkable_builtin=%i\n", g_minishell->is_pipeline, is_unforkable_builtin(node->exec_argv[0]));
 	if (g_minishell->is_pipeline || is_unforkable_builtin(node->exec_argv[0]))
 	{
-		printf("Debug: execute_command: in if true, executing command redirections\n");
+		//printf("Debug: execute_command: in if true, executing command redirections\n");
 		execute_command_redirections(node);
-		printf("Debug: execute_command: executing command\n");
+		//printf("Debug: execute_command: executing command\n");
 		if (execute_bi_cmd(node) == FALSE)
 			execute_real_cmd(node);
-		printf("Debug: execute_command: executing command redirection cleanup\n");
+		//printf("Debug: execute_command: executing command redirection cleanup\n");
 		execute_command_redirections_cleanup(node);
-		printf("Debug: execute_command: exiting if is_pipeline\n");
+		//printf("Debug: execute_command: exiting if is_pipeline\n");
 		if (g_minishell->is_pipeline)
 			exit(g_minishell->exit_status);
-		printf("Debug: execute_command: finished, did not exit\n");
+		//printf("Debug: execute_command: finished, did not exit\n");
 	}
 	else
 	{
