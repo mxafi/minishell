@@ -33,7 +33,7 @@ static void	child_processes_heredoc(t_token *token, int fd)
 	line_read = readline("> ");
 	while (line_read)
 	{
-		if (ft_strncmp(line_read, delimiter, delimiter_length) == 0)
+		if (ft_strncmp(line_read, delimiter, delimiter_length + 1) == 0)
 			break ;
 		if (*line_read)
 			write(fd, line_read, ft_strlen(line_read));
@@ -84,11 +84,13 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 }
 
 /**
- * @brief Sets up the child process for heredoc input and waits for its completion.
+ * @brief Sets up the child process for heredoc input and waits
+ * for its completion.
  * 
  * This function creates a child process using the `fork` system call to handle
  * the heredoc input. The child process reads user input until a specified
- * delimiter is encountered and writes the input to the provided file descriptor.
+ * delimiter is encountered and writes the input to the provided file
+ * descriptor.
  * 
  * @param list      The token list.
  * @param current   The current token representing the heredoc.
@@ -122,19 +124,18 @@ static t_return_value	get_heredoc_input(t_lexer *list, t_token *current)
 }
 
 /**
-
-	* @brief Generates a temporary file path for heredoc content based on the pipe counter.
+ * @brief Generates a temporary file path for heredoc content
+ * based on the pipe counter.
  * 
-
-	* This function constructs a unique temporary file path for storing heredoc content.
+ * This function constructs a unique temp path for storing heredoc content.
  * The path includes a combination of a base path and a pipe counter to ensure
  * uniqueness for each heredoc instance.
  * 
  * @param list          The token list.
  * @param current       The current token representing the heredoc.
  * @param pipe_counter  The count of pipes encountered so far.
-
-	* @return t_return_value The error code associated with generating the file path.
+ * @return t_return_value The error code associated with
+ * generating the file path.
  */
 static t_return_value	get_temp_file_path(t_lexer *list, t_token *current,
 		int pipe_counter)
@@ -179,7 +180,8 @@ t_return_value	process_heredoc(t_lexer *token_list)
 			pipe_counter++;
 		if (current->type == HEREDOC)
 		{
-			if (get_temp_file_path(token_list, current, pipe_counter) != SUCCESS)
+			if (get_temp_file_path(
+					token_list, current, pipe_counter) != SUCCESS)
 				return (token_list->error_code);
 			if (get_heredoc_input(token_list, current) != SUCCESS)
 				return (token_list->error_code);

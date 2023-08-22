@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/21 18:18:43 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:38:24 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,12 @@ void	print_signal(int termination_status)
 
 void	execute_real_cmd(t_ast_node *node)
 {
-	// printf("Debug: execute_real_cmd: start with ::%s::\n", node->exec_argv[0]);
 	if (is_absolute_path(node) == TRUE)
 		node->exec_file = ft_strdup(node->exec_argv[0]);
 	else
 		parse_path(node);
 	if (wrap_fork(NULL) == 0)
 	{
-		// printf("Debug: execute_real_cmd: calling execve from child with ::%s::\n", node->exec_argv[0]);
 		if (execve(node->exec_file, node->exec_argv, g_minishell->envp) == -1)
 		{
 			ft_putstr_fd("shellfishy: ", 2);
@@ -102,7 +100,6 @@ void	execute_real_cmd(t_ast_node *node)
 	wait(&g_minishell->termination_status);
 	g_minishell->exit_status = ret_exit_status(
 			g_minishell->termination_status);
-	// printf("Debug: execute_real_cmd: returned from execve child ::%s::\n", node->exec_argv[0]);
 	print_signal(g_minishell->termination_status);
 }
 
@@ -116,7 +113,6 @@ int	open_redir_file(const char *file_path, int flags)
 		ft_putstr_fd("shellfishy: ", 2);
 		perror(file_path);
 	}
-	printf("Debug: open fd:%i redir\n", file);
 	return (file);
 }
 
@@ -151,13 +147,11 @@ void	execute_command_redirections(t_ast_node *node)
 	t_ast_redir_type	c_type;
 	t_redir				*c_redir;
 
-	// printf("Debug: exe_cmd_redir: current node=%s\n", node->exec_argv[0]);
 	current_redir_idx = 0;
 	while (current_redir_idx < node->redir_count)
 	{
 		c_redir = node->redirections[current_redir_idx];
 		c_type = c_redir->type;
-		// printf("Debug: exe_cmd_redir: current redir i=%i and arg=%s\n", current_redir_idx, c_redir->argument);
 		if (c_type == AST_INFILE)
 		{
 			c_redir->file_descriptor = open_redir_file(c_redir->argument, O_RDONLY);
@@ -217,20 +211,20 @@ void	execute_command(t_ast_node *node)
 {
 	pid_t	fork_pid;
 
-	printf("Debug: execute_command: starting, is_pipeline=%i, is_unforkable_builtin=%i\n", g_minishell->is_pipeline, is_unforkable_builtin(node->exec_argv[0]));
+	//printf("Debug: execute_command: starting, is_pipeline=%i, is_unforkable_builtin=%i\n", g_minishell->is_pipeline, is_unforkable_builtin(node->exec_argv[0]));
 	if (g_minishell->is_pipeline || is_unforkable_builtin(node->exec_argv[0]))
 	{
-		printf("Debug: execute_command: in if true, executing command redirections\n");
+		//printf("Debug: execute_command: in if true, executing command redirections\n");
 		execute_command_redirections(node);
-		printf("Debug: execute_command: executing command\n");
+		//printf("Debug: execute_command: executing command\n");
 		if (execute_bi_cmd(node) == FALSE)
 			execute_real_cmd(node);
-		printf("Debug: execute_command: executing command redirection cleanup\n");
+		//printf("Debug: execute_command: executing command redirection cleanup\n");
 		execute_command_redirections_cleanup(node);
-		printf("Debug: execute_command: exiting if is_pipeline\n");
+		//printf("Debug: execute_command: exiting if is_pipeline\n");
 		if (g_minishell->is_pipeline)
 			exit(g_minishell->exit_status);
-		printf("Debug: execute_command: finished, did not exit\n");
+		//printf("Debug: execute_command: finished, did not exit\n");
 	}
 	else
 	{
