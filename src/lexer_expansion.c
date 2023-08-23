@@ -49,9 +49,9 @@ static char	*extract_value_from_dollar_sign(const char *dollar_sign)
 		i++;
 	}
 	alphanumeric_part = ft_substr(dollar_sign, 0, i);
-	printf("\n<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-\n");
-	printf("extract_value_from_dolar_sign:\n\tdollar_sign\t\t:%s:\n\talphanumeric_part\t:%s:\n", dollar_sign, alphanumeric_part);
-	printf("<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-\n");
+	//printf("\n<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-\n");
+	//printf("extract_value_from_dolar_sign:\n\tdollar_sign\t\t:%s:\n\talphanumeric_part\t:%s:\n", dollar_sign, alphanumeric_part);
+	//printf("<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-\n");
 	return (alphanumeric_part);
 }
 
@@ -93,15 +93,15 @@ static char	*get_result_string(char *input, char *dollar_sign,
 {
 	char	*tmp;
 
-	printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
-	printf("get_result_string:\n\tinput\t\t\t:%s:\n\tdollar_sign\t\t:%s:\n\tresult_string\t\t:%s:\nhandled_pres_string\t:%u:\n", input, dollar_sign, result_string, handled_pre_string);
+	//printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
+	//printf("get_result_string:\n\tinput\t\t\t:%s:\n\tdollar_sign\t\t:%s:\n\tresult_string\t\t:%s:\nhandled_pres_string\t:%u:\n", input, dollar_sign, result_string, handled_pre_string);
 	if (input < dollar_sign && (handled_pre_string == FALSE))
 		tmp = get_string_before_dollar(dollar_sign, input, result_string);
 	else if (!result_string && (handled_pre_string == FALSE))
 		tmp = ft_strdup("");
 	else
 		tmp = ft_strdup(result_string);
-	printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
+	//printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
 	if (result_string)
 		free(result_string);
 	return (tmp);
@@ -121,7 +121,7 @@ static char	*handle_env_value(char *result_string, const char *env_value,
 {
 	char	*tmp;
 
-	printf("Handle_env_value:\n\tresult_string\t:%s:\n\tenv_value\t:%s:\n\tcurrent->content\t:%s:\n", result_string, env_value, current->content);
+	//printf("Handle_env_value:\n\tresult_string\t:%s:\n\tenv_value\t:%s:\n\tcurrent->content\t:%s:\n", result_string, env_value, current->content);
 	if (result_string && env_value)
     {
         tmp = ft_strjoin(result_string, env_value);
@@ -218,11 +218,11 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 			break ;
 		if (!(result_string = get_result_string(input, dollar_sign, result_string, handled_pre_string)))
 			return (MALLOC_FAIL);
-		printf("process_token:\n\tget_result_string: result_string :%s:\n", result_string);
+		//printf("process_token:\n\tget_result_string: result_string :%s:\n", result_string);
 		handled_pre_string = TRUE;
 		key_value = extract_value_from_dollar_sign(dollar_sign + 1);
 		env_value = handle_expansion(key_value, list);
-		printf("check what is in env_value :%s:\n", env_value);
+		//printf("check what is in env_value :%s:\n", env_value);
 		if (env_value)
 		{
 			if (result_string == NULL)
