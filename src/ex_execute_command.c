@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_execute_command.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/23 16:27:51 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/23 17:10:37 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,13 +207,18 @@ int	is_unforkable_builtin(char *cmd)
 	return (0);
 }
 
-void	ctrl_c_single(int sig)
+void	sig_single(int sig)
 {
-	(void)sig;
-	kill(g_minishell->pid_single, SIGINT);
 	ioctl(0, TIOCSTI, "\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	if (sig == SIGINT)
+		kill(g_minishell->pid_single, SIGINT);
+	else if (sig == SIGQUIT)
+	{
+		kill(g_minishell->pid_single, SIGQUIT);
+		ft_putstr_fd("Quit: 3\n", 1);
+	}
 }
 
 void	execute_command(t_ast_node *node)
@@ -237,9 +242,11 @@ void	execute_command(t_ast_node *node)
 			execute_command_redirections_cleanup(node);
 			exit(g_minishell->exit_status);
 		}
-		signal(SIGINT, ctrl_c_single);
+		signal(SIGINT, sig_single);
+		signal(SIGQUIT, sig_single);
 		waitpid(g_minishell->pid_single, &g_minishell->termination_status, 0);
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		g_minishell->exit_status = ret_exit_status(
 				g_minishell->termination_status);
 	}
