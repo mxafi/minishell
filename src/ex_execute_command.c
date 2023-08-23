@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ex_execute_command.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
 /*   Updated: 2023/08/23 10:22:10 by malaakso         ###   ########.fr       */

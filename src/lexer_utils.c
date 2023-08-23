@@ -52,8 +52,8 @@ t_return_value	make_new_node(t_lexer *token_list, t_token **new_token)
 	*new_token = (t_token *)ft_calloc(1, sizeof(t_token));
 	if (*new_token == NULL)
 	{
-		token_list->error_code = CALLOC_FAIL;
-		return (CALLOC_FAIL);
+		token_list->error_code = MALLOC_FAIL;
+		return (MALLOC_FAIL);
 	}
 	return (SUCCESS);
 }
