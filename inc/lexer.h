@@ -60,7 +60,7 @@ typedef enum e_return_value
 {
 	SUCCESS,
 	FAILURE,
-	CALLOC_FAIL,
+	MALLOC_FAIL,
 	FORK_FAIL,
 	WAIT_PID_FAIL,
 	FILE_OPEN_ERROR,

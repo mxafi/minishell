@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 13:44:48 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/19 15:49:23 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/23 10:12:49 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	concatenate_strings(t_lexer *list, t_token *current,
 	}
 	else
 	{
-		list->error_code = CALLOC_FAIL;
+		list->error_code = MALLOC_FAIL;
 		return ;
 	}
 }
@@ -90,7 +90,7 @@ void	concatenate_adjacent_strings(t_lexer *list)
 			while (next_token != NULL && next_token->type == STRING)
 			{
 				concatenate_strings(list, current, next_token);
-				if (list->error_code == CALLOC_FAIL)
+				if (list->error_code == MALLOC_FAIL)
 					return ;
 				next_token = current->next;
 			}

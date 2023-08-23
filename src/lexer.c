@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/22 10:19:07 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/23 10:12:49 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
  * @param token_list	Token and list information placeholder
  * @param input			string to be tokenized 
  * @param delimiter		used to determine string length to be tokenized 
- * @return int			SUCCESS or CALLOC_FAIL 
+ * @return int			SUCCESS or MALLOC_FAIL 
  */
 t_return_value	string_to_token(t_lexer *token_list, char *input,
 		char *delimiter)
@@ -101,10 +101,10 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 		length = ft_strlen(input);
 	else
 		length = delimiter - input;
-	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
-		return (token_list->error_code = CALLOC_FAIL);
+	if (make_new_node(token_list, &new_token) == MALLOC_FAIL)
+		return (token_list->error_code = MALLOC_FAIL);
 	if (tokenize_node(token_list, new_token, input, length) == FAILURE)
-		return (token_list->error_code = CALLOC_FAIL);
+		return (token_list->error_code = MALLOC_FAIL);
 	label_token_type(token_list, new_token, STRING, input);
 	input = delimiter;
 	// CHECK IF RETURN VALUES ARE USED
@@ -131,7 +131,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 
 	new_token = NULL;
 	//printf("delimiter_to_token()\n");
-	if (make_new_node(token_list, &new_token) == CALLOC_FAIL)
+	if (make_new_node(token_list, &new_token) == MALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
 	{
@@ -159,7 +159,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
  * 			a tokenized linked list. The delimiter itself is then tokenized.
  * 
  * @param token_list	Token list and list information placeholder.
- * @return int			Error code is initialized to 0 and return CALLOC_FAIL
+ * @return int			Error code is initialized to 0 and return MALLOC_FAIL
  *						if it occurs
  */
 static int	tokenize_readline(t_lexer *token_list)
@@ -183,7 +183,7 @@ static int	tokenize_readline(t_lexer *token_list)
 				string_to_token(token_list, input, delimiter);
 			input = delimiter_to_token(token_list, delimiter);
 		}
-		if (token_list->error_code == CALLOC_FAIL)
+		if (token_list->error_code == MALLOC_FAIL)
 			break ;
 	}
 	return (token_list->error_code);

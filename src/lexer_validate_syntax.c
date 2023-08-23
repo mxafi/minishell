@@ -110,7 +110,7 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//print_list(token_list);
 	//printf("validate_syntax()quote validated\n");
 	//printf("_______________________________________________________________________________\n");
-	if (expand_from_env(token_list) == CALLOC_FAIL)
+	if (expand_from_env(token_list) == MALLOC_FAIL)
 		return (token_list->error_code);
 	//printf("validate_syntax()expanded\n");
 	//print_list(token_list);

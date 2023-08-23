@@ -145,14 +145,14 @@ static t_return_value	get_temp_file_path(t_lexer *list, t_token *current,
 	pipe_counter_str = ft_itoa(pipe_counter);
 	if (!pipe_counter_str)
 	{
-		list->error_code = CALLOC_FAIL;
+		list->error_code = MALLOC_FAIL;
 		return (list->error_code);
 	}
 	temp_file_path = ft_strjoin("/tmp/minishell_heredoc.tmp", pipe_counter_str);
 	free(pipe_counter_str);
 	if (!temp_file_path)
 	{
-		list->error_code = CALLOC_FAIL;
+		list->error_code = MALLOC_FAIL;
 		return (list->error_code);
 	}
 	current->content = temp_file_path;

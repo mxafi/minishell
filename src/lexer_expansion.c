@@ -44,15 +44,14 @@ static char	*extract_value_from_dollar_sign(const char *dollar_sign)
 	while (dollar_sign[i] != '\0')
 	{
 		if (ft_isalnum(dollar_sign[i]) == 0 && dollar_sign[i] != '_')
-		// Characters test fails
+			// Characters test fails
 			break ;
 		i++;
 	}
 	alphanumeric_part = ft_substr(dollar_sign, 0, i);
-	printf("\n\t- - - - - - - - - - - - - - - -\n");
-	printf("\textract_value_from_dolar_sign:\n\tdollar_sign\t:%s:\n\talphanumeric_part\t:%s:\n",
-			dollar_sign, alphanumeric_part);
-	printf("\t- - - - - - - - - - - - - - - -\n\n");
+	printf("\n<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-\n");
+	printf("extract_value_from_dolar_sign:\n\tdollar_sign\t\t:%s:\n\talphanumeric_part\t:%s:\n", dollar_sign, alphanumeric_part);
+	printf("<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-\n");
 	return (alphanumeric_part);
 }
 
@@ -80,6 +79,111 @@ static char	*get_string_before_dollar(char *dollar_sign, char *input_string,
 }
 
 /**
+ * @brief 
+ * 
+ * 
+ * @param input 
+ * @param dollar_sign 
+ * @param result_string 
+ * @param handled_pre_string 
+ * @return 
+ */
+static char	*get_result_string(char *input, char *dollar_sign,
+		char *result_string, t_bool handled_pre_string)
+{
+	char	*tmp;
+
+	printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
+	printf("get_result_string:\n\tinput\t\t\t:%s:\n\tdollar_sign\t\t:%s:\n\tresult_string\t\t:%s:\nhandled_pres_string\t:%u:\n", input, dollar_sign, result_string, handled_pre_string);
+	if (input < dollar_sign && (handled_pre_string == FALSE))
+		tmp = get_string_before_dollar(dollar_sign, input, result_string);
+	else if (!result_string && (handled_pre_string == FALSE))
+		tmp = ft_strdup("");
+	else
+		tmp = ft_strdup(result_string);
+	printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
+	if (result_string)
+		free(result_string);
+	return (tmp);
+}
+
+/**
+ * @brief 
+ * 
+ * 
+ * @param result_string 
+ * @param env_value 
+ * @param current 
+ * @return 
+ */
+static char	*handle_env_value(char *result_string, const char *env_value,
+		t_token *current)
+{
+	char	*tmp;
+
+	printf("Handle_env_value:\n\tresult_string\t:%s:\n\tenv_value\t:%s:\n\tcurrent->content\t:%s:\n", result_string, env_value, current->content);
+	if (result_string && env_value)
+    {
+        tmp = ft_strjoin(result_string, env_value);
+        if (!tmp)
+            return (NULL);
+		free(result_string);
+        result_string = tmp;
+    }
+	else
+	{
+		if (result_string)
+			free(result_string);
+		result_string = ft_strdup("");
+		if (!result_string)
+			return (NULL);
+	}
+	if (current->content)
+		free(current->content);
+	current->content = ft_strdup(result_string);
+	if (!current->content)
+		return (NULL);
+	return (result_string);
+}
+
+/**
+ * @brief 
+ * 
+ * 
+ * @param env_value 
+ * @param list 
+ * @param key_value 
+ */
+static void	handle_exit_status(const char **env_value, t_lexer *list,
+		char *key_value)
+{
+	char	*exit_status_value;
+
+	exit_status_value = ft_itoa(g_minishell->exit_status);
+	if (!exit_status_value)
+	{
+		list->error_code = MALLOC_FAIL;
+		free(key_value);
+		return ;
+	}
+	*env_value = exit_status_value;
+	free(exit_status_value);
+}
+
+static const char	*handle_expansion(char *key_value, t_lexer *list)
+{
+	const char	*env_value;
+
+	if (key_value && ft_strncmp(key_value, "$", 2) == 0)
+		env_value = ft_strdup("$");
+	else if (ft_strncmp(key_value, "?", 2) == 0)
+		handle_exit_status(&env_value, list, key_value);
+	else
+		env_value = env_get_value_by_key(key_value);
+	return (env_value);
+}
+
+/**
  * @brief Processes a token for environment variable expansion.
  * 
  * @details This function processes a token for environment variable expansion.
@@ -99,77 +203,37 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 	char		*input;
 	const char	*env_value;
 	t_bool		handled_pre_string;
-	char		*tmp;
+	char		*input_origin;
 
 	result_string = NULL;
-	input = current->content;
+	input = ft_strdup(current->content);
+	if (!input)
+		return (MALLOC_FAIL);
+	input_origin = input;
 	handled_pre_string = FALSE;
-	//if (strncmp("$", input, 2))
-		//return (SUCCESS);
 	while (input && *input != '\0')
 	{
 		printf("________________________________________________________________________________\n");
 		dollar_sign = ft_strchr(input, '$');
 		if (!dollar_sign)
 			break ;
-		if (input < dollar_sign && handled_pre_string == FALSE)
-		// string before $ is saved here
-		{
-			result_string = get_string_before_dollar(dollar_sign, input,
-					result_string);
-			printf("There is a pre_string:\t\n\tdollar_sign\t:%s:\n\tcurrent->content\t:%s:\n\tresult_string\t:%s:\n\n", dollar_sign, current->content, result_string);
-			if (!result_string)
-				return (CALLOC_FAIL);
-		}
-		else if (!result_string && handled_pre_string == FALSE)
-		{
-			result_string = ft_strjoin("", NULL); // result_string = "";
-		}
-		printf("Pres_string handled:\n\tresult_string :%s:\n", result_string);
+		if (!(result_string = get_result_string(input, dollar_sign, result_string, handled_pre_string)))
+			return (MALLOC_FAIL);
+		printf("process_token:\n\tget_result_string: result_string :%s:\n", result_string);
 		handled_pre_string = TRUE;
 		key_value = extract_value_from_dollar_sign(dollar_sign + 1);
-		if (key_value && ft_strncmp(key_value, "$", 2) == 0)
-			env_value = ft_strdup("$");
-		else if (ft_strncmp(key_value, "?", 2) == 0) // Handle exit status
+		env_value = handle_expansion(key_value, list);
+		printf("check what is in env_value :%s:\n", env_value);
+		if (env_value)
 		{
-			env_value = ft_itoa(g_minishell->exit_status);
-			if (env_value == NULL)
+			if (result_string == NULL)
 			{
-				list->error_code = CALLOC_FAIL;
-				free(key_value);
-				return (CALLOC_FAIL);
-			}
-		}
-		else // get env_value corresponding to the dollar_sign
-			env_value = env_get_value_by_key(key_value);
-		printf("Coming from extract_value_from_dollar_sign:\n\tkey_value\t:%s:\n\n", key_value);
-		printf("Returned from env_get_value_by_key:\n\tkey_value\t:%s:\n\tenv_value\t:%s:\n\n", key_value, env_value);
-		if (result_string == NULL && env_value)
-		{
-			free(current->content);
-			current->content = ft_strdup(env_value);
-			printf("Result_string == NULL &&  env_value != NULL:\n\tcurrent->content :%s: = ft_strdup(env_value\t:%s:)\n", current->content, env_value);
-		}
-		else if (result_string && env_value)
-		{
-			printf("if (result_string && env_value) == TRUE:\n");
-			printf("\tBefore ft_strjoin:\tresult_string\t:%s:\n", result_string);
-			if (env_value)
-			{
-				tmp = ft_strjoin(result_string, env_value);
-				free(result_string);
-				result_string = tmp;
+				if (current->content)
+					free(current->content);
+				current->content = ft_strdup(env_value);
 			}
 			else
-				*result_string = '\0';
-			printf("\tAfter ft_strjoin:\tresult_string\t:%s:\n", result_string);
-			if (result_string == NULL)
-				return (CALLOC_FAIL);
-			free(current->content);
-			current->content = ft_strdup(result_string);
-			printf("\tcurrent->content\t:%s:\n", current->content);
-			if (!current->content)
-				return (CALLOC_FAIL);
+				result_string = handle_env_value(result_string, env_value, current);
 		}
 		else if (!env_value)
 		{
@@ -177,24 +241,35 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 			{
 				result_string = (char *)ft_calloc(2, sizeof(char));
 				if (!result_string)
-					return (CALLOC_FAIL);
+					return (MALLOC_FAIL);
 			}
-			free(current->content);
+			if (current->content)
+				free(current->content);
 			current->content = ft_strdup(result_string);
+			if (!current->content)
+				return(MALLOC_FAIL);
 		}
 		else
-			free(key_value);
-		if (ft_strncmp(key_value, "?", 2) == 0 || ft_strncmp(key_value, "$", 2) == 0)
-			free((void *)env_value);
+		{
+			if (key_value)
+				free(key_value);
+		}
+		if (ft_strncmp(key_value, "?", 2) == 0 || ft_strncmp(key_value, "$",
+				2) == 0)
+		{
+			if (env_value)
+				free((void *)env_value);
+		}
 		if (key_value)
 		{
 			input = dollar_sign + 1;
 			free(key_value);
 		}
 	}
-	//if (key_value)
-		//free(key_value);
-	free(result_string);
+	if (input_origin)
+		free(input_origin);
+	if (result_string)
+		free(result_string);
 	return (SUCCESS);
 }
 
@@ -227,8 +302,8 @@ t_return_value	expand_from_env(t_lexer *list)
 		{
 			if (process_token(list, current) != SUCCESS)
 			{
-				printf("process_token failed\n");
-				list->error_code = CALLOC_FAIL;
+				printf("process_token MALLOC_FAIL\n");
+				list->error_code = MALLOC_FAIL;
 				break ;
 			}
 		}
