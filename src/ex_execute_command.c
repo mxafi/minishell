@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/23 10:22:10 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/23 16:27:51 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,24 +218,17 @@ void	ctrl_c_single(int sig)
 
 void	execute_command(t_ast_node *node)
 {
-	//printf("Debug: execute_command: starting, is_pipeline=%i, is_unforkable_builtin=%i\n", g_minishell->is_pipeline, is_unforkable_builtin(node->exec_argv[0]));
 	if (g_minishell->is_pipeline || is_unforkable_builtin(node->exec_argv[0]))
 	{
-		//printf("Debug: execute_command: in if true, executing command redirections\n");
 		execute_command_redirections(node);
-		//printf("Debug: execute_command: executing command\n");
 		if (execute_bi_cmd(node) == FALSE)
 			execute_real_cmd(node);
-		//printf("Debug: execute_command: executing command redirection cleanup\n");
 		execute_command_redirections_cleanup(node);
-		//printf("Debug: execute_command: exiting if is_pipeline\n");
 		if (g_minishell->is_pipeline)
 			exit(g_minishell->exit_status);
-		//printf("Debug: execute_command: finished, did not exit\n");
 	}
 	else
 	{
-		// printf("Debug: execute_command: not pipeline, not unforkable builtin\n");
 		if (wrap_fork(&g_minishell->pid_single) == 0)
 		{
 			execute_command_redirections(node);
