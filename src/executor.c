@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:44:33 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/21 16:06:53 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:12:22 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	ret_exit_status(int termination_status)
 		exit_status = WEXITSTATUS(termination_status);
 	else if (WIFSIGNALED(termination_status))
 		exit_status = 128 + WTERMSIG(termination_status);
-	exit_status %= 255;
 	return (exit_status);
 }
 

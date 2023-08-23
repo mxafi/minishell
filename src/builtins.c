@@ -114,10 +114,12 @@ void	ft_exit(t_ast_node *node)
 	else if (node->argv_count == 2)
 	{
 		i = 0;
+		if (node->exec_argv[1][i] == '+' || node->exec_argv[1][i] == '-')
+			i++;
 		while (ft_isdigit(node->exec_argv[1][i]))
 			i++;
 		if (node->exec_argv[1][i] == '\0')
-			exit(ft_atoi(node->exec_argv[1]) % 255);
+			exit(ft_atoi(node->exec_argv[1]));
 		ft_putstr_fd("shellfishy : ", 2);
 		ft_putstr_fd(node->exec_argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
