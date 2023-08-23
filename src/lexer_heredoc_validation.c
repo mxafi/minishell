@@ -81,7 +81,10 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 	else if (WIFEXITED(exit_status))
 		list->error_code = WEXITSTATUS(exit_status);
 	else if (WIFSIGNALED(exit_status))
+	{
+		ft_putchar_fd('\n', 1);
 		list->error_code = WIFSIGNALED(exit_status);
+	}
 	signal(SIGINT, SIG_DFL);
 	close(fd);
 	return (list->error_code);
