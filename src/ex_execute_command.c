@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/22 15:38:24 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/23 10:22:10 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,10 +207,17 @@ int	is_unforkable_builtin(char *cmd)
 	return (0);
 }
 
+void	ctrl_c_single(int sig)
+{
+	(void)sig;
+	kill(g_minishell->pid_single, SIGINT);
+	ioctl(0, TIOCSTI, "\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+}
+
 void	execute_command(t_ast_node *node)
 {
-	pid_t	fork_pid;
-
 	//printf("Debug: execute_command: starting, is_pipeline=%i, is_unforkable_builtin=%i\n", g_minishell->is_pipeline, is_unforkable_builtin(node->exec_argv[0]));
 	if (g_minishell->is_pipeline || is_unforkable_builtin(node->exec_argv[0]))
 	{
@@ -229,7 +236,7 @@ void	execute_command(t_ast_node *node)
 	else
 	{
 		// printf("Debug: execute_command: not pipeline, not unforkable builtin\n");
-		if (wrap_fork(&fork_pid) == 0)
+		if (wrap_fork(&g_minishell->pid_single) == 0)
 		{
 			execute_command_redirections(node);
 			if (execute_bi_cmd(node) == FALSE)
@@ -237,7 +244,9 @@ void	execute_command(t_ast_node *node)
 			execute_command_redirections_cleanup(node);
 			exit(g_minishell->exit_status);
 		}
-		waitpid(fork_pid, &g_minishell->termination_status, 0);
+		signal(SIGINT, ctrl_c_single);
+		waitpid(g_minishell->pid_single, &g_minishell->termination_status, 0);
+		signal(SIGINT, SIG_DFL);
 		g_minishell->exit_status = ret_exit_status(
 				g_minishell->termination_status);
 	}
