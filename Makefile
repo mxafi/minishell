@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
+#    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
-#    Updated: 2023/08/19 14:46:13 by lclerc           ###   ########.fr        #
+#    Updated: 2023/08/23 11:33:25 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ LEXER_C			=	lexer.c \
 					lexer_validate_redirectors.c \
 					lexer_expansion.c \
 					lexer_heredoc_validation.c \
+					lexer_heredoc_validation_utils.c \
 					DELETE_ME_AND_FCT_IN_HEADER.c
 					
 BUILTINS_C		= 	builtins.c \

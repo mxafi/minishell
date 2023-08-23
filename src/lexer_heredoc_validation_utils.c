@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   lexer_heredoc_validation_utils.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 15:24:52 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/19 17:24:03 by malaakso         ###   ########.fr       */
+/*   Created: 2023/08/23 11:33:33 by malaakso          #+#    #+#             */
+/*   Updated: 2023/08/23 14:42:55 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_basic.h"
+#include "../inc/minishell.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	ctrl_c_heredoc(int sig)
 {
-	if (!s)
-		return ;
-	write(fd, s, ft_strlen(s));
+	(void)sig;
+	ioctl(0, TIOCSTI, "\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	kill(g_minishell->pid_single, SIGINT);
 }

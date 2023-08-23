@@ -6,46 +6,51 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:22 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/18 13:15:56 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/23 07:07:01 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+static void	ctrl_c_pipeline(int sig)
+{
+	(void)sig;
+	kill(g_minishell->pid_pipeline[0], SIGINT);
+	kill(g_minishell->pid_pipeline[1], SIGINT);
+	ioctl(0, TIOCSTI, "\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+}
+
 void	execute_pipeline(t_ast_node *node)
 {
-	int	pipe_end[2];
+	int		pipe_end[2];
 
 	if (pipe(pipe_end) < 0)
 		exit(1);
-	// printf("Debug: execute_pipeline: start with read_fd:%i and write_fd:%i\n", pipe_end[0], pipe_end[1]);
-	if (wrap_fork() == 0)
+	if (wrap_fork(&g_minishell->pid_pipeline[0]) == 0)
 	{
 		if (dup2(pipe_end[WRITING_END], STDOUT_FILENO) < 0)
 			exit (1);
 		close(pipe_end[READING_END]);
 		executor(node->left);
+		close(pipe_end[WRITING_END]);
 		exit(g_minishell->exit_status);
 	}
-	wait(&g_minishell->termination_status);
-	g_minishell->exit_status = ret_exit_status(
-			g_minishell->termination_status);
-	// printf("Debug: execute_pipeline: left fork returned!\n");
 	close(pipe_end[WRITING_END]);
-	if (wrap_fork() == 0)
+	if (wrap_fork(&g_minishell->pid_pipeline[1]) == 0)
 	{
 		if (dup2(pipe_end[READING_END], STDIN_FILENO) < 0)
 			exit (1);
-		close(pipe_end[WRITING_END]);
-		// printf("Debug: execute_pipeline: right fork calling executor!\n");
 		executor(node->right);
-		// printf("Debug: execute_pipeline: right fork executor call returned!\n");
+		close(pipe_end[READING_END]);
 		exit(g_minishell->exit_status);
 	}
-	wait(&g_minishell->termination_status);
+	close(pipe_end[READING_END]);
+	signal(SIGINT, ctrl_c_pipeline);
+	waitpid(g_minishell->pid_pipeline[0], &g_minishell->termination_status, 0);
+	waitpid(g_minishell->pid_pipeline[1], &g_minishell->termination_status, 0);
+	signal(SIGINT, SIG_DFL);
 	g_minishell->exit_status = ret_exit_status(
 			g_minishell->termination_status);
-	// printf("Debug: execute_pipeline: right fork returned!\n");
-	close(pipe_end[READING_END]);
-	// printf("Debug: execute_pipeline: the end\n");
 }

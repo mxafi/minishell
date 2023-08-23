@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:44:33 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 12:33:24 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/21 16:06:53 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,13 @@ int	ret_exit_status(int termination_status)
 	return (exit_status);
 }
 
-pid_t	wrap_fork(void)
+/**
+ * @brief Forks a process and returns the pid conventionally
+ * and additionally with a pointer.
+ * @param ext_pid where to write the pid of the resulting fork, can be NULL.
+ * @return pid_t - the pid of the resulting fork.
+ */
+pid_t	wrap_fork(pid_t	*ext_pid)
 {
 	pid_t	pid;
 
@@ -36,6 +42,8 @@ pid_t	wrap_fork(void)
 		perror("error creating a fork");
 		exit(1);
 	}
+	if (ext_pid)
+		*ext_pid = pid;
 	return (pid);
 }
 
@@ -49,7 +57,10 @@ void	executor(t_ast_node *node)
 	if (!node)
 		return ;
 	if (node->type == AST_PIPE)
+	{
+		g_minishell->is_pipeline = 1;
 		execute_pipeline(node);
+	}
 	else if (node->type == AST_COMMAND)
 		execute_command(node);
 }

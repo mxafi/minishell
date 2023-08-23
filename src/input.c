@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:08:47 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/11 09:26:12 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/22 19:57:35 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,22 @@ void	toggle_echoctl(void)
 char	*get_input(void)
 {
 	char	*line_read;
+	char	*hist_line;
 
 	ignore_signals();
 	toggle_echoctl();
 	line_read = readline("shellfish🦞> ");
-	if (!line_read)
-	{
-		toggle_echoctl();
-		exit(g_minishell->exit_status);
-	}
-	if (*line_read)
-		add_history(line_read);
 	restore_signal_defaults();
 	toggle_echoctl();
+	if (!line_read)
+		exit(1);
+	if (*line_read)
+	{
+		hist_line = ft_strdup(line_read);
+		if (!hist_line)
+			exit(1);
+		add_history(hist_line);
+		free(hist_line);
+	}
 	return (line_read);
 }

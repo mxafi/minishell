@@ -157,4 +157,7 @@ t_return_value			expand_from_env(t_lexer *list);
 
 t_return_value			process_heredoc(t_lexer *list);
 
+// Contained in lexer_heredoc_validation_utils.c
+void	ctrl_c_heredoc(int sig);
+
 #endif

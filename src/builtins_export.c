@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:47:45 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/17 13:40:42 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/19 17:05:34 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static void	ft_export_validate_and_execute(char *key, char *value)
 	{
 		if (!(ft_isalpha(*sanitize_check) || *sanitize_check == '_'))
 		{
-			printf("☠️  shellfishy ☠️ > Invalid variable name: %s\n", key);
+			ft_putstr_fd("shellfishy: export: `", 2);
+			ft_putstr_fd(key, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			g_minishell->exit_status = 1;
 			return ;
 		}
@@ -83,19 +85,26 @@ void	ft_export(t_ast_node *node)
 	int		i;
 	char	*arg;
 
-	i = 0;
+	g_minishell->exit_status = 0;
 	if (node->argv_count == 1)
 	{
-		env_print_list();
+		i = 0;
+		while (g_minishell->envp[i])
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd(g_minishell->envp[i], 1);
+			ft_putchar_fd('\n', 1);
+			i++;
+		}
 		return ;
 	}
+	i = 0;
 	while (++i < node->argv_count)
 	{
 		arg = node->exec_argv[i];
 		if (ft_export_handle_equal_sign(arg) == SUCCESS)
 			;
-		else 
+		else
 			ft_export_validate_and_execute(arg, "");
 	}
-	g_minishell->exit_status = 0;
 }
