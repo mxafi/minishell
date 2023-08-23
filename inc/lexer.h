@@ -111,7 +111,6 @@ t_return_value			free_token_list(t_lexer *token_list, char *input);
 t_return_value			make_new_node(t_lexer *token_to_node, t_token **new_token);
 void					delete_token(t_lexer *list, t_token *token);
 char					*ft_strpbrk(const char *string, const char *delimiters);
-void					ctrl_c_heredoc(int sig);
 
 /*
  * TODO: contained in DELETE_ME_AND_FCT_HEADER.c
@@ -157,5 +156,8 @@ void					concatenate_adjacent_strings(t_lexer *list);
 t_return_value	expand_from_env(t_lexer *list);
 
 t_return_value			process_heredoc(t_lexer *list);
+
+// Contained in lexer_heredoc_validation_utils.c
+void	ctrl_c_heredoc(int sig);
 
 #endif

@@ -26,25 +26,26 @@ static void	child_processes_heredoc(t_token *token, int fd)
 	char	*delimiter;
 	int		delimiter_length;
 
-	ignore_signals();
-	toggle_echoctl();
+	//ignore_signals();
 	delimiter = token->next->content;
 	delimiter_length = ft_strlen(delimiter);
-	line_read = readline("> ");
-	while (line_read)
+	while (1)
 	{
+		toggle_echoctl();
+		line_read = readline("> ");
+		toggle_echoctl();
 		if (ft_strncmp(line_read, delimiter, delimiter_length + 1) == 0)
 			break ;
 		if (*line_read)
-			write(fd, line_read, ft_strlen(line_read));
-		write(fd, "\n", 1);
+			ft_putstr_fd(line_read, fd);
+		ft_putchar_fd('\n', fd);
+		if (!line_read)
+			break ;
 		free(line_read);
-		line_read = readline("> ");
 	}
 	if (line_read)
 		free(line_read);
-	restore_signal_defaults();
-	toggle_echoctl();
+	//restore_signal_defaults();
 	close(fd);
 	exit(0);
 }
@@ -70,6 +71,8 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 {
 	int	exit_status;
 
+	g_minishell->pid_single = child_pid;
+	signal(SIGINT, ctrl_c_heredoc);
 	if (waitpid(child_pid, &exit_status, 0) == -1)
 	{
 		list->error_code = WAIT_PID_FAIL;
@@ -79,6 +82,7 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 		list->error_code = WEXITSTATUS(exit_status);
 	else if (WIFSIGNALED(exit_status))
 		list->error_code = WIFSIGNALED(exit_status);
+	signal(SIGINT, SIG_DFL);
 	close(fd);
 	return (list->error_code);
 }

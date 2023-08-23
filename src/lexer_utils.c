@@ -118,12 +118,3 @@ char	*ft_strpbrk(const char *string, const char *delimiters)
 	}
 	return (NULL);
 }
-
-void	ctrl_c_heredoc(int sig)
-{
-	(void)sig;
-	kill(g_minishell->pid_single, SIGINT);
-	ioctl(0, TIOCSTI, "\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
