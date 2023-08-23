@@ -72,7 +72,8 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 	int	exit_status;
 
 	g_minishell->pid_single = child_pid;
-	signal(SIGINT, ctrl_c_heredoc);
+	signal(SIGINT, sig_heredoc);
+	signal(SIGQUIT, sig_heredoc);
 	if (waitpid(child_pid, &exit_status, 0) == -1)
 	{
 		list->error_code = WAIT_PID_FAIL;
@@ -86,6 +87,7 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 		list->error_code = WIFSIGNALED(exit_status);
 	}
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	close(fd);
 	return (list->error_code);
 }
