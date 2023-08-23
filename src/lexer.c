@@ -6,48 +6,12 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/23 10:12:49 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/23 17:09:43 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/**
- * @brief  CANT RECALL WHY I USED THIS instead of libft, to be checked
- * 
- * @param s 
- * @param input 
- * @param len 
- * @return char* 
- */
-char	*ft_test_substr(const char *s, unsigned int input, size_t len)
-{
-	char	*sub;
-	size_t	s_len;
-	size_t	max_sub_len;
-	size_t	i;
-
-	if (!s)
-		return (0);
-	s_len = ft_strlen(s);
-	if (input > s_len)
-		input = s_len;
-	max_sub_len = s_len - input;
-	if (len <= max_sub_len)
-		sub = malloc(len + 1);
-	else
-		sub = malloc(max_sub_len + 1);
-	if (!sub)
-		return (NULL);
-	i = 0;
-	while (i < max_sub_len && i < len)
-	{
-		sub[i] = s[i + input];
-		i++;
-	}
-	sub[i] = '\0';
-	return (sub);
-}
 
 /**
  * @brief 	Add new token to the last node of the token list
@@ -62,8 +26,7 @@ int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 {
 	t_token	*last_token;
 
-	// uses some test substr, see below and above function, check
-	if ((token->content = ft_test_substr(str, 0, length)) == NULL)
+	if ((token->content = ft_substr(str, 0, length)) == NULL)
 	{
 		list->error_code = FAILURE;
 		return (FAILURE);

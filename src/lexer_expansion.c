@@ -167,7 +167,6 @@ static void	handle_exit_status(const char **env_value, t_lexer *list,
 		return ;
 	}
 	*env_value = exit_status_value;
-	free(exit_status_value);
 }
 
 static const char	*handle_expansion(char *key_value, t_lexer *list)
@@ -213,7 +212,7 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 	handled_pre_string = FALSE;
 	while (input && *input != '\0')
 	{
-		printf("________________________________________________________________________________\n");
+		//printf("________________________________________________________________________________\n");
 		dollar_sign = ft_strchr(input, '$');
 		if (!dollar_sign)
 			break ;
