@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_heredoc_validation_utils.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 11:33:33 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/23 16:56:41 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 14:33:45 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+/**
+ * @brief Handles signals related to heredoc process.
+ * 
+ * @param sig The signal that was received.
+ */
 void	sig_heredoc(int sig)
 {
 	ioctl(0, TIOCSTI, "\n");
@@ -25,3 +30,4 @@ void	sig_heredoc(int sig)
 		ft_putstr_fd("Quit: 3", 1);
 	}
 }
+

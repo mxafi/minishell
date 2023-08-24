@@ -44,92 +44,36 @@ static char	*extract_value_from_dollar_sign(const char *dollar_sign)
 	while (dollar_sign[i] != '\0')
 	{
 		if (ft_isalnum(dollar_sign[i]) == 0 && dollar_sign[i] != '_')
-			// Characters test fails
 			break ;
 		i++;
 	}
 	alphanumeric_part = ft_substr(dollar_sign, 0, i);
-	//printf("\n<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-\n");
-	//printf("extract_value_from_dolar_sign:\n\tdollar_sign\t\t:%s:\n\talphanumeric_part\t:%s:\n", dollar_sign, alphanumeric_part);
-	//printf("<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-<>-\n");
 	return (alphanumeric_part);
 }
 
-/**
- * @brief 
- * 
- * 
- * @param dollar_sign 
- * @param input_string 
- * @param result_string 
- * @return 
- */
-static char	*get_string_before_dollar(char *dollar_sign, char *input_string,
-		char *result_string)
-{
-	char	*tmp;
 
-	if (input_string != dollar_sign && dollar_sign != NULL)
-		tmp = ft_substr(input_string, 0, dollar_sign - input_string);
-	else
-		return (result_string);
-	if (result_string)
-		free(result_string);
-	return (tmp);
-}
 
 /**
- * @brief 
+ * @brief Handles the concatenation of environment value with result string.
  * 
- * 
- * @param input 
- * @param dollar_sign 
- * @param result_string 
- * @param handled_pre_string 
- * @return 
- */
-static char	*get_result_string(char *input, char *dollar_sign,
-		char *result_string, t_bool handled_pre_string)
-{
-	char	*tmp;
-
-	//printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
-	//printf("get_result_string:\n\tinput\t\t\t:%s:\n\tdollar_sign\t\t:%s:\n\tresult_string\t\t:%s:\nhandled_pres_string\t:%u:\n", input, dollar_sign, result_string, handled_pre_string);
-	if (input < dollar_sign && (handled_pre_string == FALSE))
-		tmp = get_string_before_dollar(dollar_sign, input, result_string);
-	else if (!result_string && (handled_pre_string == FALSE))
-		tmp = ft_strdup("");
-	else
-		tmp = ft_strdup(result_string);
-	//printf("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n");
-	if (result_string)
-		free(result_string);
-	return (tmp);
-}
-
-/**
- * @brief 
- * 
- * 
- * @param result_string 
- * @param env_value 
- * @param current 
- * @return 
+ * @param result_string The string to which the environment value is appended.
+ * @param env_value The environment value to append.
+ * @param current The current token.
+ * @return char* The updated result string.
  */
 static char	*handle_env_value(char *result_string, const char *env_value,
 		t_token *current)
 {
 	char	*tmp;
 
-	//printf("Handle_env_value:\n\tresult_string\t:%s:\n\tenv_value\t:%s:\n\tcurrent->content\t:%s:\n", result_string, env_value, current->content);
 	if (result_string && env_value)
-    {
-        tmp = ft_strjoin(result_string, env_value);
-        if (!tmp)
-            return (NULL);
+	{
+		tmp = ft_strjoin(result_string, env_value);
+		if (!tmp)
+			return (NULL);
 		free(result_string);
-        result_string = tmp;
-    }
+		result_string = tmp;
+	}
 	else
 	{
 		if (result_string)
@@ -146,41 +90,7 @@ static char	*handle_env_value(char *result_string, const char *env_value,
 	return (result_string);
 }
 
-/**
- * @brief 
- * 
- * 
- * @param env_value 
- * @param list 
- * @param key_value 
- */
-static void	handle_exit_status(const char **env_value, t_lexer *list,
-		char *key_value)
-{
-	char	*exit_status_value;
 
-	exit_status_value = ft_itoa(g_minishell->exit_status);
-	if (!exit_status_value)
-	{
-		list->error_code = MALLOC_FAIL;
-		free(key_value);
-		return ;
-	}
-	*env_value = exit_status_value;
-}
-
-static const char	*handle_expansion(char *key_value, t_lexer *list)
-{
-	const char	*env_value;
-
-	if (key_value && ft_strncmp(key_value, "$", 2) == 0)
-		env_value = ft_strdup("$");
-	else if (ft_strncmp(key_value, "?", 2) == 0)
-		handle_exit_status(&env_value, list, key_value);
-	else
-		env_value = env_get_value_by_key(key_value);
-	return (env_value);
-}
 
 /**
  * @brief Processes a token for environment variable expansion.
