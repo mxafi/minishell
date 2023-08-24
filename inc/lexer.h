@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 08:11:35 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 13:57:38 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 14:24:48by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ typedef struct s_lexer
  * contained in lexer_utils.c
  */
 t_return_value			free_token_list(t_lexer *token_list, char *input);
-t_return_value			make_new_node(t_lexer *token_to_node,
-							t_token **new_token);
+t_return_value	make_new_node(t_lexer *token_to_node,
+								t_token **new_token);
 void					delete_token(t_lexer *list, t_token *token);
 char					*ft_strpbrk(const char *string, const char *delimiters);
 
@@ -148,4 +148,10 @@ t_return_value			process_heredoc(t_lexer *list);
 // Contained in lexer_heredoc_validation_utils.c
 void					sig_heredoc(int sig);
 
+/**
+ * Contained in lexer_expansion_extra.c
+ */
+const char				*handle_expansion(char *key_value, t_lexer *list);
+char					*get_result_string(char *input, char *dollar_sign,
+							char *result_string, t_bool handled_pre_string);
 #endif
