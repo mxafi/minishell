@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:49:55 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 16:35:22 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 19:17:47 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ typedef struct s_token
 
 typedef struct s_lexer
 {
-	int					calloc_count;
 	t_validation_state	state;
 	t_return_value		error_code;
 	t_is_found			cmd_found;
@@ -102,11 +101,6 @@ t_return_value			make_new_node(t_lexer *token_to_node,
 							t_token **new_token);
 void					delete_token(t_lexer *list, t_token *token);
 char					*ft_strpbrk(const char *string, const char *delimiters);
-
-/*
- * TODO: contained in DELETE_ME_AND_FCT_HEADER.c
- */
-void					print_list(t_lexer *list);
 
 /*
  * contained in lexer_validate_syntax.c
@@ -156,4 +150,5 @@ char					*heredoc_get_line(void);
 const char				*handle_expansion(char *key_value, t_lexer *list);
 char					*get_result_string(char *input, char *dollar_sign,
 							char *result_string, t_bool handled_pre_string);
+
 #endif
