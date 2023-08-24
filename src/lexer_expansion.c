@@ -51,8 +51,6 @@ static char	*extract_value_from_dollar_sign(const char *dollar_sign)
 	return (alphanumeric_part);
 }
 
-
-
 /**
  * @brief Handles the concatenation of environment value with result string.
  * 
@@ -90,8 +88,6 @@ static char	*handle_env_value(char *result_string, const char *env_value,
 	return (result_string);
 }
 
-
-
 /**
  * @brief Processes a token for environment variable expansion.
  * 
@@ -126,7 +122,8 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 		dollar_sign = ft_strchr(input, '$');
 		if (!dollar_sign)
 			break ;
-		if (!(result_string = get_result_string(input, dollar_sign, result_string, handled_pre_string)))
+		if (!(result_string = get_result_string(input, dollar_sign,
+					result_string, handled_pre_string)))
 			return (MALLOC_FAIL);
 		//printf("process_token:\n\tget_result_string: result_string :%s:\n", result_string);
 		handled_pre_string = TRUE;
@@ -142,7 +139,8 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 				current->content = ft_strdup(env_value);
 			}
 			else
-				result_string = handle_env_value(result_string, env_value, current);
+				result_string = handle_env_value(result_string, env_value,
+						current);
 		}
 		else if (!env_value)
 		{
@@ -156,7 +154,7 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 				free(current->content);
 			current->content = ft_strdup(result_string);
 			if (!current->content)
-				return(MALLOC_FAIL);
+				return (MALLOC_FAIL);
 		}
 		else
 		{
@@ -203,10 +201,16 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 t_return_value	expand_from_env(t_lexer *list)
 {
 	t_token	*current;
+	t_token	*previous;
+	t_token	*temp;
+	t_bool	delete_null_expanded_token;
 
 	current = list->head;
+	previous = NULL;
+	delete_null_expanded_token = FALSE;
 	while (current != NULL)
 	{
+		print_list(list);
 		if (current->type == DBL_QUOTE_STR || current->type == STRING)
 		{
 			if (process_token(list, current) != SUCCESS)
@@ -215,8 +219,35 @@ t_return_value	expand_from_env(t_lexer *list)
 				list->error_code = MALLOC_FAIL;
 				break ;
 			}
+			else if (previous == NULL && current->type = MY_SPACE)
+			{
+				temp = current->next; 
+				delete_token(list, current);
+				current = temp;
+			}
+			else if (previous == NULL && ft_strncmp(current->content, "", 1) == 0)
+				delete_null_expanded_token = TRUE;
 		}
-		current = current->next;
+		if (delete_null_expanded_token == TRUE)
+		{
+			if (current->next)
+		 	{
+				temp = current->next;
+				delete_token(list, current);
+				current = temp;
+		 	}
+			else
+			{
+				delete_token(list, current);
+				return (INVALID_EXPANSION);
+			}
+		}
+		else
+		{
+			previous = current;
+			current = current->next;
+		}
+		delete_null_expanded_token = FALSE;
 	}
 	return (list->error_code);
 }

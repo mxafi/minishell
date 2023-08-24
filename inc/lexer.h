@@ -65,6 +65,7 @@ typedef enum e_return_value
 	FILE_OPEN_ERROR,
 	DIRECTORY_NOT_FOUND,
 	INVALID_ARGUMENT,
+	INVALID_EXPANSION,
 	EXIT_SYNTAX_ERROR = 258,
 }						t_return_value;
 
