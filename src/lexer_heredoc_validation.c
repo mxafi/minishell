@@ -31,17 +31,14 @@ static void	child_processes_heredoc(t_token *token, int fd)
 	while (1)
 	{
 		line_read = heredoc_get_line();
-		if (ft_strncmp(line_read, delimiter, delimiter_length + 1) == 0)
-			break ;
-		if (*line_read)
-			ft_putstr_fd(line_read, fd);
-		ft_putchar_fd('\n', fd);
 		if (!line_read)
 			break ;
+		if (ft_strncmp(line_read, delimiter, delimiter_length + 1) == 0)
+			break ;
+		ft_putstr_fd(line_read, fd);
+		ft_putchar_fd('\n', fd);
 		free(line_read);
 	}
-	if (line_read)
-		free(line_read);
 	close(fd);
 	exit(0);
 }
@@ -76,10 +73,13 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 		perror("waitpid");
 	}
 	else if (WIFEXITED(exit_status))
+	{
 		list->error_code = WEXITSTATUS(exit_status);
+	}
 	else if (WIFSIGNALED(exit_status))
 	{
-		ft_putchar_fd('\n', 1);
+		if (WTERMSIG(exit_status) == SIGINT)
+			ft_putchar_fd('\n', 1);
 		list->error_code = WIFSIGNALED(exit_status);
 	}
 	signal(SIGINT, SIG_DFL);

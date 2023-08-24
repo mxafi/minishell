@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 11:33:33 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 16:38:03 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:56:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@
 void	sig_heredoc(int sig)
 {
 	if (sig == SIGINT)
-	{	
 		kill(g_minishell->pid_single, SIGINT);
-	}
 }
 
 char	*heredoc_get_line(void)
