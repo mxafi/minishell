@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:30:46 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 09:34:55 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 11:11:58 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ char	*env_utils_join_three_str(char *s1, char *s2, char *s3)
 	tmp = ft_strjoin(s1, s2);
 	if (!tmp)
 	{
-		perror("shellfishy: env_utils_join_three_str: ");
+		perror("shellfishy: ");
 		exit(1);
 	}
 	ret = ft_strjoin(tmp, s3);
 	free(tmp);
 	if (!ret)
 	{
-		perror("shellfishy: env_utils_join_three_str: ");
+		perror("shellfishy: ");
 		exit(1);
 	}
 	return (ret);
