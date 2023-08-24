@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 11:13:47 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 15:49:10 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@
 
 typedef struct s_minishell
 {
-	int			exit_status;
-	int			termination_status;
-	t_vec		env_vec;
-	char		**envp;
-	int			is_pipeline;
-	int			pid_pipeline[2];
-	int			pid_single;
-}				t_minishell;
+	int				exit_status;
+	int				termination_status;
+	t_vec			env_vec;
+	char			**envp;
+	int				is_pipeline;
+	int				pid_pipeline[2];
+	int				pid_single;
+}					t_minishell;
 
 typedef enum e_bool
 {
@@ -74,23 +74,23 @@ typedef enum e_bool
 	TRUE
 }				t_bool;
 
-t_minishell		*g_minishell;
+t_minishell			*g_minishell;
 
 // Necessary function prototype for readline.
 void				rl_replace_line(const char *text, int clear_undo);
 
 // Function prototypes for user created functions
-void			display_prompt(void);
-t_return_value	lexer(char *input);
-t_ast_node		*ast_builder(t_token *token);
-void			executor(t_ast_node *node);
+void				display_prompt(void);
+t_return_value		lexer(char *input);
+t_ast_node			*ast_builder(t_token *token);
+void				executor(t_ast_node *node);
 
 // Builtins
-void		ft_pwd(void);
-void		ft_echo(t_ast_node *node);
-void		ft_cd(t_ast_node *node);
-void		ft_exit(t_ast_node *node);
-void		ft_unset(t_ast_node *node);
-void		ft_export(t_ast_node *node);
+void				ft_pwd(void);
+void				ft_echo(t_ast_node *node);
+void				ft_cd(t_ast_node *node);
+void				ft_exit(t_ast_node *node);
+void				ft_unset(t_ast_node *node);
+void				ft_export(t_ast_node *node);
 
 #endif
