@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:33:28 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 22:14:17 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 08:58:32 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_ast_node	*ast_builder(t_token *token)
 
 	if (!token)
 		return (NULL);
-	tmp = ast_parse_command(token); //parse everything upto a pipe
+	tmp = ast_parse_command(token);
 	while (token->next != NULL && token->type != PIPE)
 		token = token->next;
 	if (token->type != PIPE)

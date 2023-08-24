@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 13:02:31 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/10 22:13:33 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 08:58:49 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static t_token	*skip_redirector_and_arg(t_token *token)
 {
 	if (token->type == HEREDOC
-			|| token->type == APPEND_TO
-			|| token->type == OUTFILE
-			|| token->type == INFILE)
+		|| token->type == APPEND_TO
+		|| token->type == OUTFILE
+		|| token->type == INFILE)
 	{
 		token = token->next;
 		if (!token || token->type == PIPE)
