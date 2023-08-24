@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 08:11:35 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 11:09:38 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 11:20:22 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,46 +94,39 @@ typedef struct s_lexer
 }						t_lexer;
 
 /*
- * contained in lexer.c
- */
-
-t_return_value		string_to_token(t_lexer *token_list, char *input,
-						char *delimiter);
-int					tokenize_node(t_lexer *list, t_token *token, char *str,
-						int length);
-/*
  * contained in lexer_utils.c
  */
-t_return_value		free_token_list(t_lexer *token_list, char *input);
-t_return_value		make_new_node(t_lexer *token_to_node, t_token **new_token);
-void				delete_token(t_lexer *list, t_token *token);
-char				*ft_strpbrk(const char *string, const char *delimiters);
+t_return_value			free_token_list(t_lexer *token_list, char *input);
+t_return_value			make_new_node(t_lexer *token_to_node,
+							t_token **new_token);
+void					delete_token(t_lexer *list, t_token *token);
+char					*ft_strpbrk(const char *string, const char *delimiters);
 
 /*
  * TODO: contained in DELETE_ME_AND_FCT_HEADER.c
  */
-void				print_list(t_lexer *list);
+void					print_list(t_lexer *list);
 
 /*
  * contained in lexer_validate_syntax.c
  */
-t_return_value		validate_syntax(t_lexer *token_list);
+t_return_value			validate_syntax(t_lexer *token_list);
 
 /**
  * contained in lexer_validate_redirector.c 
  */
-t_return_value		token_is_redirector(t_token *token);
-t_return_value		validate_redirectors(t_lexer *list);
+t_return_value			token_is_redirector(t_token *token);
+t_return_value			validate_redirectors(t_lexer *list);
 
 /**
  * contained in lexer_validate_pipes.c 
  */
-t_return_value		validate_pipes(t_lexer *token_list);
+t_return_value			validate_pipes(t_lexer *token_list);
 
 /**
  * contained in lexer_validate_quote.c
  */
-t_return_value		validate_quotes(t_lexer *token_list);
+t_return_value			validate_quotes(t_lexer *token_list);
 
 /**
  * contained in lexer_label_token_type.c
@@ -144,16 +137,16 @@ void					label_token_type(t_lexer *list, t_token *token,
 /**
  * contained in lexer_string_concatenation.c 
  */
-void				concatenate_adjacent_strings(t_lexer *list);
+t_return_value			concatenate_adjacent_strings(t_lexer *list);
 
 /**
  * Contained in lexer_expansion.c
  */
-t_return_value		expand_from_env(t_lexer *list);
+t_return_value			expand_from_env(t_lexer *list);
 
-t_return_value		process_heredoc(t_lexer *list);
+t_return_value			process_heredoc(t_lexer *list);
 
 // Contained in lexer_heredoc_validation_utils.c
-void				sig_heredoc(int sig);
+void					sig_heredoc(int sig);
 
 #endif
