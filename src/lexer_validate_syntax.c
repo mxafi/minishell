@@ -93,7 +93,7 @@ t_return_value	validate_syntax(t_lexer *token_list)
 {
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
-	if (expand_from_env(token_list) == MALLOC_FAIL)
+	if (expand_from_env(token_list) != SUCCESS)
 		return (token_list->error_code);
 	if (concatenate_adjacent_strings(token_list) == MALLOC_FAIL)
 		return (token_list->error_code);

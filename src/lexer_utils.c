@@ -91,11 +91,11 @@ t_return_value	free_token_list(t_lexer *delete_me, char *input)
  * @brief	Searches a string for any of a set of specified delimiters.
  * 
  * @param string 		The string to search within
-* @param delimiters	A null-terminated string containing
-the delimiters to search for.
-* @return char*	A pointer to the first occurence of any delimiter in the string,
-* return NULL if no delimiter is found.
-*/
+ * @param delimiters	A null-terminated string containing the delimiters to 
+ * search for.
+ * @return char*		A pointer to the first occurrence of any delimiter in 
+ * the string, or NULL if no delimiter is found.
+ */
 char	*ft_strpbrk(const char *string, const char *delimiters)
 {
 	int	i;
