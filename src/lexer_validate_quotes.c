@@ -78,15 +78,19 @@ static void	add_null_string_for_empty_quotes(t_lexer *token_list)
  */
 t_return_value	validate_quotes(t_lexer *token_list)
 {
-	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED || token_list->state == SGL_QUOTE_OPENED)
+	if (token_list->state == SGL_QUOTE_CAN_BE_CLOSED
+		|| token_list->state == SGL_QUOTE_OPENED)
 	{
-		ft_putstr_fd("☠️  shellfishy ☠️  > syntax error: expecting closing single quotes `\''\n", STDERR_FILENO);
+		ft_putstr_fd("☠️  shellfishy ☠️  > syntax error: expecting closing "
+			"single quotes `\''\n", STDERR_FILENO);
 		token_list->error_code = EXIT_SYNTAX_ERROR;
 		return (token_list->error_code);
 	}
-	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED || token_list->state == DBL_QUOTE_OPENED)
+	else if (token_list->state == DBL_QUOTE_CAN_BE_CLOSED
+		|| token_list->state == DBL_QUOTE_OPENED)
 	{
-		ft_putstr_fd("☠️  shellfishy ☠️  > syntax error: expecting closing double quotes `\"'\n", STDERR_FILENO);
+		ft_putstr_fd("☠️  shellfishy ☠️  > syntax error: expecting closing "
+			"double quotes `\"'\n", STDERR_FILENO);
 		token_list->error_code = EXIT_SYNTAX_ERROR;
 		return (token_list->error_code);
 	}
