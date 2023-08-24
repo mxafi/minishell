@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/13 16:48:14 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/29 14:03:48by lclerc           ###   ########.fr       */
+/*   Created: 2023/06/13 08:11:35 by lclerc            #+#    #+#             */
+/*   Updated: 2023/08/24 11:09:38 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef enum e_token_type
 	HEREDOC,
 	APPEND_TO,
 	CMD,
-	BI_CMD,
 	ARG,
 	SGL_QUOTE_STR,
 	DBL_QUOTE_STR,
@@ -40,9 +39,8 @@ typedef enum e_token_type
 }						t_token_type;
 
 /**
-
-	* @brief validation state enumerator used in syntax validation and tokenization of single and double quotes
- * 
+ * @brief validation state enumerator used in syntax validation
+ * and tokenization of single and double quotes
  */
 typedef enum e_validation_state
 {
@@ -81,7 +79,6 @@ typedef struct s_token	t_token;
 typedef struct s_token
 {
 	t_token_type		type;
-	int token_count; //not used should be removed
 	char				*content;
 	t_token				*next;
 }						t_token;
@@ -92,7 +89,6 @@ typedef struct s_lexer
 	t_validation_state	state;
 	t_return_value		error_code;
 	t_is_found			cmd_found;
-	int token_amount; //not used should be removed
 	char				*readlined;
 	t_token				*head;
 }						t_lexer;
@@ -101,40 +97,43 @@ typedef struct s_lexer
  * contained in lexer.c
  */
 
+t_return_value		string_to_token(t_lexer *token_list, char *input,
+						char *delimiter);
+int					tokenize_node(t_lexer *list, t_token *token, char *str,
+						int length);
 /*
  * contained in lexer_utils.c
  */
-t_return_value			free_token_list(t_lexer *token_list, char *input);
-t_return_value			make_new_node(t_lexer *token_to_node,
-							t_token **new_token);
-void					delete_token(t_lexer *list, t_token *token);
-char					*ft_strpbrk(const char *string, const char *delimiters);
+t_return_value		free_token_list(t_lexer *token_list, char *input);
+t_return_value		make_new_node(t_lexer *token_to_node, t_token **new_token);
+void				delete_token(t_lexer *list, t_token *token);
+char				*ft_strpbrk(const char *string, const char *delimiters);
 
 /*
  * TODO: contained in DELETE_ME_AND_FCT_HEADER.c
  */
-void					print_list(t_lexer *list);
+void				print_list(t_lexer *list);
 
 /*
  * contained in lexer_validate_syntax.c
  */
-t_return_value			validate_syntax(t_lexer *token_list);
+t_return_value		validate_syntax(t_lexer *token_list);
 
 /**
  * contained in lexer_validate_redirector.c 
  */
-t_return_value			token_is_redirector(t_token *token);
-t_return_value			validate_redirectors(t_lexer *list);
+t_return_value		token_is_redirector(t_token *token);
+t_return_value		validate_redirectors(t_lexer *list);
 
 /**
  * contained in lexer_validate_pipes.c 
  */
-t_return_value			validate_pipes(t_lexer *token_list);
+t_return_value		validate_pipes(t_lexer *token_list);
 
 /**
  * contained in lexer_validate_quote.c
  */
-t_return_value			validate_quotes(t_lexer *token_list);
+t_return_value		validate_quotes(t_lexer *token_list);
 
 /**
  * contained in lexer_label_token_type.c
@@ -145,16 +144,16 @@ void					label_token_type(t_lexer *list, t_token *token,
 /**
  * contained in lexer_string_concatenation.c 
  */
-t_return_value				concatenate_adjacent_strings(t_lexer *list);
+void				concatenate_adjacent_strings(t_lexer *list);
 
 /**
  * Contained in lexer_expansion.c
  */
-t_return_value			expand_from_env(t_lexer *list);
+t_return_value		expand_from_env(t_lexer *list);
 
-t_return_value			process_heredoc(t_lexer *list);
+t_return_value		process_heredoc(t_lexer *list);
 
 // Contained in lexer_heredoc_validation_utils.c
-void					sig_heredoc(int sig);
+void				sig_heredoc(int sig);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/24 09:02:52 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 11:10:19 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static t_return_value	tokenize_node(t_lexer *list, t_token *token, char *str,
 		return (FAILURE);
 	}
 	token->next = NULL;
-	token->token_count = ++list->token_amount;
 	if (list->head == NULL)
 		list->head = token;
 	else

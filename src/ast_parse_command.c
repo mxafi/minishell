@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_command.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:05:54 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/23 16:28:14 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 08:08:12 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@ static t_ast_node_type	ast_get_command_type(t_token *token)
 {
 	while (token->next && token->next->type != PIPE)
 	{
-		if (token->type == CMD || token->type == BI_CMD)
+		if (token->type == CMD)
 			break ;
 		token = token->next;
 	}
 	if (token->type == CMD)
 		return (AST_COMMAND);
-	if (token->type == BI_CMD)
-		return (AST_BI_CMD);
 	return (AST_UNDEFINED);
 }
 

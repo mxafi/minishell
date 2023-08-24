@@ -6,14 +6,14 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 19:44:47 by malaakso          #+#    #+#             */
-/*   Updated: 2023/07/09 12:15:31 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 08:57:14 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_basic.h"
 
 static int	is_whitespace(char c)
-{	
+{
 	if ((c > 8 && c < 14) || c == 32)
 		return (1);
 	return (0);

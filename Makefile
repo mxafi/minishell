@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
-#    Updated: 2023/08/23 11:33:25 by malaakso         ###   ########.fr        #
+#    Updated: 2023/08/24 09:31:07 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ FOLDER_LIST		=	$(H_FOLDER) $(C_FOLDER) $(OBJ_FOLDER) \
 SHELL_H			=	minishell.h \
 					env.h
 SHELL_C			=	minishell.c \
-					env.c
+					env.c \
+					env_utils.c
 
 INPUT_H			=	input.h
 INPUT_C			=	input.c

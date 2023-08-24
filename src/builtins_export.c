@@ -6,11 +6,19 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:47:45 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/19 17:05:34 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:27:06 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static void	ft_export_error_identifier(char *key)
+{
+	ft_putstr_fd("shellfishy: export: `", 2);
+	ft_putstr_fd(key, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	g_minishell->exit_status = 1;
+}
 
 /**
  * @brief Validates and exports the given variable.
@@ -31,10 +39,7 @@ static void	ft_export_validate_and_execute(char *key, char *value)
 	{
 		if (!(ft_isalpha(*sanitize_check) || *sanitize_check == '_'))
 		{
-			ft_putstr_fd("shellfishy: export: `", 2);
-			ft_putstr_fd(key, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			g_minishell->exit_status = 1;
+			ft_export_error_identifier(key);
 			return ;
 		}
 		sanitize_check++;
@@ -65,6 +70,8 @@ static t_return_value	ft_export_handle_equal_sign(char *arg)
 		value = equal_sign + 1;
 		if (*key)
 			ft_export_validate_and_execute(key, value);
+		else
+			ft_export_error_identifier(key);
 		return (SUCCESS);
 	}
 	return (FAILURE);
