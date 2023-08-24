@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 08:11:35 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 11:20:22 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 13:57:38 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ t_return_value			concatenate_adjacent_strings(t_lexer *list);
  * Contained in lexer_expansion.c
  */
 t_return_value			expand_from_env(t_lexer *list);
-
 t_return_value			process_heredoc(t_lexer *list);
 
 // Contained in lexer_heredoc_validation_utils.c

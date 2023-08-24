@@ -26,7 +26,6 @@ static void	child_processes_heredoc(t_token *token, int fd)
 	char	*delimiter;
 	int		delimiter_length;
 
-	//ignore_signals();
 	delimiter = token->next->content;
 	delimiter_length = ft_strlen(delimiter);
 	while (1)
@@ -45,7 +44,6 @@ static void	child_processes_heredoc(t_token *token, int fd)
 	}
 	if (line_read)
 		free(line_read);
-	//restore_signal_defaults();
 	close(fd);
 	exit(0);
 }
@@ -114,7 +112,7 @@ static t_return_value	get_heredoc_input(t_lexer *list, t_token *current)
 	if (fd == -1)
 	{
 		list->error_code = FILE_OPEN_ERROR;
-		return (list->error_code);
+		return (FILE_OPEN_ERROR);
 	}
 	child_pid = fork();
 	if (child_pid == -1)
@@ -165,6 +163,8 @@ static t_return_value	get_temp_file_path(t_lexer *list, t_token *current,
 		list->error_code = MALLOC_FAIL;
 		return (list->error_code);
 	}
+	if (current->content)
+		free(current->content);
 	current->content = temp_file_path;
 	return (SUCCESS);
 }
