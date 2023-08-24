@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 11:38:34 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 15:55:40 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	execute_real_cmd(t_ast_node *node)
 	wait(&g_minishell->termination_status);
 	g_minishell->exit_status = ret_exit_status(
 			g_minishell->termination_status);
-	print_signal(g_minishell->termination_status);
 }
 
 int	is_unforkable_builtin(char *cmd)
