@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:44:33 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/23 18:12:22 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:53:02 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	executor(t_ast_node *node)
 		return ;
 	if (node->type == AST_PIPE)
 	{
-		g_minishell->is_pipeline = 1;
+		g_minishell->is_pipeline += 1;
 		execute_pipeline(node);
 	}
 	else if (node->type == AST_COMMAND)

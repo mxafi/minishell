@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 15:55:40 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:49:49 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,21 @@ int	is_unforkable_builtin(char *cmd)
 
 void	sig_single(int sig)
 {
-	ioctl(0, TIOCSTI, "\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
 	if (sig == SIGINT)
+	{
 		kill(g_minishell->pid_single, SIGINT);
+		ft_putstr_fd("^C", 1);
+		ioctl(0, TIOCSTI, "\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
 	else if (sig == SIGQUIT)
 	{
 		kill(g_minishell->pid_single, SIGQUIT);
-		ft_putstr_fd("Quit: 3\n", 1);
+		ft_putstr_fd("^\\Quit: 3", 1);
+		ioctl(0, TIOCSTI, "\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
 	}
 }
 
