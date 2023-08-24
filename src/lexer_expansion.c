@@ -118,60 +118,57 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 	handled_pre_string = FALSE;
 	while (input && *input != '\0')
 	{
-		//printf("________________________________________________________________________________\n");
 		dollar_sign = ft_strchr(input, '$');
 		if (!dollar_sign)
 			break ;
 		if (!(result_string = get_result_string(input, dollar_sign,
 					result_string, handled_pre_string)))
 			return (MALLOC_FAIL);
-		//printf("process_token:\n\tget_result_string: result_string :%s:\n", result_string);
-		handled_pre_string = TRUE;
-		key_value = extract_value_from_dollar_sign(dollar_sign + 1);
-		env_value = handle_expansion(key_value, list);
-		//printf("check what is in env_value :%s:\n", env_value);
-		if (env_value)
-		{
-			if (result_string == NULL)
-			{
-				if (current->content)
-					free(current->content);
-				current->content = ft_strdup(env_value);
-			}
-			else
-				result_string = handle_env_value(result_string, env_value,
-						current);
-		}
-		else if (!env_value)
-		{
-			if (!result_string)
-			{
-				result_string = (char *)ft_calloc(2, sizeof(char));
-				if (!result_string)
-					return (MALLOC_FAIL);
-			}
-			if (current->content)
-				free(current->content);
-			current->content = ft_strdup(result_string);
-			if (!current->content)
-				return (MALLOC_FAIL);
-		}
-		else
-		{
-			if (key_value)
-				free(key_value);
-		}
-		if (ft_strncmp(key_value, "?", 2) == 0 || ft_strncmp(key_value, "$",
-				2) == 0)
-		{
-			if (env_value)
-				free((void *)env_value);
-		}
-		if (key_value)
-		{
-			input = dollar_sign + 1;
-			free(key_value);
-		}
+				handled_pre_string = TRUE;
+				key_value = extract_value_from_dollar_sign(dollar_sign + 1);
+				env_value = handle_expansion(key_value, list);
+				if (env_value)
+				{
+					if (result_string == NULL)
+					{
+						if (current->content)
+							free(current->content);
+						current->content = ft_strdup(env_value);
+					}
+					else
+						result_string = handle_env_value(result_string,
+								env_value, current);
+				}
+				else if (!env_value)
+				{
+					if (!result_string)
+					{
+						result_string = (char *)ft_calloc(2, sizeof(char));
+						if (!result_string)
+							return (MALLOC_FAIL);
+					}
+					if (current->content)
+						free(current->content);
+					current->content = ft_strdup(result_string);
+					if (!current->content)
+						return (MALLOC_FAIL);
+				}
+				else
+				{
+					if (key_value)
+						free(key_value);
+				}
+				if (ft_strncmp(key_value, "?", 2) == 0 || ft_strncmp(key_value,
+						"$", 2) == 0)
+				{
+					if (env_value)
+						free((void *)env_value);
+				}
+				if (key_value)
+				{
+					input = dollar_sign + 1;
+					free(key_value);
+				}
 	}
 	if (input_origin)
 		free(input_origin);
@@ -181,36 +178,60 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 }
 
 /**
- * @brief	Expands environment variables within double-quoted strings or 
- *			regular strings with KEYs in environment variables.
- * @details	Expands environment variables within double-quoted strings or 
- * regular strings that contain environment keys. It searches for the 
- * occurrence of environment variables indicated by a `$` symbol within 
- * tokens. It retrieves the corresponding values from the environment and
- * updates the token content accordingly. The searched string starts after 
- * the `$` sign and extends until the next token or the next non-alphanumeric 
- * character. If the environment key does not match an existing environment 
- * variable, the expanded content is set to a null string. Some examples:
- *				- echo $USER -> username (expands to)
- * 				- echo $USER123 -> unless USER123 exists, bash returns '\n'
- *				- echo $USER+^ -> username+^ (expands to and concatenate non
- *					alphanumeric char to it)
+ * @brief Deletes a token with null content from the token list and updates 
+ * error code.
  *
- * @param list	The lexer list containing the tokens to process
+ * @details Deletes the given token from the token list and updates the error 
+ * code if needed. If the token is not the last one, it's replaced with the 
+ * following token. If it's the last token, the error code is set to 
+ * `INVALID_EXPANSION`.
+ *
+ * @param list The lexer list containing the tokens.
+ * @param current The token to be deleted.
+ * @return The updated error code.
+ */
+
+static t_return_value	delete_null_expanded_token(t_lexer *list, t_token *current)
+{
+	t_token	*temp;
+
+	if (current->next)
+	{
+		temp = current->next;
+		delete_token(list, current);
+		current = temp;
+	}
+	else
+	{
+		delete_token(list, current);
+		list->error_code = INVALID_EXPANSION;
+	}
+	return (list->error_code);
+}
+
+/**
+ * @brief Expands environment variables within double-quoted strings or regular
+ * strings with keys from environment variables.
+ *
+ * @details This function processes the tokens in the lexer list, searching for
+ * double-quoted strings or regular strings containing environment variable 
+ * keys. It expands environment variables indicated by a `$` symbol within 
+ * tokens. The expanded content is retrieved from the environment and updates 
+ * the token content accordingly. The search for the environment key starts 
+ * after the `$` sign and extends until the next token or the next non-
+ * alphanumeric character. If the environment key does not match an existing 
+ * environment variable, the expanded content is set to an empty string.
+ *
+ * @param list The lexer list containing the tokens to process.
+ * @return The return value indicating the success or failure of the expansion.
  */
 t_return_value	expand_from_env(t_lexer *list)
 {
 	t_token	*current;
-	t_token	*previous;
-	t_token	*temp;
-	t_bool	delete_null_expanded_token;
 
 	current = list->head;
-	previous = NULL;
-	delete_null_expanded_token = FALSE;
 	while (current != NULL)
 	{
-		print_list(list);
 		if (current->type == DBL_QUOTE_STR || current->type == STRING)
 		{
 			if (process_token(list, current) != SUCCESS)
@@ -219,35 +240,13 @@ t_return_value	expand_from_env(t_lexer *list)
 				list->error_code = MALLOC_FAIL;
 				break ;
 			}
-			else if (previous == NULL && current->type = MY_SPACE)
-			{
-				temp = current->next; 
-				delete_token(list, current);
-				current = temp;
-			}
-			else if (previous == NULL && ft_strncmp(current->content, "", 1) == 0)
-				delete_null_expanded_token = TRUE;
+			else if (ft_strncmp(current->content, "", 1) == 0)
+			 {
+				if (delete_null_expanded_token(list, current) != SUCCESS)
+					return(list->error_code);
+			 }
 		}
-		if (delete_null_expanded_token == TRUE)
-		{
-			if (current->next)
-		 	{
-				temp = current->next;
-				delete_token(list, current);
-				current = temp;
-		 	}
-			else
-			{
-				delete_token(list, current);
-				return (INVALID_EXPANSION);
-			}
-		}
-		else
-		{
-			previous = current;
-			current = current->next;
-		}
-		delete_null_expanded_token = FALSE;
+		current = current->next;
 	}
 	return (list->error_code);
 }
