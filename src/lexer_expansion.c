@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 18:05:46 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 19:04:45 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,8 @@ static t_return_value	delete_null_expanded_token(t_lexer *list, t_token *current
 		delete_token(list, current);
 		current = temp;
 	}
+	else if (list->head != current)
+		delete_token(list, current);
 	else
 	{
 		delete_token(list, current);
@@ -236,7 +238,6 @@ t_return_value	expand_from_env(t_lexer *list)
 		{
 			if (process_token(list, current) != SUCCESS)
 			{
-				printf("process_token MALLOC_FAIL\n");
 				list->error_code = MALLOC_FAIL;
 				break ;
 			}
