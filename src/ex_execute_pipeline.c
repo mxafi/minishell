@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:22 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 09:48:53 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 11:42:40 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ static void	sig_pipeline(int sig)
 	}
 }
 
-static void	execute_pipeline_fork_left(pid_t *ext_pid,
-	t_ast_node *node, int *pipe_end)
+static void	execute_pipeline_fork_left(t_ast_node *node, int *pipe_end)
 {
 	if (wrap_fork(&g_minishell->pid_pipeline[0]) == 0)
 	{
@@ -44,8 +43,7 @@ static void	execute_pipeline_fork_left(pid_t *ext_pid,
 	}
 }
 
-static void	execute_pipeline_fork_right(pid_t *ext_pid,
-	t_ast_node *node, int *pipe_end)
+static void	execute_pipeline_fork_right(t_ast_node *node, int *pipe_end)
 {
 	if (wrap_fork(&g_minishell->pid_pipeline[1]) == 0)
 	{
@@ -63,9 +61,9 @@ void	execute_pipeline(t_ast_node *node)
 
 	if (pipe(pipe_end) < 0)
 		exit(1);
-	execute_pipeline_fork_left(&g_minishell->pid_pipeline[0], node, pipe_end);
+	execute_pipeline_fork_left(node, pipe_end);
 	close(pipe_end[WRITING_END]);
-	execute_pipeline_fork_right(&g_minishell->pid_pipeline[1], node, pipe_end);
+	execute_pipeline_fork_right(node, pipe_end);
 	close(pipe_end[READING_END]);
 	signal(SIGINT, sig_pipeline);
 	signal(SIGQUIT, sig_pipeline);
