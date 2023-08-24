@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:33:51 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 14:34:33 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 14:42:04 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static char	*get_string_before_dollar(char *dollar_sign, char *input_string,
 }
 
 
-char	*get_result_string(char *input, char *dollar_sign, 
+char	*get_result_string(char *input, char *dollar_sign,
 			char *result_string, t_bool handled_pre_string)
 {
 	char	*tmp;
