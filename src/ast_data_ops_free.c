@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:01:04 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/17 17:16:56 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 14:00:30 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ast_recursive_delete(t_ast_node *node)
 	if (!node)
 		return ;
 	delete_argv(node->exec_argv, node->argv_count);
-	delete_redirections(node->redirections, node->argv_count);
+	delete_redirections(node->redirections, node->redir_count);
 	if (node->exec_file)
 		free(node->exec_file);
 	ast_recursive_delete(node->left);
