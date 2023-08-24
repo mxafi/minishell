@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/18 13:49:03lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 18:05:46 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,10 +241,10 @@ t_return_value	expand_from_env(t_lexer *list)
 				break ;
 			}
 			else if (ft_strncmp(current->content, "", 1) == 0)
-			 {
+			{
 				if (delete_null_expanded_token(list, current) != SUCCESS)
-					return(list->error_code);
-			 }
+					return (list->error_code);
+			}
 		}
 		current = current->next;
 	}
