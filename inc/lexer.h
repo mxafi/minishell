@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/13 16:48:14 by lclerc            #+#    #+#             */
-/*   Updated: 2023/06/29 14:03:48by lclerc           ###   ########.fr       */
+/*   Created: 2023/06/13 08:11:35 by lclerc            #+#    #+#             */
+/*   Updated: 2023/08/24 08:53:50 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ typedef enum e_token_type
 }						t_token_type;
 
 /**
- * @brief validation state enumerator used in syntax validation and tokenization of single and double quotes
- * 
+ * @brief validation state enumerator used in syntax validation
+ * and tokenization of single and double quotes
  */
 typedef enum e_validation_state
 {
@@ -79,7 +79,6 @@ typedef struct s_token	t_token;
 typedef struct s_token
 {
 	t_token_type		type;
-	int					token_count; //not used should be removed
 	char				*content;
 	t_token				*next;
 }						t_token;
@@ -90,7 +89,6 @@ typedef struct s_lexer
 	t_validation_state	state;
 	t_return_value		error_code;
 	t_is_found			cmd_found;
-	int					token_amount; //not used should be removed
 	char				*readlined;
 	t_token				*head;
 }						t_lexer;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/23 17:09:43 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 08:52:40 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
 		return (FAILURE);
 	}
 	token->next = NULL;
-	token->token_count = ++list->token_amount;
 	if (list->head == NULL)
 		list->head = token;
 	else

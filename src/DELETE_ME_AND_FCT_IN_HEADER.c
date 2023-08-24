@@ -72,7 +72,7 @@ void	print_list(t_lexer *list)
 		else if (current_token->type == PIPE)
 			strncpy(token_type, "PIPE", sizeof(token_type) - 1);
 		token_type[sizeof(token_type) - 1] = '\0';
-		printf("Token[#%d] [%s]:\t:%p:\n", current_token->token_count, token_type,
+		printf("Token[#token_count_removed:malaakso] [%s]:\t:%p:\n", token_type,
 				current_token->content);
 		current_token = current_token->next;
 	}
