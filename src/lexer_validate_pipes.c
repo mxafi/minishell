@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:43:44 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 10:28:56 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 10:33:00 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,5 @@ t_return_value	validate_pipes(t_lexer *token_list)
 		previous = current;
 		current = current->next;
 	}
-	if (token_list->state == SYNTAX_ERROR)
-		token_list->error_code = EXIT_SYNTAX_ERROR;
 	return (token_list->error_code);
 }
