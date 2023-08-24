@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 13:44:48 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/23 10:12:49 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 09:45:21 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 /**
  * @brief Concatenates the content of current and following tokens.
  * @details This function concatenates the content of the current token and the
- *          following token, resulting in the deletion of the next token. The
- *          content of the current token is updated with the concatenated string.
+ * following token, resulting in the deletion of the next token. The content of
+ * the current token is updated with the concatenated string
  * 
  * @param list       The list of tokens.
  * @param current    The current token that will hold the new string.
  * @param next_token The token to be deleted after concatenation.
  */
-void	concatenate_strings(t_lexer *list, t_token *current,
+static void	concatenate_strings(t_lexer *list, t_token *current,
 		t_token *next_token)
 {
 	size_t	length;
@@ -47,9 +47,9 @@ void	concatenate_strings(t_lexer *list, t_token *current,
 
 /**
  * @brief Simplifies the syntax of string tokens.
- * @details This function traverses the token list and converts single-quoted and
- *          double-quoted string tokens into regular string tokens. This is done
- *          to simplify the handling of string concatenation.
+ * @details This function traverses the token list and converts single-quoted 
+ * and double-quoted string tokens into regular string tokens. This is done
+ * to simplify the handling of string concatenation.
  * 
  * @param list List of tokens to process.
  */
@@ -69,13 +69,13 @@ static void	simplify_string_syntax(t_lexer *list)
 /**
  * @brief Concatenates adjacent string tokens into a single token.
  *
- * @details This function searches for consecutive string tokens and concatenates
- *          them into a single token. The resulting token will have the combined
- *          content of all consecutive string tokens.
+ * @details This function searches for consecutive string tokens and 
+ * concatenates them into a single token. The resulting token will have the 
+ * combined content of all consecutive string tokens.
  * 
  * @param list List of tokens to process.
  */
-void	concatenate_adjacent_strings(t_lexer *list)
+t_return_value	concatenate_adjacent_strings(t_lexer *list)
 {
 	t_token	*current;
 	t_token	*next_token;
@@ -91,10 +91,11 @@ void	concatenate_adjacent_strings(t_lexer *list)
 			{
 				concatenate_strings(list, current, next_token);
 				if (list->error_code == MALLOC_FAIL)
-					return ;
+					return (list->error_code);
 				next_token = current->next;
 			}
 		}
 		current = current->next;
 	}
+	return (list->error_code);
 }

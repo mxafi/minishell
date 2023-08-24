@@ -12,19 +12,10 @@
 
 #include "../inc/minishell.h"
 
-/* Syntax check as I have gathered it.. hopefully, nothing is missing:
-1/ Check first character -> cannot be pipe
-2/ Redirectors < < , <>,
-	> > and pipes | | (beware of non combinable delimiters else than << and >>) have to be followed with at least one non-delimiter chars on each side (yeah,
-		spaces can be in between)
-3/ check quotes are closing 
-4/ Last char cannot be redirector or pipe
-Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
-*/
 
 /**
-
-		* @brief	Labels tokens as CMD or ARG based on their position in the token list.
+ * @brief	Labels tokens as CMD or ARG based on their position in the token 
+ *	list.
  * 
  * @details	The first encountered STRING tokenS of the input and after each 
  * 			pipes are labeled as CMD, and all subsequent STRING tokens are 
@@ -32,7 +23,7 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
  * 			field of the tokens.
  * @param token_list The list to process and label.
  */
-void	label_cmds_and_args(t_lexer *token_list)
+static void	label_cmds_and_args(t_lexer *token_list)
 {
 	t_token	*current;
 	t_token	*prev_token;
@@ -56,7 +47,7 @@ void	label_cmds_and_args(t_lexer *token_list)
 		}
 		else if (current->type == PIPE)
 			token_list->cmd_found = NOT_YET;
-		prev_token = current; // Remember the previous token
+		prev_token = current;
 		current = current->next;
 	}
 }
@@ -115,7 +106,8 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//printf("validate_syntax()expanded\n");
 	//print_list(token_list);
 	//printf("_______________________________________________________________________________\n");
-	concatenate_adjacent_strings(token_list);
+	if (concatenate_adjacent_strings(token_list) == MALLOC_FAIL)
+		return (token_list->error_code);
 	//print_list(token_list);
 	//printf("validate_syntax()concatenated\n");
 	//printf("_______________________________________________________________________________\n");
@@ -149,9 +141,5 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	label_cmds_and_args(token_list);
 	//print_list(token_list);
 	//printf("validate_syntax()token CMD ARGS labelled\n");
-	//printf("_______________________________________________________________________________\n");
-	//printf("################################################################################\n");
-	//printf("#                                   OUTPUT                                     #\n");
-	//printf("################################################################################\n");
 	return (token_list->error_code);
 }
