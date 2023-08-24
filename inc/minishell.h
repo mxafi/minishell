@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/23 10:32:12 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 08:10:55 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef enum e_bool
 t_minishell	*g_minishell;
 
 // Necessary function prototype for readline.
-void	rl_replace_line(const char *text, int clear_undo);
+void		rl_replace_line(const char *text, int clear_undo);
 
 // Function prototypes for user created functions
 void		display_prompt(void);
@@ -86,11 +86,11 @@ t_ast_node	*ast_builder(t_token *token);
 void		executor(t_ast_node *node);
 
 // Builtins
-void	ft_pwd(void);
-void	ft_echo(t_ast_node *node);
-void	ft_cd(t_ast_node *node);
-void	ft_exit(t_ast_node *node);
-void	ft_unset(t_ast_node *node);
-void	ft_export(t_ast_node *node);
+void		ft_pwd(void);
+void		ft_echo(t_ast_node *node);
+void		ft_cd(t_ast_node *node);
+void		ft_exit(t_ast_node *node);
+void		ft_unset(t_ast_node *node);
+void		ft_export(t_ast_node *node);
 
 #endif
