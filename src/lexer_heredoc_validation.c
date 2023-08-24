@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_heredoc_validation.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 15:26:00 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/11 14:10:19by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 18:48:01 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

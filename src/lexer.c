@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/24 11:10:19 by lclerc           ###   ########.fr       */
+/*   Created: 2023/08/24 18:45:42 by malaakso          #+#    #+#             */
+/*   Updated: 2023/08/24 18:45:44 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

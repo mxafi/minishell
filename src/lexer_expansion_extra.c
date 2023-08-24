@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expansion_extra.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:33:51 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 14:45:14 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 18:46:00 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ static char	*get_string_before_dollar(char *dollar_sign, char *input_string,
  * @param input The input string.
  * @param dollar_sign The position of the dollar sign.
  * @param result_string The existing result string.
- * @param handled_pre_string Flag indicating if a string before dollar sign is handled.
+ * @param handled_pre_string Flag indicating if a string before
+ * dollar sign is handled.
  * @return A pointer to the constructed result string.
  */
 char	*get_result_string(char *input, char *dollar_sign,

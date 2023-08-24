@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_validate_syntax.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:11:59 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/13 11:29:09by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 18:47:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
 
 /**
  * @brief	Labels tokens as CMD or ARG based on their position in the token 
@@ -92,7 +91,6 @@ static void	remove_spaces(t_lexer *list)
  */
 t_return_value	validate_syntax(t_lexer *token_list)
 {
-
 	if (validate_quotes(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
 	if (expand_from_env(token_list) == MALLOC_FAIL)
