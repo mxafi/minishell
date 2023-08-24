@@ -30,9 +30,7 @@ static void	child_processes_heredoc(t_token *token, int fd)
 	delimiter_length = ft_strlen(delimiter);
 	while (1)
 	{
-		toggle_echoctl();
-		line_read = readline("> ");
-		toggle_echoctl();
+		line_read = heredoc_get_line();
 		if (ft_strncmp(line_read, delimiter, delimiter_length + 1) == 0)
 			break ;
 		if (*line_read)

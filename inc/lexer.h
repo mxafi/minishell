@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:49:55 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 15:51:02 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:35:22 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ t_return_value			process_heredoc(t_lexer *list);
 
 // Contained in lexer_heredoc_validation_utils.c
 void					sig_heredoc(int sig);
+char					*heredoc_get_line(void);
 
 /**
  * Contained in lexer_expansion_extra.c
