@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:08:47 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/22 19:57:35 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:21:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*get_input(void)
 	restore_signal_defaults();
 	toggle_echoctl();
 	if (!line_read)
-		exit(1);
+		exit(0);
 	if (*line_read)
 	{
 		hist_line = ft_strdup(line_read);

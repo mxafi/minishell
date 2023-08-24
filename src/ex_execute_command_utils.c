@@ -6,24 +6,11 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 11:37:00 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 11:44:14 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 15:55:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	print_signal(int termination_status)
-{
-	int	sig_num;
-
-	if (WIFEXITED(termination_status) || !WIFSIGNALED(termination_status))
-		return ;
-	sig_num = WTERMSIG(termination_status);
-	if (sig_num == SIGINT)
-		ft_putchar_fd('\n', 1);//check this against real behavior
-	else if (sig_num == SIGQUIT)
-		ft_putstr_fd("Quit: 3\n", 2);//check this against real behavior
-}
 
 t_bool	is_absolute_path(t_ast_node *node)
 {

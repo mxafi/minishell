@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_heredoc_validation.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 15:26:00 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/11 14:10:19by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 18:48:01 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,15 @@ static void	child_processes_heredoc(t_token *token, int fd)
 	delimiter_length = ft_strlen(delimiter);
 	while (1)
 	{
-		toggle_echoctl();
-		line_read = readline("> ");
-		toggle_echoctl();
-		if (ft_strncmp(line_read, delimiter, delimiter_length + 1) == 0)
-			break ;
-		if (*line_read)
-			ft_putstr_fd(line_read, fd);
-		ft_putchar_fd('\n', fd);
+		line_read = heredoc_get_line();
 		if (!line_read)
 			break ;
+		if (ft_strncmp(line_read, delimiter, delimiter_length + 1) == 0)
+			break ;
+		ft_putstr_fd(line_read, fd);
+		ft_putchar_fd('\n', fd);
 		free(line_read);
 	}
-	if (line_read)
-		free(line_read);
 	close(fd);
 	exit(0);
 }
@@ -78,10 +73,13 @@ static t_return_value	parent_wait_for_child(t_lexer *list, int fd,
 		perror("waitpid");
 	}
 	else if (WIFEXITED(exit_status))
+	{
 		list->error_code = WEXITSTATUS(exit_status);
+	}
 	else if (WIFSIGNALED(exit_status))
 	{
-		ft_putchar_fd('\n', 1);
+		if (WTERMSIG(exit_status) == SIGINT)
+			ft_putchar_fd('\n', 1);
 		list->error_code = WIFSIGNALED(exit_status);
 	}
 	signal(SIGINT, SIG_DFL);

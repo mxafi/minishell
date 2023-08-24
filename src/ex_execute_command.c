@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 11:38:34 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:49:49 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	execute_real_cmd(t_ast_node *node)
 	wait(&g_minishell->termination_status);
 	g_minishell->exit_status = ret_exit_status(
 			g_minishell->termination_status);
-	print_signal(g_minishell->termination_status);
 }
 
 int	is_unforkable_builtin(char *cmd)
@@ -51,15 +50,21 @@ int	is_unforkable_builtin(char *cmd)
 
 void	sig_single(int sig)
 {
-	ioctl(0, TIOCSTI, "\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
 	if (sig == SIGINT)
+	{
 		kill(g_minishell->pid_single, SIGINT);
+		ft_putstr_fd("^C", 1);
+		ioctl(0, TIOCSTI, "\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
 	else if (sig == SIGQUIT)
 	{
 		kill(g_minishell->pid_single, SIGQUIT);
-		ft_putstr_fd("Quit: 3\n", 1);
+		ft_putstr_fd("^\\Quit: 3", 1);
+		ioctl(0, TIOCSTI, "\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
 	}
 }
 

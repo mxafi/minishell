@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_heredoc_validation_utils.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 11:33:33 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 14:33:45 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 17:56:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,18 @@
  */
 void	sig_heredoc(int sig)
 {
-	ioctl(0, TIOCSTI, "\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
 	if (sig == SIGINT)
 		kill(g_minishell->pid_single, SIGINT);
-	else if (sig == SIGQUIT)
-	{
-		kill(g_minishell->pid_single, SIGQUIT);
-		ft_putstr_fd("Quit: 3", 1);
-	}
 }
 
+char	*heredoc_get_line(void)
+{
+	char	*line_read;
+
+	toggle_echoctl();
+	signal(SIGQUIT, SIG_IGN);
+	line_read = readline("> ");
+	signal(SIGQUIT, SIG_DFL);
+	toggle_echoctl();
+	return (line_read);
+}

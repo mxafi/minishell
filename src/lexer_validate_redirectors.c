@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_validate_redirectors.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:58:31 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/18 15:37:29 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 18:53:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 /* Syntax check as I have gathered it.. hopefully, nothing is missing:
 1/ Check first character -> cannot be pipe
 2/ Redirectors < < , <>,
-	> > and pipes | | (beware of non combinable delimiters else than << and >>) have to be followed with at least one non-delimiter chars on each side (yeah,
-		spaces can be in between)
+  > > and pipes | | (beware of non combinable delimiters else than << and >>)
+  have to be followed with at least one non-delimiter chars on each side (yeah,
+  spaces can be in between)
 3/ check quotes are closing 
 4/ Last char cannot be redirector or pipe
 Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
@@ -30,8 +31,8 @@ Any syntax error exits back to prompt with "return FAILED_VALIDATION = 258"
  */
 t_return_value	token_is_redirector(t_token *token)
 {
-	if (token->type == OUTFILE || token->type == INFILE ||
-		token->type == HEREDOC || token->type == APPEND_TO)
+	if (token->type == OUTFILE || token->type == INFILE
+		|| token->type == HEREDOC || token->type == APPEND_TO)
 		return (SUCCESS);
 	return (FAILURE);
 }
@@ -44,10 +45,15 @@ t_return_value	token_is_redirector(t_token *token)
 static void	print_syntax_error(char *unexpected_token)
 {
 	if (!unexpected_token)
-		printf("☠️  shellfishy ☠️  > syntax error near unexpected token `newline'\n");
+	{
+		printf("☠️  shellfishy ☠️  > ");
+		printf("syntax error near unexpected token `newline'\n");
+	}
 	else
-		printf("☠️  shellfishy ☠️  > syntax error near unexpected token `%s'\n",
-				unexpected_token);
+	{
+		printf("☠️  shellfishy ☠️  > ");
+		printf("syntax error near unexpected token `%s'\n", unexpected_token);
+	}
 }
 
 /**

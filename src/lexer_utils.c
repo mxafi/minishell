@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 13:59:04 by lclerc            #+#    #+#             */
-/*   Updated: 2023/07/11 13:45:09lclerc           ###   ########.fr       */
+/*   Created: 2023/08/24 18:46:08 by malaakso          #+#    #+#             */
+/*   Updated: 2023/08/24 18:47:16 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_return_value	free_token_list(t_lexer *delete_me, char *input)
 }
 
 /**
- * @brief		Searches a string for any of a set of specified delimiters. 
+ * @brief	Searches a string for any of a set of specified delimiters.
  * 
  * @param string 		The string to search within
  * @param delimiters	A null-terminated string containing the delimiters to 

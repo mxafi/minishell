@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:22 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 11:42:40 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:54:37 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,29 @@
 
 static void	sig_pipeline(int sig)
 {
-	ioctl(0, TIOCSTI, "\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
 	if (sig == SIGINT)
 	{
 		kill(g_minishell->pid_pipeline[0], SIGINT);
 		kill(g_minishell->pid_pipeline[1], SIGINT);
+		if (g_minishell->is_pipeline == 1)
+		{
+			ft_putstr_fd("^C", 1);
+			ioctl(0, TIOCSTI, "\n");
+			rl_on_new_line();
+			rl_replace_line("", 0);
+		}
 	}
 	else if (sig == SIGQUIT)
 	{
 		kill(g_minishell->pid_pipeline[0], SIGQUIT);
 		kill(g_minishell->pid_pipeline[1], SIGQUIT);
-		ft_putstr_fd("Quit: 3\n", 1);
+		if (g_minishell->is_pipeline == 1)
+		{
+			ft_putstr_fd("^\\Quit: 3", 1);
+			ioctl(0, TIOCSTI, "\n");
+			rl_on_new_line();
+			rl_replace_line("", 0);
+		}	
 	}
 }
 
