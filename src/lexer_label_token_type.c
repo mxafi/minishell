@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 17:38:05 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 11:35:10 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 11:39:51 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ static void	set_token_type_and_list_state(t_lexer *list, t_token *token,
 		token->content = NULL;
 }
 
+/**
+ * @brief Handles token list's state when it's in UNDEFINED state.
+ * 
+ * @param list Head of the token list and information placeholder.
+ * @param token Current token.
+ * @param input Current input string being tokenized.
+ */
 static void	handle_list_state_is_undefined(t_lexer *list, t_token *token,
 		char *input)
 {
