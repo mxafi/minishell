@@ -38,7 +38,7 @@ void	print_list(t_lexer *list)
 		strncpy(list_error, "EXIT_SYNTAX_ERROR", sizeof(list_error) - 1);
 	list_error[sizeof(list_error) - 1] = '\0';
 
-	printf("List state\t\t:%p:\nlist error\t\t:%p:\n", list_state, list_error);
+	printf("List state\t\t:%s:\nlist error\t\t:%s:\n", list_state, list_error);
 	while (current_token != NULL)
 	{
 		if (current_token->type == UNDEFINED_TOKEN)
@@ -72,7 +72,7 @@ void	print_list(t_lexer *list)
 		else if (current_token->type == PIPE)
 			strncpy(token_type, "PIPE", sizeof(token_type) - 1);
 		token_type[sizeof(token_type) - 1] = '\0';
-		printf("Token[#%d] [%s]:\t:%p:\n", current_token->token_count, token_type,
+		printf("Token[#%d] [%s]:\t:%s:\n", current_token->token_count, token_type,
 				current_token->content);
 		current_token = current_token->next;
 	}

@@ -121,8 +121,8 @@ t_return_value	validate_syntax(t_lexer *token_list)
 	//print_list(token_list);
 	//printf("list error_code %d\n", token_list->error_code);
 	//printf("validate_syntax()validated pipes\n");
-	//if (token_list->error_code != SUCCESS)
-	//return (token_list->error_code);
+	if (token_list->error_code != SUCCESS)
+	return (token_list->error_code);
 	//printf("_______________________________________________________________________________\n");
 	if (validate_redirectors(token_list) == EXIT_SYNTAX_ERROR)
 		return (token_list->error_code);
