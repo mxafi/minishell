@@ -27,7 +27,6 @@ typedef enum e_token_type
 	HEREDOC,
 	APPEND_TO,
 	CMD,
-	BI_CMD,
 	ARG,
 	SGL_QUOTE_STR,
 	DBL_QUOTE_STR,

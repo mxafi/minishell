@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:32:41 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/19 14:20:46 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/24 08:09:08 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,10 @@
 typedef enum e_token_type	t_token_type;
 typedef struct s_token		t_token;
 
-// e_token_type from lexer.h for DEBUG
-//typedef enum e_token_list{
-//	SINGLE_QUOTE,
-//	DOUBLE_QUOTE,
-//	OUTFILE,
-//	INFILE,
-//	PIPE,
-//	MY_SPACE,
-//	STRING,
-//	HEREDOC,
-//	APPEND_TO,
-//	CMD,
-//	BI_CMD,
-//	REDIR,
-//	ARG
-//}	t_token_type;
-
-// expected input for ast_builder from lexer, here for debug purposes
-//typedef struct s_token
-//{
-//	t_token_type	type;
-//	char			*data;
-//	struct s_token	*next;
-//}					t_token;
-
 typedef enum e_ast_node_type
 {
 	AST_PIPE,
 	AST_COMMAND,
-	AST_BI_CMD, //Currently in the process of being obsoleted
 	AST_UNDEFINED
 }	t_ast_node_type;
 
