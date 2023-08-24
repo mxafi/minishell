@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:58:09 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/16 13:53:23by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 08:59:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	ft_echo(t_ast_node *node)
 	print_newline = TRUE;
 	if (node->argv_count > 1)
 		flag_length = ft_strlen(node->exec_argv[1]);
-	if (node->argv_count > 1 && !ft_strncmp(node->exec_argv[1], "-n", 2) &&
-		flag_length == 2)
+	if (node->argv_count > 1 && !ft_strncmp(node->exec_argv[1], "-n", 2)
+		&& flag_length == 2)
 	{
 		print_newline = FALSE;
 		argument_count++;
