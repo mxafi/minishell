@@ -6,12 +6,11 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/23 17:09:43 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/24 09:02:52 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
 
 /**
  * @brief 	Add new token to the last node of the token list
@@ -22,11 +21,13 @@
  * @param length	length of the string to be tokenized 
  * @return int		SUCCESS or FAILURE 
  */
-int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
+static t_return_value	tokenize_node(t_lexer *list, t_token *token, char *str,
+		int length)
 {
 	t_token	*last_token;
 
-	if ((token->content = ft_substr(str, 0, length)) == NULL)
+	token->content = ft_substr(str, 0, length);
+	if (token->content == NULL)
 	{
 		list->error_code = FAILURE;
 		return (FAILURE);
@@ -53,7 +54,7 @@ int	tokenize_node(t_lexer *list, t_token *token, char *str, int length)
  * @param delimiter		used to determine string length to be tokenized 
  * @return int			SUCCESS or MALLOC_FAIL 
  */
-t_return_value	string_to_token(t_lexer *token_list, char *input,
+static t_return_value	string_to_token(t_lexer *token_list, char *input,
 		char *delimiter)
 {
 	t_token	*new_token;
@@ -70,8 +71,8 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
 		return (token_list->error_code = MALLOC_FAIL);
 	label_token_type(token_list, new_token, STRING, input);
 	input = delimiter;
-	// CHECK IF RETURN VALUES ARE USED
-	return (token_list->error_code = SUCCESS);
+	token_list->error_code = SUCCESS;
+	return (token_list->error_code);
 }
 
 /**
@@ -79,8 +80,7 @@ t_return_value	string_to_token(t_lexer *token_list, char *input,
  * @details	Heredoc and append delimiters are determined separately from the 
  * 			other delimiters. A call to set_token_type_and_quote_state is made
  * 			which will set the token type to the node, as well as an 
-
-				* 			initialization of the token list's state needed by the quote handlers
+ * 			initialization of the token list's state needed by the quote handler
  *			in add_null_string_token_if_empty_quote function.
  *
  * @param token_list	Information and token list placeholder.
@@ -93,7 +93,6 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 	int		length;
 
 	new_token = NULL;
-	//printf("delimiter_to_token()\n");
 	if (make_new_node(token_list, &new_token) == MALLOC_FAIL)
 		return (NULL);
 	if (ft_strncmp(input, "<<", 2) == 0 || ft_strncmp(input, ">>", 2) == 0)
@@ -116,7 +115,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
 
 /**
  * @brief 	Readline string is tokenized using a self implemented version 
- * 			of strpbrk
+ * of strpbrk
  * @details	The strpbrk seeks the input string for delimiters: spaces, 
  * 			tabs, redirection, pipes and quotes to output delimited strings in 
  * 			a tokenized linked list. The delimiter itself is then tokenized.
@@ -125,7 +124,7 @@ static char	*delimiter_to_token(t_lexer *token_list, char *input)
  * @return int			Error code is initialized to 0 and return MALLOC_FAIL
  *						if it occurs
  */
-static int	tokenize_readline(t_lexer *token_list)
+static t_return_value	tokenize_readline(t_lexer *token_list)
 {
 	char	*input;
 	char	*delimiter;
@@ -154,7 +153,7 @@ static int	tokenize_readline(t_lexer *token_list)
 
 /**
  * @brief 	The lexer prepares the input string from the shell prompt to be 
- *				executed
+ *			executed
  * @details	A lexer struct is initialized and serves as a placeholder for 
  *			the tokenized list.
  *			- White spaces are trimmed from both ends of the readline input
@@ -162,10 +161,10 @@ static int	tokenize_readline(t_lexer *token_list)
  *			- Syntax is validated
  * 
  * @param input String obtained by user via readline
- * @return int	Return value is 0 if input was validated and execution was 
- * 				accomplished properly or an error code is returned.
+ * @return t_return_value	Return value is 0 if input was validated and 
+ * execution was accomplished properly or an error code is returned.
  */
-int	lexer(char *input)
+t_return_value	lexer(char *input)
 {
 	t_lexer		token_list;
 	t_ast_node	*ast_root;
@@ -191,5 +190,5 @@ int	lexer(char *input)
 		ast_recursive_delete(ast_root);
 	}
 	free_token_list(&token_list, input);
-	return (0);
+	return (SUCCESS);
 }

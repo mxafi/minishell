@@ -100,10 +100,7 @@ typedef struct s_lexer
 /*
  * contained in lexer.c
  */
-t_return_value			string_to_token(t_lexer *token_list, char *input,
-							char *delimiter);
-int						tokenize_node(t_lexer *list, t_token *token, char *str,
-							int length);
+
 /*
  * contained in lexer_utils.c
  */
