@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:49:55 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 19:17:47 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/25 08:32:52 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef enum e_return_value
 	INVALID_ARGUMENT,
 	INVALID_EXPANSION,
 	EXIT_SYNTAX_ERROR = 258,
+	BREAK,
 }						t_return_value;
 
 typedef enum e_is_found
@@ -139,6 +140,10 @@ t_return_value			concatenate_adjacent_strings(t_lexer *list);
  */
 t_return_value			expand_from_env(t_lexer *list);
 t_return_value			process_heredoc(t_lexer *list);
+char					*extract_value_from_dollar_sign(
+							const char *dollar_sign);
+char					*handle_env_value(char *result_string,
+							const char *env_value, t_token *current);
 
 // Contained in lexer_heredoc_validation_utils.c
 void					sig_heredoc(int sig);
@@ -147,8 +152,13 @@ char					*heredoc_get_line(void);
 /**
  * Contained in lexer_expansion_extra.c
  */
-const char				*handle_expansion(char *key_value, t_lexer *list);
+const char				*handle_expansion(char *key_value,
+							t_return_value *ret_val);
 char					*get_result_string(char *input, char *dollar_sign,
 							char *result_string, t_bool handled_pre_string);
+
+// Contained in lexer_expansion_process_token_utils.c
+t_return_value			process_token_single(t_token *current, char **input,
+							char **result_string, t_bool *handled_pre_string);
 
 #endif

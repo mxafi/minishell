@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+         #
+#    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
-#    Updated: 2023/08/24 14:39:23 by lclerc           ###   ########.fr        #
+#    Updated: 2023/08/25 06:02:20 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ LEXER_C			=	lexer.c \
 					lexer_validate_redirectors.c \
 					lexer_expansion.c \
 					lexer_expansion_extra.c \
+					lexer_expansion_process_token_utils.c \
 					lexer_heredoc_validation.c \
 					lexer_heredoc_validation_utils.c
 					

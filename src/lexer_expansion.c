@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/25 08:45:19 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 09:35:12 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
  * @return A dynamically allocated string containing the extracted alphanumeric
  * part. The caller is responsible for freeing the memory.
  */
-static char	*extract_value_from_dollar_sign(const char *dollar_sign)
+char	*extract_value_from_dollar_sign(const char *dollar_sign)
 {
 	int		i;
 	char	*alphanumeric_part;
@@ -59,7 +59,7 @@ static char	*extract_value_from_dollar_sign(const char *dollar_sign)
  * @param current The current token.
  * @return char* The updated result string.
  */
-static char	*handle_env_value(char *result_string, const char *env_value,
+char	*handle_env_value(char *result_string, const char *env_value,
 		t_token *current)
 {
 	char	*tmp;
@@ -100,15 +100,13 @@ static char	*handle_env_value(char *result_string, const char *env_value,
  * 
  * @param current The current token to process.
  */
-static t_return_value	process_token(t_lexer *list, t_token *current)
+static t_return_value	process_token(t_token *current)
 {
-	char		*dollar_sign;
-	char		*key_value;
-	char		*result_string;
-	char		*input;
-	const char	*env_value;
-	t_bool		handled_pre_string;
-	char		*input_origin;
+	char			*result_string;
+	char			*input;
+	t_bool			handled_pre_string;
+	char			*input_origin;
+	t_return_value	ret;
 
 	result_string = NULL;
 	input = ft_strdup(current->content);
@@ -118,60 +116,14 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
 	handled_pre_string = FALSE;
 	while (input && *input != '\0')
 	{
-		dollar_sign = ft_strchr(input, '$');
-		if (!dollar_sign)
+		ret = process_token_single(
+				current, &input, &result_string, &handled_pre_string);
+		if (ret == BREAK)
 			break ;
-		if (!(result_string = get_result_string(input, dollar_sign,
-					result_string, handled_pre_string)))
+		else if (ret == MALLOC_FAIL)
 			return (MALLOC_FAIL);
-				handled_pre_string = TRUE;
-				key_value = extract_value_from_dollar_sign(dollar_sign + 1);
-				env_value = handle_expansion(key_value, list);
-				if (env_value)
-				{
-					if (result_string == NULL)
-					{
-						if (current->content)
-							free(current->content);
-						current->content = ft_strdup(env_value);
-					}
-					else
-						result_string = handle_env_value(result_string,
-								env_value, current);
-				}
-				else if (!env_value)
-				{
-					if (!result_string)
-					{
-						result_string = (char *)ft_calloc(2, sizeof(char));
-						if (!result_string)
-							return (MALLOC_FAIL);
-					}
-					if (current->content)
-						free(current->content);
-					current->content = ft_strdup(result_string);
-					if (!current->content)
-						return (MALLOC_FAIL);
-				}
-				else
-				{
-					if (key_value)
-						free(key_value);
-				}
-				if (ft_strncmp(key_value, "?", 2) == 0 || ft_strncmp(key_value,
-						"$", 2) == 0)
-				{
-					if (env_value)
-						free((void *)env_value);
-				}
-				if (key_value)
-				{
-					input = dollar_sign + 1;
-					free(key_value);
-				}
 	}
-	if (input_origin)
-		free(input_origin);
+	free(input_origin);
 	if (result_string)
 		free(result_string);
 	return (SUCCESS);
@@ -191,7 +143,8 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
  * @return The updated error code.
  */
 
-static t_return_value	delete_null_expanded_token(t_lexer *list, t_token **current)
+static t_return_value	delete_null_expanded_token(
+	t_lexer *list, t_token **current)
 {
 	t_token	*temp;
 
@@ -200,13 +153,18 @@ static t_return_value	delete_null_expanded_token(t_lexer *list, t_token **curren
 		temp = (*current)->next;
 		delete_token(list, *current);
 		*current = temp;
+		//printf("Debug: delete_null_expanded_token: there is currentnext\n");
 	}
 	else if (list->head != *current)
+	{
 		delete_token(list, *current);
+		//printf("Debug: delete_null_expanded_token: list head is not current (not the only token)\n");
+	}
 	else
 	{
 		delete_token(list, *current);
 		list->error_code = INVALID_EXPANSION;
+		//printf("Debug: delete_null_expanded_token: it's the only token, invalid expansion\n");
 	}
 	return (list->error_code);
 }
@@ -236,7 +194,7 @@ t_return_value	expand_from_env(t_lexer *list)
 	{
 		if (current->type == DBL_QUOTE_STR || current->type == STRING)
 		{
-			if (process_token(list, current) != SUCCESS)
+			if (process_token(current) != SUCCESS)
 			{
 				list->error_code = MALLOC_FAIL;
 				break ;
@@ -250,4 +208,5 @@ t_return_value	expand_from_env(t_lexer *list)
 		current = current->next;
 	}
 	return (list->error_code);
+	// Null token as the last one causes heap-use-after-free but no segv
 }

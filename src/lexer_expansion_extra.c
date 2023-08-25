@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:33:51 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 18:46:00 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 07:37:49 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@
  * @param list The lexer list containing the tokens.
  * @param key_value The key value for the environment variable.
  */
-static void	handle_exit_status(const char **env_value, t_lexer *list,
-		char *key_value)
+static t_return_value	handle_exit_status(
+	const char **env_value, char *key_value)
 {
 	char	*exit_status_value;
 
 	exit_status_value = ft_itoa(g_minishell->exit_status);
 	if (!exit_status_value)
 	{
-		list->error_code = MALLOC_FAIL;
 		free(key_value);
-		return ;
+		return (MALLOC_FAIL);
 	}
 	*env_value = exit_status_value;
+	return (SUCCESS);
 }
 
 /**
@@ -47,14 +47,17 @@ static void	handle_exit_status(const char **env_value, t_lexer *list,
  * @param list The lexer list containing context information.
  * @return A pointer to the resulting environment value.
  */
-const char	*handle_expansion(char *key_value, t_lexer *list)
+const char	*handle_expansion(char *key_value, t_return_value *ret_val)
 {
 	const char	*env_value;
 
 	if (key_value && ft_strncmp(key_value, "$", 2) == 0)
 		env_value = ft_strdup("$");
 	else if (ft_strncmp(key_value, "?", 2) == 0)
-		handle_exit_status(&env_value, list, key_value);
+	{
+		if (handle_exit_status(&env_value, key_value) == MALLOC_FAIL)
+			*ret_val = MALLOC_FAIL;
+	}
 	else
 		env_value = env_get_value_by_key(key_value);
 	return (env_value);
