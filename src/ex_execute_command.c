@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:18 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 16:49:49 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:17:03 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,14 @@ void	execute_real_cmd(t_ast_node *node)
 		parse_path(node);
 	if (wrap_fork(NULL) == 0)
 	{
+		pre_execve_checks(node);
 		if (execve(node->exec_file, node->exec_argv, g_minishell->envp) == -1)
 		{
 			ft_putstr_fd("shellfishy: ", 2);
-			ft_putstr_fd(node->exec_file, 2);
+			if (ft_strncmp(node->exec_argv[0], "..", 3) != 0)
+				ft_putstr_fd(node->exec_file, 2);
+			else
+				ft_putstr_fd(node->exec_argv[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
 			exit(127);
 		}

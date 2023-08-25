@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:43:39 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 15:55:52 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 10:45:18 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void	execute_command_redirections_append(t_redir *c_redir);
 void	execute_command_redirections_heredoc(t_redir *c_redir);
 t_bool	is_absolute_path(t_ast_node *node);
 void	parse_path(t_ast_node *node);
+void	pre_execve_checks(t_ast_node *node);
 
 #endif

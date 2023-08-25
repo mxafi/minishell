@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 11:37:00 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 15:55:47 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:19:54 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,33 @@ void	parse_path(t_ast_node *node)
 	while (split_path[i] != NULL)
 		free(split_path[i++]);
 	free(split_path);
+}
+
+void	pre_execve_checks(t_ast_node *node)
+{
+	struct stat	info;
+
+	printf("av0::%s::\nexfile::%s::\n", node->exec_argv[0], node->exec_file);
+	if (stat(node->exec_file, &info) != 0)
+	{
+		ft_putstr_fd("shellfishy: ", 2);
+		perror(node->exec_file);
+		exit(127);
+	}
+	if (S_ISDIR(info.st_mode) && ft_strchr(node->exec_file, '/') != NULL
+		&& ft_strncmp(node->exec_argv[0], "..", 3) != 0)
+	{
+		ft_putstr_fd("shellfishy: ", 2);
+		ft_putstr_fd(node->exec_file, 2);
+		ft_putstr_fd(": is a directory\n", 2);
+		exit(126);
+	}
+	if (access(node->exec_file, X_OK) != 0)
+	{
+		ft_putstr_fd("shellfishy: ", 2);
+		perror(node->exec_file);
+		if (errno == EACCES)
+			exit(126);
+		exit(127);
+	}
 }
