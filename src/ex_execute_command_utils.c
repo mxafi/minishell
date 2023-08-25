@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 11:37:00 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/25 11:19:54 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:22:50 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	pre_execve_checks(t_ast_node *node)
 {
 	struct stat	info;
 
-	printf("av0::%s::\nexfile::%s::\n", node->exec_argv[0], node->exec_file);
 	if (stat(node->exec_file, &info) != 0)
 	{
 		ft_putstr_fd("shellfishy: ", 2);
