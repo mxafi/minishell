@@ -6,18 +6,18 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 15:49:10 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 10:51:00 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// FOR DEBUG PURPOSES
-# include <assert.h>
-
 // Provides constants for system limits, such as maximum path length.
 # include <limits.h>
+
+// Provides types
+# include <types.h>
 
 // Contains general-purpose functions like malloc, free, exit, getenv.
 # include <stdlib.h>
@@ -48,6 +48,9 @@
 
 // For ioctl
 # include <sys/ioctl.h>
+
+// For stat
+# include <sys/stat.h>
 
 // User defined headers
 # include "../libft/libft.h"
