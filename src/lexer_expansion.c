@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/25 09:43:26 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:05:09 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,8 @@ t_return_value	expand_from_env(t_lexer *list)
 				list->error_code = MALLOC_FAIL;
 				break ;
 			}
-			else if (ft_strncmp(current->content, "", 1) == 0)
+			else if (ft_strncmp(current->content, "", 1) == 0
+				&& current->type != QUOTE_NEED_NULL_STR)
 			{
 				if (delete_null_expanded_token(list, &current) != SUCCESS)
 					return (list->error_code);

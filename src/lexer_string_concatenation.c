@@ -6,7 +6,7 @@
 /*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 13:44:48 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 09:45:21 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/25 13:03:53 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static void	simplify_string_syntax(t_lexer *list)
 	current = list->head;
 	while (current != NULL)
 	{
-		if (current->type == SGL_QUOTE_STR || current->type == DBL_QUOTE_STR)
+		if (current->type == SGL_QUOTE_STR || current->type == DBL_QUOTE_STR
+			|| current->type == QUOTE_NEED_NULL_STR)
 			current->type = STRING;
 		current = current->next;
 	}

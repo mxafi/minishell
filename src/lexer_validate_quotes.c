@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_validate_quotes.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:41:02 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 18:47:26 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:00:35 by lclerc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ static void	add_null_string_for_empty_quotes(t_lexer *token_list)
 	while (current != NULL)
 	{
 		if (current->type == QUOTE_NEED_NULL_STR)
-		{
-			current->type = STRING;
 			ft_strlcpy(current->content, "", 1);
-		}
 		current = current->next;
 	}
 }
