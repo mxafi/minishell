@@ -6,7 +6,7 @@
 #    By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/11 09:39:41 by lclerc            #+#    #+#              #
-#    Updated: 2023/08/25 06:02:20 by malaakso         ###   ########.fr        #
+#    Updated: 2023/08/25 13:47:57 by malaakso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,8 @@ EXECUTOR_C		=	executor.c \
 					ex_execute_command_utils.c \
 					ex_execute_bi_cmd.c \
 					ex_execute_command_redirections.c \
-					ex_execute_command_redirections_utils.c
+					ex_execute_command_redirections_utils.c \
+					executor_undefined.c
 
 H_FILES			=	$(SHELL_H) $(INPUT_H) $(LEXER_H) $(ASTREE_H) $(EXECUTOR_H)
 C_FILES			=	$(SHELL_C) $(INPUT_C) $(LEXER_C) $(ASTREE_C) $(EXECUTOR_C) $(BUILTINS_C)

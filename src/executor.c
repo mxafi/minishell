@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:44:33 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 16:53:02 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:46:50 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,6 @@ void	executor(t_ast_node *node)
 	}
 	else if (node->type == AST_COMMAND)
 		execute_command(node);
+	else if (node->type == AST_UNDEFINED)
+		execute_safe_undefined(node);
 }
