@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:01:04 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 14:00:30 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 10:56:55 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	delete_argv(char **argv, int argc)
 			free(argv[i]);
 		i++;
 	}
-	assert(argv[i] == NULL);
 	free(argv);
 }
 
@@ -76,7 +75,6 @@ t_token	*free_current_token_return_next(t_token *token)
 {
 	t_token	*ret;
 
-	assert(token != NULL);
 	ret = token->next;
 	free(token->content);
 	free(token);
