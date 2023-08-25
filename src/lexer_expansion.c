@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lclerc <lclerc@hive.student.fi>            +#+  +:+       +#+        */
+/*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/24 19:04:45 by lclerc           ###   ########.fr       */
+/*   Updated: 2023/08/25 08:45:19 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,21 +191,21 @@ static t_return_value	process_token(t_lexer *list, t_token *current)
  * @return The updated error code.
  */
 
-static t_return_value	delete_null_expanded_token(t_lexer *list, t_token *current)
+static t_return_value	delete_null_expanded_token(t_lexer *list, t_token **current)
 {
 	t_token	*temp;
 
-	if (current->next)
+	if ((*current)->next)
 	{
-		temp = current->next;
-		delete_token(list, current);
-		current = temp;
+		temp = (*current)->next;
+		delete_token(list, *current);
+		*current = temp;
 	}
-	else if (list->head != current)
-		delete_token(list, current);
+	else if (list->head != *current)
+		delete_token(list, *current);
 	else
 	{
-		delete_token(list, current);
+		delete_token(list, *current);
 		list->error_code = INVALID_EXPANSION;
 	}
 	return (list->error_code);
@@ -243,7 +243,7 @@ t_return_value	expand_from_env(t_lexer *list)
 			}
 			else if (ft_strncmp(current->content, "", 1) == 0)
 			{
-				if (delete_null_expanded_token(list, current) != SUCCESS)
+				if (delete_null_expanded_token(list, &current) != SUCCESS)
 					return (list->error_code);
 			}
 		}
