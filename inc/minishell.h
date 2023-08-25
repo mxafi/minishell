@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:34:09 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/25 10:51:00 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 10:55:36 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <limits.h>
 
 // Provides types
-# include <types.h>
+# include <sys/types.h>
 
 // Contains general-purpose functions like malloc, free, exit, getenv.
 # include <stdlib.h>
