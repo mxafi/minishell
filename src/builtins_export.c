@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:47:45 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/23 18:27:06 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 09:54:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,27 @@ static t_return_value	ft_export_handle_equal_sign(char *arg)
 	return (FAILURE);
 }
 
+static void	print_export(void)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (g_minishell->envp[i])
+	{
+		ft_putstr_fd("declare -x ", 1);
+		j = 0;
+		while (g_minishell->envp[i][j] && g_minishell->envp[i][j] != '=')
+			ft_putchar_fd(g_minishell->envp[i][j++], 1);
+		j++;
+		ft_putstr_fd("=\"", 1);
+		while (g_minishell->envp[i][j])
+			ft_putchar_fd(g_minishell->envp[i][j++], 1);
+		ft_putstr_fd("\"\n", 1);
+		i++;
+	}
+}
+
 /**
  * @brief Exports environment variables based on the provided command node.
  *
@@ -95,14 +116,7 @@ void	ft_export(t_ast_node *node)
 	g_minishell->exit_status = 0;
 	if (node->argv_count == 1)
 	{
-		i = 0;
-		while (g_minishell->envp[i])
-		{
-			ft_putstr_fd("declare -x ", 1);
-			ft_putstr_fd(g_minishell->envp[i], 1);
-			ft_putchar_fd('\n', 1);
-			i++;
-		}
+		print_export();
 		return ;
 	}
 	i = 0;
