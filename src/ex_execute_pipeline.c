@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 17:01:22 by malaakso          #+#    #+#             */
-/*   Updated: 2023/08/24 16:54:37 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 05:35:47 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	sig_pipeline(int sig)
 			ioctl(0, TIOCSTI, "\n");
 			rl_on_new_line();
 			rl_replace_line("", 0);
-		}	
+		}
 	}
 }
 
