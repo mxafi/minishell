@@ -42,8 +42,7 @@ LEXER_C			=	lexer.c \
 					lexer_expansion.c \
 					lexer_expansion_extra.c \
 					lexer_heredoc_validation.c \
-					lexer_heredoc_validation_utils.c \
-					DELETE_ME_AND_FCT_IN_HEADER.c
+					lexer_heredoc_validation_utils.c
 					
 BUILTINS_C		= 	builtins.c \
 					builtins_export.c
