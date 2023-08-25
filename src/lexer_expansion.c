@@ -6,7 +6,7 @@
 /*   By: malaakso <malaakso@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:24:25 by lclerc            #+#    #+#             */
-/*   Updated: 2023/08/25 09:35:12 by malaakso         ###   ########.fr       */
+/*   Updated: 2023/08/25 09:43:26 by malaakso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,18 +153,15 @@ static t_return_value	delete_null_expanded_token(
 		temp = (*current)->next;
 		delete_token(list, *current);
 		*current = temp;
-		//printf("Debug: delete_null_expanded_token: there is currentnext\n");
 	}
 	else if (list->head != *current)
 	{
-		delete_token(list, *current);
-		//printf("Debug: delete_null_expanded_token: list head is not current (not the only token)\n");
+		return (list->error_code);
 	}
 	else
 	{
 		delete_token(list, *current);
 		list->error_code = INVALID_EXPANSION;
-		//printf("Debug: delete_null_expanded_token: it's the only token, invalid expansion\n");
 	}
 	return (list->error_code);
 }
@@ -208,5 +205,4 @@ t_return_value	expand_from_env(t_lexer *list)
 		current = current->next;
 	}
 	return (list->error_code);
-	// Null token as the last one causes heap-use-after-free but no segv
 }
